@@ -29,6 +29,10 @@ class Set2 {
 			_second(other._second) {}
 		
 		Set2<T> const& operator=(Set2<T> const& other) {
+			if (&other == this) {
+				/// Shortcut self-assignment
+				return *this;
+			}
 			_first = other._first;
 			_second = other._second;
 			return *this;
