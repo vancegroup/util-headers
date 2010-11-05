@@ -19,11 +19,26 @@
 
 namespace util {
 
+/** @brief Container class for two interchangeable values.
+
+	Allows use of a pair of values without concern as to what order they
+	are in.  Particularly useful as a key in maps to avoid needing
+	double-sized nested maps.
+
+	Should be compatible with most (if not all) STL containers and algorithms.
+
+	@invariant Internally maintains ! (second < first)
+
+	@tparam T Contained type.
+*/
 template<typename T>
 class Set2 {
 	/// @todo How to enforce a single representation for cases in which
 	/// ! (a < b) but also ! (b < a), but a != b in some meaningful way?
+
+	/// @todo Note about handling NAN?
 	public:
+		/// Contained value type
 		typedef T value_type;
 
 		/// Default constructor: requires T be default constructible and assignment
