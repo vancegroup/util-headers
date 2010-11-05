@@ -28,11 +28,4 @@ add_boost_test(Saturate
 
 add_boost_test(Set2
 	SOURCES
-	Set2.cpp
-	TESTS
-	ConstructionSmallerFirst
-	ConstructionSmallerSecond
-	ConstructionEqual
-	ComparisonFirstsUnequal
-	ComparisonFirstsEqual
-	ComparisonBothEqual)
+	Set2.cpp)
