@@ -231,3 +231,25 @@ BOOST_AUTO_TEST_CASE(MapCompatibility) {
 	BOOST_CHECK(m.find(b)->first == b);
 	BOOST_CHECK(m.find(b)->second == 2);
 }
+
+BOOST_AUTO_TEST_CASE(MapUpdate) {
+	std::map<Set2<int>, int> m;
+
+	Set2<int> a(5, 10);
+	Set2<int> b(20, 30);
+
+	m.insert(std::make_pair(a, 1));
+	m[b] = 2;
+
+	m[Set2<int>(5, 10)] = 3;
+
+	BOOST_REQUIRE_EQUAL(m.size(), 2);
+	BOOST_CHECK(m[a] == 3);
+	BOOST_CHECK(m[b] == 2);
+
+	BOOST_CHECK(m.find(a)->first == a);
+	BOOST_CHECK(m.find(a)->second == 3);
+
+	BOOST_CHECK(m.find(b)->first == b);
+	BOOST_CHECK(m.find(b)->second == 2);
+}
