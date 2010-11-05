@@ -18,6 +18,7 @@
 // Standard includes
 #include <vector>
 #include <map>
+#include <algorithm>
 
 
 using namespace boost::unit_test;
@@ -168,6 +169,45 @@ BOOST_AUTO_TEST_CASE(ComparisonBothEqual) {
 }
 
 BOOST_AUTO_TEST_CASE(VectorCompatibility) {
+	std::vector<Set2<int> > v;
 
+	Set2<int> a(5, 10);
+	Set2<int> b(20, 30);
 
+	v.push_back(a);
+	v.push_back(b);
+
+	BOOST_CHECK(v[0] == a);
+	BOOST_CHECK(v[1] == b);
+}
+
+BOOST_AUTO_TEST_CASE(VectorSort) {
+	std::vector<Set2<int> > v;
+
+	Set2<int> a(5, 10);
+	Set2<int> b(20, 30);
+
+	// pushing in the "wrong" order
+	v.push_back(b);
+	v.push_back(a);
+
+	std::sort(v.begin(), v.end());
+
+	BOOST_CHECK(v[0] == a);
+	BOOST_CHECK(v[1] == b);
+}
+
+BOOST_AUTO_TEST_CASE(VectorSortNoOp) {
+	std::vector<Set2<int> > v;
+
+	Set2<int> a(5, 10);
+	Set2<int> b(20, 30);
+
+	v.push_back(a);
+	v.push_back(b);
+
+	std::sort(v.begin(), v.end());
+
+	BOOST_CHECK(v[0] == a);
+	BOOST_CHECK(v[1] == b);
 }
