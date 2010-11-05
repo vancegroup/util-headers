@@ -23,6 +23,11 @@
 using namespace boost::unit_test;
 using namespace util;
 
+BOOST_AUTO_TEST_CASE(DefaultConstruction) {
+	Set2<int> a;
+	BOOST_CHECK_LE(a.first(), a.second());
+}
+
 BOOST_AUTO_TEST_CASE(ConstructionSmallerFirst) {
 	Set2<int> a(5, 10);
 	BOOST_CHECK_EQUAL(a.first(), 5);
