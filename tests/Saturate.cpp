@@ -7,7 +7,7 @@
 	Human-Computer Interaction Graduate Program
 */
 
-#define BOOST_TEST_MODULE util tests
+#define BOOST_TEST_MODULE Saturate tests
 
 // Internal Includes
 #include <util/Saturate.h>
