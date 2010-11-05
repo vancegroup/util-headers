@@ -43,7 +43,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 # Build the project
 ###
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+add_subdirectory(third-party)
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}" ${THIRD_PARTY_INCLUDE_DIRS})
 
 add_subdirectory(util)
 
