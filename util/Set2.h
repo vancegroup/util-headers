@@ -24,9 +24,15 @@ class Set2 {
 	/// @todo How to enforce a single representation for cases in which
 	/// ! (a < b) but also ! (b < a), but a != b in some meaningful way?
 	public:
+		/// Default constructor: requires T be default constructible
+		Set2() {}
+
+		/// Constructor from values: requires T be copy constructible
 		Set2(T const& a, T const& b) :
-				_first(b < a ? b : a),
-				_second(b < a ? a : b) {}
+			_first(b < a ? b : a),
+			_second(b < a ? a : b) {}
+
+		/// Copy constructor
 		Set2(Set2<T> const& other) :
 			_first(other._first),
 			_second(other._second) {}
