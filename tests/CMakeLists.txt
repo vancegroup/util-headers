@@ -28,4 +28,27 @@ add_boost_test(Saturate
 
 add_boost_test(Set2
 	SOURCES
-	Set2.cpp)
+	Set2.cpp
+	TESTS
+	DefaultConstruction
+	ConstructionSmallerFirst
+	ConstructionSmallerSecond
+	ConstructionEqual
+	CopyConstruction
+	AssignmentOperator
+	AssignmentOperatorBothWays
+	AssignmentOperatorSelfAssign
+	MutatorSmallerFirst
+	MutatorSmallerSecond
+	MutatorBothEqual
+	MutatorNoChange
+	MutatorNoEffectiveChange
+	ComparisonFirstsUnequal
+	ComparisonFirstsEqual
+	ComparisonBothEqual
+	VectorCompatibility
+	VectorSort
+	VectorSortNoOp
+	MapCompatibility
+	MapUpdate)
+
