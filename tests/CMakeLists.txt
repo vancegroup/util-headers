@@ -3,7 +3,25 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
-set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
-
-add_subdirectory(VPSTools)
-add_subdirectory(osgVPS)
+add_boost_test(Saturate
+	SOURCES
+	Saturate.cpp
+	TESTS
+	TwoParamNoSaturateZeros
+	ThreeParamNoSaturateZeros
+	TwoParam1DNoSaturate
+	TwoParam1DNoSaturateNeg
+	TwoParam1DSaturate
+	TwoParam1DSaturateNeg
+	ThreeParam1DNoSaturate
+	ThreeParam1DNoSaturateNeg
+	ThreeParam1DSaturate
+	ThreeParam1DSaturateNeg
+	TwoParam3DNoSaturate
+	TwoParam3DNoSaturateNeg
+	TwoParam3DSaturate
+	TwoParam3DSaturateNeg
+	ThreeParam3DNoSaturate
+	ThreeParam3DNoSaturateNeg
+	ThreeParam3DSaturate
+	ThreeParam3DSaturateNeg)
