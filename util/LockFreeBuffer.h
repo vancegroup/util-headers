@@ -31,6 +31,11 @@
 #define LFB_VOL
 #endif
 
+namespace util {
+
+/// @addtogroup DataStructures Data Strutures
+/// @{
+
 /** @brief A buffer with one producer and one consumer, and no OS locks.
 */
 template<class T>
@@ -80,6 +85,8 @@ class LockFreeBuffer {
 
 // -- inline implementations -- //
 
+/// @}
+} // end of namespace util
 
 #endif // INCLUDED_LockFreeBuffer_h_GUID_04578a7b_6d47_4faa_848d_269963fdef2f
 

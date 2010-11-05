@@ -19,6 +19,9 @@
 
 namespace util {
 
+/// @addtogroup DataStructures Data Strutures
+/// @{
+
 /** @brief Container class for two interchangeable values.
 
 	Allows use of a pair of values without concern as to what order they
@@ -30,18 +33,20 @@ namespace util {
 	@invariant Internally maintains ! (second < first)
 
 	@tparam T Contained type.
+
+	@todo How to enforce a single representation for cases in which
+	! (a < b) but also ! (b < a), but a != b in some meaningful way?
+
+	@todo Note about handling NAN?
 */
 template<typename T>
 class Set2 {
-	/// @todo How to enforce a single representation for cases in which
-	/// ! (a < b) but also ! (b < a), but a != b in some meaningful way?
-
-	/// @todo Note about handling NAN?
 	public:
 		/// Contained value type
 		typedef T value_type;
 
-		/// Default constructor: requires T be default constructible and assignment
+		/// Default constructor: requires T be default constructible and have
+		/// an assignment operator
 		Set2() {
 			if (_second < _first) {
 				T temp(_first);
@@ -92,7 +97,8 @@ class Set2 {
 		T _second;
 };
 
-/// Comparison operator for Set2 containers: uses only operator<
+/// @brief Comparison operator for Set2 containers: uses only operator<
+/// @relates Set2
 template<typename T>
 bool operator<(Set2<T> const& a, Set2<T> const& b) {
 	/// The somewhat awkward series of comparisons is to
@@ -106,12 +112,15 @@ bool operator<(Set2<T> const& a, Set2<T> const& b) {
 	}
 }
 
-/// Equality operator for Set2 containers: uses operator==
+/// @brief Equality operator for Set2 containers: uses operator==
+/// @relates Set2
 template<typename T>
 bool operator==(Set2<T> const& a, Set2<T> const& b) {
 	/// @todo should we be using combined < calls here?
 	return (a.first() == b.first()) && (a.second() == b.second());
 }
+
+/// @}
 
 } // end of namespace util
 
