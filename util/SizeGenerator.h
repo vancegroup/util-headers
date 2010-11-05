@@ -11,8 +11,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef _SizeGenerator_h_
-#define _SizeGenerator_h_
+#ifndef INCLUDED_SizeGenerator_h_GUID_46b0d167_fb36_4c0a_bacd_134533ccb6a5
+#define INCLUDED_SizeGenerator_h_GUID_46b0d167_fb36_4c0a_bacd_134533ccb6a5
 
 // Local includes
 // - none
@@ -25,6 +25,10 @@
 #include <iomanip>
 
 namespace util {
+
+/// @addtogroup Other Other Utility Classes
+/// @{
+
 	class SizeGenerator {
 		public:
 			SizeGenerator(unsigned int min, unsigned int max, unsigned int step) :
@@ -66,6 +70,9 @@ namespace util {
 			unsigned int _rows;
 			unsigned int _cols;
 	};
+	
+/// @}
 }
 
-#endif // _SizeGenerator_h_
+#endif // INCLUDED_SizeGenerator_h_GUID_46b0d167_fb36_4c0a_bacd_134533ccb6a5
+

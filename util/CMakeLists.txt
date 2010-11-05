@@ -2,6 +2,11 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+add_custom_target(util
+	SOURCES
+	Stride.h
+	SizeGenerator.h)
+
 add_custom_target(util-DataStructures
 	SOURCES
 	LockFreeBuffer.h
@@ -12,13 +17,11 @@ add_custom_target(util-Math
 	RandomFloat.h
 	Saturate.h)
 	
-add_custom_target(util-OSG
+add_custom_target(util-FreeFunctions
 	SOURCES
+	ChangeFileExtension.h
+	GetLocalComputerName.h
 	gmtlToOsgMatrix.h
 	osgFindNamedNode.h)
 
-add_custom_target(util-Other
-	SOURCES
-	Stride.h
-	SizeGenerator.h
-	GetLocalComputerName.h)
+

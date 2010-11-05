@@ -11,8 +11,9 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef _RandomFloat_h_
-#define _RandomFloat_h_
+#ifndef INCLUDED_RandomFloat_h_GUID_8bc80329_72d0_45bc_af08_671fb074f875
+#define INCLUDED_RandomFloat_h_GUID_8bc80329_72d0_45bc_af08_671fb074f875
+
 
 // Local includes
 // - none
@@ -24,6 +25,10 @@
 #include <cstdlib>
 
 namespace util {
+
+/// @addtogroup Math Math Utilities
+/// @{
+
 	/// Return a random float in [0, 1]
 	inline float randomFloat() {
 		return static_cast<float>(::std::rand())/RAND_MAX;
@@ -33,6 +38,11 @@ namespace util {
 	inline double randomDouble() {
 		return static_cast<double>(::std::rand())/RAND_MAX;
 	}
+
+
+/// @}
+
 }
 
-#endif // _RandomFloat_h_
+#endif // INCLUDED_RandomFloat_h_GUID_8bc80329_72d0_45bc_af08_671fb074f875
+

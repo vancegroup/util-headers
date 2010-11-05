@@ -14,9 +14,13 @@
 */
 
 #pragma once
-#ifndef _GETLOCALCOMPUTERNAME_H
-#define _GETLOCALCOMPUTERNAME_H
+#ifndef INCLUDED_GetLocalComputerName_h_GUID_40bc94c9_d917_4cc2_9b0b_00fc13454b01
+#define INCLUDED_GetLocalComputerName_h_GUID_40bc94c9_d917_4cc2_9b0b_00fc13454b01
 
+// Local includes
+// - none
+
+// Library includes
 #if defined(_WIN32)
 #include <Winsock2.h>
 #pragma comment(lib, "Ws2_32.lib")
@@ -24,7 +28,13 @@
 #include <unistd.h>
 #endif
 
+// Standard includes
 #include <string>
+
+namespace util {
+
+/// @addtogroup FreeFunctions Free Functions
+/// @{
 
 std::string GetLocalComputerName() {
 	char hostname[256];
@@ -54,4 +64,9 @@ std::string GetFullLocalComputerName() {
 	return GetLocalComputerName() + GetLocalDomainName();
 }
 
-#endif
+/// @}
+
+} // end of util namespace
+
+#endif // INCLUDED_GetLocalComputerName_h_GUID_40bc94c9_d917_4cc2_9b0b_00fc13454b01
+

@@ -13,8 +13,8 @@
 */
 
 #pragma once
-#ifndef _util_SplitMap_h_
-#define _util_SplitMap_h_
+#ifndef INCLUDED_SplitMap_h_GUID_7c123d17_2fc7_4404_8108_3dc819b374b9
+#define INCLUDED_SplitMap_h_GUID_7c123d17_2fc7_4404_8108_3dc819b374b9
 
 // Internal Includes
 // - none
@@ -25,8 +25,13 @@
 // Standard includes
 // - none
 
+
 namespace util {
 
+/// @addtogroup FreeFunctions Free Functions
+/// @{
+
+/// Given a map, return a vector of all the keys
 template<class MapType, class VectorType>
 VectorType getAllKeys(MapType const & map) {
 	VectorType ret;
@@ -36,6 +41,7 @@ VectorType getAllKeys(MapType const & map) {
 	return ret;
 }
 
+/// Given a map, return a vector of all the values
 template<class MapType, class VectorType>
 VectorType getAllValues(MapType const & map) {
 	VectorType ret;
@@ -45,6 +51,7 @@ VectorType getAllValues(MapType const & map) {
 	return ret;
 }
 
+/// Given a map, return a vector of keys and a vector of values
 template<class MapType, class PairVectorType>
 PairVectorType getSplit(MapType const & map) {
 	PairVectorType ret;
@@ -55,7 +62,9 @@ PairVectorType getSplit(MapType const & map) {
 	return ret;
 }
 
+/// @}
 
 } // end of util namespace
 
-#endif // _util_SplitMap_h_
+#endif // INCLUDED_SplitMap_h_GUID_7c123d17_2fc7_4404_8108_3dc819b374b9
+

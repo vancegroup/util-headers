@@ -15,18 +15,27 @@
 
 */
 
-// Standard includes
-#include <string>
+#pragma once
+#ifndef INCLUDED_osgFindNamedNode_h_GUID_981f9445_6d58_462f_8452_6937dfac9a52
+#define INCLUDED_osgFindNamedNode_h_GUID_981f9445_6d58_462f_8452_6937dfac9a52
+
+// Internal Includes
+// - none
 
 // Library/third-party includes
 #include <osg/Node>
 #include <osg/Group>
 
+// Standard includes
+#include <string>
 
-// Internal Includes
-// - none
+namespace util {
 
-osg::Node* findNamedNode(osg::Node* currNode, std::string modelName)
+/// @addtogroup FreeFunctions Free Functions
+/// @{
+
+/// Search a scenegraph and return the first node found with the given name.
+inline osg::Node* findNamedNode(osg::Node* currNode, std::string modelName)
 {
 	osg::Group* currGroup;
 	osg::Node* foundNode;
@@ -68,3 +77,10 @@ osg::Node* findNamedNode(osg::Node* currNode, std::string modelName)
 		return NULL; // leaf node, no match
 	}
 }
+
+} // end of namespace util
+
+/// @}
+
+#endif // INCLUDED_osgFindNamedNode_h_GUID_981f9445_6d58_462f_8452_6937dfac9a52
+

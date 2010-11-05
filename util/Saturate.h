@@ -15,7 +15,6 @@
 #ifndef INCLUDED_util_Saturate_h_GUID_8E496A1E_CA76_11DF_8972_7DCDDFD72085
 #define INCLUDED_util_Saturate_h_GUID_8E496A1E_CA76_11DF_8972_7DCDDFD72085
 
-
 // Local includes
 // - none
 
@@ -26,6 +25,10 @@
 // - none
 
 namespace util {
+
+/// @addtogroup Math Math Utilities
+/// @{
+
 	/** Saturate the vector at the given max magnitude.
 
 		@param vec The input and output vector
@@ -67,6 +70,9 @@ namespace util {
 		}
 		return false;
 	}
+	
+/// @}
+
 }
 #endif // INCLUDED_util_Saturate_h_GUID_8E496A1E_CA76_11DF_8972_7DCDDFD72085
 
