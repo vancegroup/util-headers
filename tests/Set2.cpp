@@ -253,3 +253,7 @@ BOOST_AUTO_TEST_CASE(MapUpdate) {
 	BOOST_CHECK(m.find(b)->first == b);
 	BOOST_CHECK(m.find(b)->second == 2);
 }
+
+/// @todo Add tests for use in std::set
+/// @todo Add templated construction test in separate cpp
+
