@@ -9,6 +9,7 @@ add_custom_target(util
 
 add_custom_target(util-DataStructures
 	SOURCES
+	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h)
 
