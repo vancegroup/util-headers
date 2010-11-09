@@ -37,3 +37,23 @@ BOOST_AUTO_TEST_CASE(IncrementalCounts) {
 	BOOST_CHECK_EQUAL(a.store("bar"), 1);
 	BOOST_CHECK_EQUAL(a.size(), 2);
 }
+
+BOOST_AUTO_TEST_CASE(SimpleRetrieve) {
+	CountedUniqueValues<string> a;
+	unsigned int fooID = a.store("foo");
+	unsigned int barID = a.store("bar");
+	BOOST_CHECK_EQUAL(a.get(fooID), "foo");
+	BOOST_CHECK_EQUAL(a.get(barID), "bar");
+}
+
+BOOST_AUTO_TEST_CASE(ValueIdentity) {
+	CountedUniqueValues<string> a;
+	unsigned int fooID = a.store("foo");
+	unsigned int barID = a.store("bar");
+	BOOST_CHECK_EQUAL(fooID, a.store("foo"));
+	BOOST_CHECK_EQUAL(barID, a.store("bar"));
+	
+	// Checking actual store ID after repeated store IDs
+	BOOST_CHECK_EQUAL(a.store("baz"), 2);
+	BOOST_CHECK_EQUAL(a.store("baz"), 2);
+}
