@@ -52,3 +52,7 @@ add_boost_test(Set2
 	MapCompatibility
 	MapUpdate)
 
+add_boost_test(CountedUniqueValues
+	SOURCES
+	CountedUniqueValues.cpp)
+
