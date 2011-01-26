@@ -32,6 +32,9 @@ include(EnableExtraCompilerWarnings)
 include(CTest)
 include(CreateDashboardScripts)
 
+include(SetDefaultBuildType)
+set_default_build_type(RelWithDebInfo)
+
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
