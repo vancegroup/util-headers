@@ -9,6 +9,8 @@ add_custom_target(util
 
 add_custom_target(util-DataStructures
 	SOURCES
+	BlockingInvokeFunctor.h
+	BlockingInvokeFunctorVPR.h
 	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h)
