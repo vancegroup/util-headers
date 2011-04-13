@@ -13,5 +13,9 @@ else()
 	list(APPEND THIRD_PARTY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/eigen-20") # for Eigen
 endif()
 
+# Loki lib SVN https://loki-lib.svn.sourceforge.net/svnroot/loki-lib/trunk@1081
+message(STATUS "Using Loki template library r1081")
+list(APPEND THIRD_PARTY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/loki-lib")
+
 # Forward these include dirs up to the parent directory
 set(THIRD_PARTY_INCLUDE_DIRS ${THIRD_PARTY_INCLUDE_DIRS} PARENT_SCOPE)
