@@ -153,8 +153,7 @@ BOOST_AUTO_TEST_CASE(TwoParam3DNoSaturate) {
 	double mxMagnitude = 5.0;
 	bool result = util::saturate(vec, mxMagnitude);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(orig[i], vec[i], 0.0001);
 	}
 	BOOST_CHECK(result == false);
@@ -166,8 +165,7 @@ BOOST_AUTO_TEST_CASE(TwoParam3DNoSaturateNeg) {
 	double mxMagnitude = 5.0;
 	bool result = util::saturate(vec, mxMagnitude);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(orig[i], vec[i], 0.0001);
 	}
 	BOOST_CHECK(result == false);
@@ -178,11 +176,10 @@ BOOST_AUTO_TEST_CASE(TwoParam3DSaturate) {
 	Eigen::Vector3d expected(3.0, 3.0, 3.0);
 
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(3.0*3.0 + 3.0*3.0 + 3.0*3.0);
+	double mxMagnitude = sqrt(3.0 * 3.0 + 3.0 * 3.0 + 3.0 * 3.0);
 	bool result = util::saturate(vec, mxMagnitude);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(expected[i], vec[i], 0.0001);
 	}
 	BOOST_CHECK(result == true);
@@ -192,11 +189,10 @@ BOOST_AUTO_TEST_CASE(TwoParam3DSaturateNeg) {
 	Eigen::Vector3d orig(-4.0, -4.0, -4.0);
 	Eigen::Vector3d expected(-3.0, -3.0, -3.0);
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(-3.0*-3.0 + -3.0*-3.0 + -3.0*-3.0);
+	double mxMagnitude = sqrt(-3.0 * -3.0 + -3.0 * -3.0 + -3.0 * -3.0);
 	bool result = util::saturate(vec, mxMagnitude);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(expected[i], vec[i], 0.0001);
 	}
 	BOOST_CHECK(result == true);
@@ -206,11 +202,10 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DNoSaturate) {
 	Eigen::Vector3d orig(1.0, 1.0, 1.0);
 	Eigen::Vector3d othervec(1.0, 1.0, 1.0);
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(1.0*1.0 + 1.0*1.0 + 1.0*1.0);
+	double mxMagnitude = sqrt(1.0 * 1.0 + 1.0 * 1.0 + 1.0 * 1.0);
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(orig[i], vec[i], 0.0001);
 		BOOST_CHECK_CLOSE(orig[i], othervec[i], 0.0001);
 	}
@@ -221,11 +216,10 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DNoSaturateNeg) {
 	Eigen::Vector3d orig(-1.0, -1.0, -1.0);
 	Eigen::Vector3d othervec(-1.0, -1.0, -1.0);
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(-1.0*-1.0 + -1.0*-1.0 + -1.0*-1.0);
+	double mxMagnitude = sqrt(-1.0 * -1.0 + -1.0 * -1.0 + -1.0 * -1.0);
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(orig[i], vec[i], 0.0001);
 		BOOST_CHECK_CLOSE(orig[i], othervec[i], 0.0001);
 	}
@@ -237,14 +231,13 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DNoSaturateNeg) {
 BOOST_AUTO_TEST_CASE(ThreeParam3DSaturate) {
 	Eigen::Vector3d orig(4.0, 4.0, 4.0);
 	Eigen::Vector3d othervec(4.0, 4.0, 4.0);
-	double exp_result = sqrt(3.0*3.0 + 3.0*3.0 + 3.0*3.0);
+	double exp_result = sqrt(3.0 * 3.0 + 3.0 * 3.0 + 3.0 * 3.0);
 	Eigen::Vector3d expected(3.0, 3.0, 3.0);
 	Eigen::Vector3d vec = orig;
 	double mxMagnitude = exp_result;
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(expected[i], vec[i], 0.0001);
 		BOOST_CHECK_CLOSE(expected[i], othervec[i], 0.0001);
 	}
@@ -254,14 +247,13 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DSaturate) {
 BOOST_AUTO_TEST_CASE(ThreeParam3DSaturateNeg) {
 	Eigen::Vector3d orig(-4.0, -4.0, -4.0);
 	Eigen::Vector3d othervec(-4.0, -4.0, -4.0);
-	double exp_result = sqrt(-3.0*-3.0 + -3.0*-3.0 + -3.0*-3.0);
+	double exp_result = sqrt(-3.0 * -3.0 + -3.0 * -3.0 + -3.0 * -3.0);
 	Eigen::Vector3d expected(-3.0, -3.0, -3.0);
 	Eigen::Vector3d vec = orig;
 	double mxMagnitude = exp_result;
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
 		BOOST_CHECK_CLOSE(expected[i], vec[i], 0.0001);
 		BOOST_CHECK_CLOSE(expected[i], othervec[i], 0.0001);
 	}

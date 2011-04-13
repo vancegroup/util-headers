@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(ValueIdentity) {
 	unsigned int barID = a.store("bar");
 	BOOST_CHECK_EQUAL(fooID, a.store("foo"));
 	BOOST_CHECK_EQUAL(barID, a.store("bar"));
-	
+
 	// Checking actual store ID after repeated store IDs
 	BOOST_CHECK_EQUAL(a.store("baz"), 2);
 	BOOST_CHECK_EQUAL(a.store("baz"), 2);

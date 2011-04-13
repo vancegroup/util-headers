@@ -140,10 +140,10 @@ BOOST_AUTO_TEST_CASE(ComparisonFirstsUnequal) {
 	Set2<int> b(20, 30);
 
 	BOOST_CHECK(a < b);
-	BOOST_CHECK(! (b < a) );
+	BOOST_CHECK(!(b < a));
 
-	BOOST_CHECK(! (a == b) );
-	BOOST_CHECK(! (b == a) );
+	BOOST_CHECK(!(a == b));
+	BOOST_CHECK(!(b == a));
 }
 
 BOOST_AUTO_TEST_CASE(ComparisonFirstsEqual) {
@@ -151,18 +151,18 @@ BOOST_AUTO_TEST_CASE(ComparisonFirstsEqual) {
 	Set2<int> b(5, 30);
 
 	BOOST_CHECK(a < b);
-	BOOST_CHECK(! (b < a) );
+	BOOST_CHECK(!(b < a));
 
-	BOOST_CHECK(! (a == b) );
-	BOOST_CHECK(! (b == a) );
+	BOOST_CHECK(!(a == b));
+	BOOST_CHECK(!(b == a));
 }
 
 BOOST_AUTO_TEST_CASE(ComparisonBothEqual) {
 	Set2<int> a(5, 10);
 	Set2<int> b(5, 10);
 
-	BOOST_CHECK(! (a < b) );
-	BOOST_CHECK(! (b < a) );
+	BOOST_CHECK(!(a < b));
+	BOOST_CHECK(!(b < a));
 
 	BOOST_CHECK(a == b);
 	BOOST_CHECK(b == a);
