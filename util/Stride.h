@@ -30,35 +30,35 @@ namespace util {
 /// @{
 
 /// Handle the task of "do this every n times" in an easy way.
-class Stride {
-	public:
-		Stride(const unsigned int n) :
-			_stride(n),
-			_step(0) { }
+	class Stride {
+		public:
+			Stride(const unsigned int n) :
+				_stride(n),
+				_step(0) { }
 
-		void advance() {
-			_step = (_step + 1) % _stride;
-		}
+			void advance() {
+				_step = (_step + 1) % _stride;
+			}
 
-		Stride operator++() {
-			Stride temp = *this;
-			advance();
-			return temp;
-		}
+			Stride operator++() {
+				Stride temp = *this;
+				advance();
+				return temp;
+			}
 
-		Stride & operator++(int) {
-			advance();
-			return *this;
-		}
+			Stride & operator++(int) {
+				advance();
+				return *this;
+			}
 
-		operator bool() const {
-			return _step == 0;
-		}
+			operator bool() const {
+				return _step == 0;
+			}
 
-	private:
-		unsigned int _stride;
-		unsigned int _step;
-};
+		private:
+			unsigned int _stride;
+			unsigned int _step;
+	};
 
 /// @}
 

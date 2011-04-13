@@ -36,33 +36,37 @@ namespace util {
 /// @addtogroup FreeFunctions Free Functions
 /// @{
 
-std::string GetLocalComputerName() {
-	char hostname[256];
-	std::string host;
-	for (int i = 0; i < 256; i++) { hostname[i] = 0; }
-	int ret = gethostname(&hostname[0], 255);
-	if (ret == 0) {
-		host = std::string(hostname);
+	std::string GetLocalComputerName() {
+		char hostname[256];
+		std::string host;
+		for (int i = 0; i < 256; i++) {
+			hostname[i] = 0;
+		}
+		int ret = gethostname(&hostname[0], 255);
+		if (ret == 0) {
+			host = std::string(hostname);
+		}
+		return host;
 	}
-	return host;
-}
 
-std::string GetLocalDomainName() {
-	std::string domain("");
+	std::string GetLocalDomainName() {
+		std::string domain("");
 #if !defined(_WIN32)
-	char domainname[256];
-	for (int i = 0; i < 256; i++) { domainname[i] = 0; }
-	int ret = getdomainname(&domainname[0], 256);
-	if (ret == 0) {
-		domain = domainname;
-	}
+		char domainname[256];
+		for (int i = 0; i < 256; i++) {
+			domainname[i] = 0;
+		}
+		int ret = getdomainname(&domainname[0], 256);
+		if (ret == 0) {
+			domain = domainname;
+		}
 #endif
-   return domain;
-}
+		return domain;
+	}
 
-std::string GetFullLocalComputerName() {
-	return GetLocalComputerName() + GetLocalDomainName();
-}
+	std::string GetFullLocalComputerName() {
+		return GetLocalComputerName() + GetLocalDomainName();
+	}
 
 /// @}
 

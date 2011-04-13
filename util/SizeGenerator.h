@@ -70,7 +70,7 @@ namespace util {
 			unsigned int _rows;
 			unsigned int _cols;
 	};
-	
+
 /// @}
 }
 

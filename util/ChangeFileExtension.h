@@ -31,14 +31,14 @@ namespace util {
 /// @{
 
 /// Remove the last file extension, if present, and append the new provided one
-inline std::string changeFileExtension(const std::string & origName, const std::string & newExt) {
-	std::string fn = origName;
-	if (fn.rfind(".") != std::string::npos) {
-		fn.erase(fn.rfind("."));
+	inline std::string changeFileExtension(const std::string & origName, const std::string & newExt) {
+		std::string fn = origName;
+		if (fn.rfind(".") != std::string::npos) {
+			fn.erase(fn.rfind("."));
+		}
+		fn += newExt;
+		return fn;
 	}
-	fn += newExt;
-	return fn;
-}
 
 /// @}
 

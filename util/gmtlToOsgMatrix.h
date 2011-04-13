@@ -32,11 +32,11 @@ namespace util {
 /// @{
 
 /// Given a GMTL matrix, produce an equivalent OSG matrix
-inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
-	::osg::Matrix temp;
-	temp.set(r.getData());
-	return temp;
-}
+	inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
+		::osg::Matrix temp;
+		temp.set(r.getData());
+		return temp;
+	}
 
 /// @}
 

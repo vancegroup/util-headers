@@ -36,7 +36,7 @@ namespace util {
 		public:
 			typedef unsigned int count_type;
 			typedef std::vector<value_type> storage_type;
-			
+
 			count_type store(value_type const& v) {
 				count_type i = _storage.size();
 				if (_lookup.find(v) != _lookup.end()) {
@@ -50,17 +50,17 @@ namespace util {
 				}
 				return i;
 			}
-			
-			
+
+
 			/// @todo dangerous because of not changing the lookup?
 			value_type & get(count_type const& i) {
 				return _storage.at(i);
 			}
-			
+
 			value_type const& get(count_type const& i) const {
 				return _storage.at(i);
 			}
-			
+
 			count_type size() const {
 				return _storage.size();
 			}
@@ -68,7 +68,7 @@ namespace util {
 		protected:
 			std::vector<value_type> _storage;
 			std::map<value_type, count_type> _lookup;
-			
+
 	};
 
 

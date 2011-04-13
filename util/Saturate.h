@@ -70,7 +70,7 @@ namespace util {
 		}
 		return false;
 	}
-	
+
 /// @}
 
 }

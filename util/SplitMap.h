@@ -32,35 +32,35 @@ namespace util {
 /// @{
 
 /// Given a map, return a vector of all the keys
-template<class MapType, class VectorType>
-VectorType getAllKeys(MapType const & map) {
-	VectorType ret;
-	for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
-		ret.push_back(it->first);
+	template<class MapType, class VectorType>
+	VectorType getAllKeys(MapType const & map) {
+		VectorType ret;
+		for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
+			ret.push_back(it->first);
+		}
+		return ret;
 	}
-	return ret;
-}
 
 /// Given a map, return a vector of all the values
-template<class MapType, class VectorType>
-VectorType getAllValues(MapType const & map) {
-	VectorType ret;
-	for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
-		ret.push_back(it->second);
+	template<class MapType, class VectorType>
+	VectorType getAllValues(MapType const & map) {
+		VectorType ret;
+		for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
+			ret.push_back(it->second);
+		}
+		return ret;
 	}
-	return ret;
-}
 
 /// Given a map, return a vector of keys and a vector of values
-template<class MapType, class PairVectorType>
-PairVectorType getSplit(MapType const & map) {
-	PairVectorType ret;
-	for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
-		ret.first.push_back(it->first);
-		ret.second.push_back(it->second);
+	template<class MapType, class PairVectorType>
+	PairVectorType getSplit(MapType const & map) {
+		PairVectorType ret;
+		for (typename MapType::const_iterator it = map.begin(); it != map.end(); ++it) {
+			ret.first.push_back(it->first);
+			ret.second.push_back(it->second);
+		}
+		return ret;
 	}
-	return ret;
-}
 
 /// @}
 

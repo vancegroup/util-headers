@@ -31,12 +31,12 @@ namespace util {
 
 	/// Return a random float in [0, 1]
 	inline float randomFloat() {
-		return static_cast<float>(::std::rand())/RAND_MAX;
+		return static_cast<float>(::std::rand()) / RAND_MAX;
 	}
 
 	/// Return a random double in [0, 1]
 	inline double randomDouble() {
-		return static_cast<double>(::std::rand())/RAND_MAX;
+		return static_cast<double>(::std::rand()) / RAND_MAX;
 	}
 
 

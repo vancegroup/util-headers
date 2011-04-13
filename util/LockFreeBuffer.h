@@ -36,52 +36,52 @@ namespace util {
 /// @addtogroup DataStructures Data Strutures
 /// @{
 
-/** @brief A buffer with one producer and one consumer, and no OS locks.
-*/
-template<class T>
-class LockFreeBuffer {
-	public:
-		LockFreeBuffer() :
-			_sent(0),
-			_received(0) { }
-		~LockFreeBuffer() {}
+	/** @brief A buffer with one producer and one consumer, and no OS locks.
+	*/
+	template<class T>
+	class LockFreeBuffer {
+		public:
+			LockFreeBuffer() :
+				_sent(0),
+				_received(0) { }
+			~LockFreeBuffer() {}
 
-		typedef T value_type;
+			typedef T value_type;
 
-		bool send(value_type const& item) {
-			if (_sent == _received) {
-				_val = item;
-				_sent = ~_received; // let sent be bitwise-NOT of received
-				return true;
-			} else {
+			bool send(value_type const& item) {
+				if (_sent == _received) {
+					_val = item;
+					_sent = ~_received; // let sent be bitwise-NOT of received
+					return true;
+				} else {
 #ifdef VERBOSE
-				std::cout << __FUNCTION__ << ": skipping because last update not received" << std::endl;
+					std::cout << __FUNCTION__ << ": skipping because last update not received" << std::endl;
 #endif
-				return false;
+					return false;
+				}
 			}
-		}
 
-		bool receive(value_type & out) {
-			if (_sent != _received) {
-				out = _val;
-				_received = _sent;
-				return true;
-			} else {
+			bool receive(value_type & out) {
+				if (_sent != _received) {
+					out = _val;
+					_received = _sent;
+					return true;
+				} else {
 #ifdef VERBOSE
-				std::cout << __FUNCTION__ << ": failed because no new updates" << std::endl;
+					std::cout << __FUNCTION__ << ": failed because no new updates" << std::endl;
 #endif
-				return false;
+					return false;
+				}
 			}
-		}
 
-	private:
-		value_type _val;
+		private:
+			value_type _val;
 
-		// See http://msdn.microsoft.com/en-us/library/12a04hfd%28VS.80%29.aspx
-		// for information on volatile
-		int LFB_VOL _sent;
-		int LFB_VOL _received;
-};
+			// See http://msdn.microsoft.com/en-us/library/12a04hfd%28VS.80%29.aspx
+			// for information on volatile
+			int LFB_VOL _sent;
+			int LFB_VOL _received;
+	};
 
 // -- inline implementations -- //
 
