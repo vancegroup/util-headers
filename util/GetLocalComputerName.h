@@ -1,9 +1,9 @@
 /**
-	@file GetLocalComputerName.h
+	@file  GetLocalComputerName.h
 	@brief Provides a cross-platform interface to getting the computer name.
 
 	@date
-	2009
+	2009-2011
 
 	@author
 	Ryan Pavlik
@@ -30,38 +30,34 @@
 
 // Standard includes
 #include <string>
+#include <cstring>
 
 namespace util {
 
 /// @addtogroup FreeFunctions Free Functions
 /// @{
 
+	static const size_t NETWORK_STR_LEN = 256;
 	std::string GetLocalComputerName() {
-		char hostname[256];
-		std::string host;
-		for (int i = 0; i < 256; i++) {
-			hostname[i] = 0;
-		}
-		int ret = gethostname(&hostname[0], 255);
+		char hostname[NETWORK_STR_LEN];
+		std::memset(hostname, 0, sizeof(hostname));
+		int ret = gethostname(hostname, NETWORK_STR_LEN);
 		if (ret == 0) {
-			host = std::string(hostname);
+			return std::string(hostname);
 		}
-		return host;
+		return std::string();
 	}
 
 	std::string GetLocalDomainName() {
-		std::string domain("");
 #if !defined(_WIN32)
-		char domainname[256];
-		for (int i = 0; i < 256; i++) {
-			domainname[i] = 0;
-		}
-		int ret = getdomainname(&domainname[0], 256);
+		char domainname[NETWORK_STR_LEN];
+		std::memset(domainname, 0, sizeof(domainname));
+		int ret = getdomainname(&domainname[0], NETWORK_STR_LEN);
 		if (ret == 0) {
-			domain = domainname;
+			return std::string(domainname);
 		}
 #endif
-		return domain;
+		return std::string();
 	}
 
 	std::string GetFullLocalComputerName() {
