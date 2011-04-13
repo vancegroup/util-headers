@@ -6,7 +6,7 @@ message(STATUS "")
 message(STATUS "Bundled third-party code:")
 
 if(BUILD_WITH_EIGEN3)
-	message(STATUS "Using Eigen 3.0 pre-release")
+	message(STATUS "Using Eigen 3.0")
 	list(APPEND THIRD_PARTY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/eigen") # for Eigen
 else()
 	message(STATUS "Using Eigen 2.0.x")
