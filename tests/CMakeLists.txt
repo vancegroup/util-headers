@@ -56,3 +56,4 @@ add_boost_test(CountedUniqueValues
 	SOURCES
 	CountedUniqueValues.cpp)
 
+add_subdirectory(cleanbuild)

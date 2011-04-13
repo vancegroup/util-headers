@@ -38,6 +38,10 @@ set_default_build_type(RelWithDebInfo)
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
+find_package(VRJuggler COMPONENTS vpr)
+find_package(GMTL)
+find_package(OpenSceneGraph)
+
 ###
 # End build configuration
 ###

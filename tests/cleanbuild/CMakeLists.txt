@@ -1,0 +1,30 @@
+
+if(VRJUGGLER_FOUND)
+	include_directories(${VRJUGGLER_INCLUDE_DIRS})
+	set(LIBRARIES_BlockingInvokeFunctorVPR ${VRJUGGLER_LIBRARIES})
+else()
+	list(REMOVE_ITEM HEADERS BlockingInvokeFunctorVPR.h)
+endif()
+
+if(OPENSCENEGRAPH_FOUND)
+	include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
+	if(GMTL_FOUND)
+		include_directories(${GMTL_INCLUDE_DIRS})
+	else()
+		list(REMOVE_ITEM HEADERS gmtlToOsgMatrix.h)
+	endif()
+else()
+	list(REMOVE_ITEM HEADERS osgFindNamedNode.h)
+endif()
+
+foreach(HEADER ${HEADERS})
+	string(REPLACE ".h" "" SHORTNAME "${HEADER}")
+	configure_file(test_headercompile.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/test_headercompile_${SHORTNAME}.cpp" @ONLY)
+
+	add_executable(test_headercompile_${SHORTNAME} "${CMAKE_CURRENT_BINARY_DIR}/test_headercompile_${SHORTNAME}.cpp")
+	if(LIBRARIES_${SHORTNAME})
+		target_link_libraries(test_headercompile_${SHORTNAME} ${LIBRARIES_${SHORTNAME}})
+	endif()
+	add_test(test_headercompile_${SHORTNAME}_executes test_headercompile_${SHORTNAME})
+endforeach()
+
