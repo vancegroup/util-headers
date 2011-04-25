@@ -26,6 +26,11 @@
 
 namespace util {
 
+	/// Container class for a value varying over time, where you might want
+	/// to know not only the "current" value, but the value prior to most recent
+	/// "advance/swap" event that your code initiates.
+	/// last/this frame, etc.
+	/// Does just swell holding STL containers.
 	template<typename T>
 	class WithHistory {
 		public:
@@ -34,38 +39,66 @@ namespace util {
 			typedef T const& value_const_ref_type;
 		private:
 			int _currentIdx;
-			T _contained[2];
+			T _a;
+			T _b;
 			T * _current;
 			T * _previous;
 		public:
+			/// Default constructor: creates previous and current values
+			/// by default construction
 			WithHistory() :
-				_current(&(_contained[0])),
-				_previous(&(_contained[1]))  {
-			}
+				_current(&_a),
+				_previous(&_b)  { }
 
-			WithHistory(T prevVal) :
-				_current(&(_contained[0])),
-				_previous(&(_contained[1])) {
-				_contained[1] = prevVal;
-			}
+
+			/// Value constructor: creates current value by copy construction,
+			/// and previous value by default construction
+			WithHistory(T curVal) :
+				_a(curVal),
+				_current(&_a),
+				_previous(&_b) { }
+
+			/// Value constructor: creates current and previous values
+			/// by copy construction.
+			WithHistory(T curVal, T prevVal) :
+				_a(curVal),
+				_b(prevVal),
+				_current(&_a),
+				_previous(&_b) { }
+
+			/// Accessor for current value - can be used as an l-value
 			value_ref_type current() {
 				return *_current;
 			}
 
+			/// Const accessor for current value
 			value_const_ref_type current() const {
 				return *_current;
 			}
 
+			/// Accessor for "previous" value - can be used as an l-value
+			/// but this makes little sense in the context of this container.
 			value_ref_type previous() {
 				return *_previous;
 			}
 
+			/// Const accessor for "previous" value
 			value_const_ref_type previous() const {
 				return *_previous;
 			}
 
+			/// Make previous() return what current() returns now, and vice-versa.
+			/// If you want to start with a "clean" current value, it is
+			/// your responsibility to do so after this method.
 			void swap() {
 				std::swap(_current, _previous);
+			}
+
+			/// Make previous() return what current() returns now, and initialize
+			/// the new "current()" with a copy of this value.
+			void advanceByCopy() {
+				(*_previous) = (*_current);
+				swap();
 			}
 
 	};
