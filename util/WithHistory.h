@@ -26,22 +26,40 @@
 
 namespace util {
 
-	/// Container class for a value varying over time, where you might want
-	/// to know not only the "current" value, but the value prior to most recent
-	/// "advance/swap" event that your code initiates.
-	/// last/this frame, etc.
-	/// Does just swell holding STL containers.
+/// @addtogroup DataStructures Data Strutures
+/// @{
+	/** @brief Container class for a value varying over time, where you might want
+		to know not only the "current" value, but the value prior to most recent
+		"advance/swap" event that your code initiates.
+
+		One example would be values valid for the last frame and current frame of
+		some simulation.
+
+		Works nicely holding STL containers, as well as other "value-type" objects:
+		that is, things that aren't complicated and pointer-y.
+	*/
 	template<typename T>
 	class WithHistory {
 		public:
+			/// Contained value type
 			typedef T value_type;
+
+			/// Reference to contained value type
 			typedef T & value_ref_type;
+
+			/// Reference to const contained value type
 			typedef T const& value_const_ref_type;
 		private:
-			int _currentIdx;
+			/// One of the contained values
 			T _a;
+
+			/// The other contained value
 			T _b;
+
+			/// Pointer to the contained value deemed "current"
 			T * _current;
+
+			/// Pointer to the contained value deemed "previous"
 			T * _previous;
 		public:
 			/// Default constructor: creates previous and current values
@@ -104,6 +122,8 @@ namespace util {
 				return *_previous;
 			}
 
+			/// Advance history by a simple swap.
+			///
 			/// Make previous() return what current() returns now, and vice-versa.
 			/// If you want to start with a "clean" current value, it is
 			/// your responsibility to do so after this method.
@@ -111,6 +131,8 @@ namespace util {
 				std::swap(_current, _previous);
 			}
 
+			/// Advance history by copying.
+			///
 			/// Make previous() return what current() returns now, and initialize
 			/// the new "current()" with a copy of this value.
 			void advanceByCopy() {
@@ -120,6 +142,7 @@ namespace util {
 
 	};
 
+/// @}
 
 } // end of namespace util
 
