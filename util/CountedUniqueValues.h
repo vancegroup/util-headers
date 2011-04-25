@@ -27,7 +27,7 @@
 
 namespace util {
 
-/// @addtogroup DataStructures Data Strutures
+/// @addtogroup DataStructures Data Structures
 /// @{
 
 	/// A container template that numbers and stores unique values.

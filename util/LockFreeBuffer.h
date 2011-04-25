@@ -33,7 +33,7 @@
 
 namespace util {
 
-/// @addtogroup DataStructures Data Strutures
+/// @addtogroup DataStructures Data Structures
 /// @{
 
 	/** @brief A buffer with one producer and one consumer, and no OS locks.

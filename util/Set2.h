@@ -28,7 +28,7 @@
 
 namespace util {
 
-/// @addtogroup DataStructures Data Strutures
+/// @addtogroup DataStructures Data Structures
 /// @{
 
 	/** @brief Container class for two interchangeable values.

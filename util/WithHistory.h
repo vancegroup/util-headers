@@ -26,7 +26,7 @@
 
 namespace util {
 
-/// @addtogroup DataStructures Data Strutures
+/// @addtogroup DataStructures Data Structures
 /// @{
 	/** @brief Container class for a value varying over time, where you might want
 		to know not only the "current" value, but the value prior to most recent
