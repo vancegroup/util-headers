@@ -17,6 +17,15 @@
 #ifndef INCLUDED_Set2_h_GUID_cfb4b70a_f756_4367_b64f_f76f4569deda
 #define INCLUDED_Set2_h_GUID_cfb4b70a_f756_4367_b64f_f76f4569deda
 
+// Internal Includes
+// - none
+
+// Library/third-party includes
+// - none
+
+// Standard includes
+#include <algorithm>
+
 namespace util {
 
 /// @addtogroup DataStructures Data Strutures
@@ -49,9 +58,7 @@ namespace util {
 			/// an assignment operator
 			Set2() {
 				if (_second < _first) {
-					T temp(_first);
-					_first = _second;
-					_second = temp;
+					std::swap(_first, _second);
 				}
 			}
 
