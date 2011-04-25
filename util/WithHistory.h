@@ -66,6 +66,23 @@ namespace util {
 				_current(&_a),
 				_previous(&_b) { }
 
+			/// Copy constructor
+			WithHistory(WithHistory const& other) :
+				_a(other._a),
+				_b(other._b),
+				_current(&_a),
+				_previous(&_b) { }
+
+			/// Assignment operator
+			WithHistory & operator=(WithHistory const& other) {
+				if (this == &other) {
+					/// self-assign is a no-op
+					return *this;
+				}
+				current() = other.current();
+				previous() = other.previous();
+			}
+
 			/// Accessor for current value - can be used as an l-value
 			value_ref_type current() {
 				return *_current;
