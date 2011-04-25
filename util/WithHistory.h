@@ -24,53 +24,7 @@
 // Standard includes
 #include <algorithm>
 
-namespace std {
-	/// Forward declarations
-	template<typename T, typename Allocator>
-	class Vector;
-	template<typename Key, typename T, typename Compare, typename Allocator>
-	class Map;
-	template<typename Key, typename Compare, typename Allocator>
-	class Set;
-} // end of namespace std
-
 namespace util {
-	namespace detail {
-		/// Templated default function to clear an object using assignment
-		/// operator and default constructor
-		template<typename T>
-		struct ClearByDefaultConstruction {
-			void apply(T & obj) {
-				obj = T();
-			}
-		};
-
-		/// For all types without specializations, clearing history
-		/// occurs by default construction and assignment.
-		template<typename T>
-		struct DefaultHistoryClear : ClearByDefaultConstruction<T> {};
-
-		/// Templated way of clearing objects with a clear method.
-		template<typename T>
-		struct HistoryClearByClearMethod {
-			void apply(T & obj) {
-				obj.clear();
-			}
-		};
-		/*
-				/// use a clear method to clear std::vector types by default
-				template<typename T>
-				struct DefaultHistoryClear< std::vector<T> > : HistoryClearByClearMethod< std::vector<T> > {};
-
-				/// use a clear method to clear std::map types by default
-				template<typename KeyT, typename ValT>
-				struct DefaultHistoryClear< std::map<KeyT, ValT> > : HistoryClearByClearMethod< std::map<KeyT, ValT> > {};
-
-				/// use a clear method to clear std::set types by default
-				template<typename T>
-				struct DefaultHistoryClear< std::set<T> > : HistoryClearByClearMethod< std::set<T> > {};
-		*/
-	} // end of namespace detail
 
 	template<typename T>
 	class WithHistory {
