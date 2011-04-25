@@ -10,7 +10,8 @@ set(DATASTRUCTURES_HEADERS
 	BlockingInvokeFunctorVPR.h
 	CountedUniqueValues.h
 	LockFreeBuffer.h
-	SplitMap.h)
+	SplitMap.h
+	WithHistory.h)
 set(MATH_HEADERS
 	RandomFloat.h
 	Saturate.h)
