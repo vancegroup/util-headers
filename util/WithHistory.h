@@ -37,6 +37,8 @@ namespace util {
 
 		Works nicely holding STL containers, as well as other "value-type" objects:
 		that is, things that aren't complicated and pointer-y.
+
+		@tparam T Contained type.
 	*/
 	template<typename T>
 	class WithHistory {
