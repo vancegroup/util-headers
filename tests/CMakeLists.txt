@@ -58,6 +58,27 @@ add_boost_test(CountedUniqueValues
 
 add_boost_test(WithHistory
 	SOURCES
-	WithHistory.cpp)
+	WithHistory.cpp
+	TESTS
+	DefaultConstructionPOD
+	ValueConstructionPOD
+	ValuePODSwap
+	ValuePODAdvanceByCopy
+	DualValueConstructionPOD
+	CopyFromDefaultConstructionPOD
+	CopyFromValueConstructionPOD
+	CopyFromDualValueConstructionPOD
+	DualValuePODSwap
+	DualValuePODAdvanceByCopy
+	DefaultConstructionVector
+	ValueConstructionVector
+	ValueVectorSwap
+	ValueVectorAdvanceByCopy
+	DualValueConstructionVector
+	DualValueVectorSwap
+	DualValueVectorAdvanceByCopy
+	CopyFromDefaultConstructionVector
+	CopyFromValueConstructionVector
+	CopyFromDualValueConstructionVector)
 
 add_subdirectory(cleanbuild)
