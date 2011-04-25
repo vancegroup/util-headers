@@ -53,7 +53,7 @@ namespace util {
 
 			/// Value constructor: creates current value by copy construction,
 			/// and previous value by default construction
-			WithHistory(T curVal) :
+			explicit WithHistory(T curVal) :
 				_a(curVal),
 				_current(&_a),
 				_previous(&_b) { }
