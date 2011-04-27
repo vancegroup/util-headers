@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DNoSaturate) {
 	Eigen::Vector3d orig(1.0, 1.0, 1.0);
 	Eigen::Vector3d othervec(1.0, 1.0, 1.0);
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(1.0 * 1.0 + 1.0 * 1.0 + 1.0 * 1.0);
+	double mxMagnitude = sqrt(1.1 * 1.1 + 1.1 * 1.1 + 1.1 * 1.1);
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
 	for (unsigned int i = 0; i < 3; i++) {
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(ThreeParam3DNoSaturateNeg) {
 	Eigen::Vector3d orig(-1.0, -1.0, -1.0);
 	Eigen::Vector3d othervec(-1.0, -1.0, -1.0);
 	Eigen::Vector3d vec = orig;
-	double mxMagnitude = sqrt(-1.0 * -1.0 + -1.0 * -1.0 + -1.0 * -1.0);
+	double mxMagnitude = sqrt(-1.1 * -1.1 + -1.1 * -1.1 + -1.1 * -1.1);
 	bool result = util::saturate(vec, mxMagnitude, othervec);
 
 	for (unsigned int i = 0; i < 3; i++) {
