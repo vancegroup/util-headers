@@ -19,6 +19,7 @@ set(FREEFUNCTION_HEADERS
 	ChangeFileExtension.h
 	GetLocalComputerName.h
 	gmtlToOsgMatrix.h
+	launchByAssociation.h
 	osgFindNamedNode.h)
 
 
