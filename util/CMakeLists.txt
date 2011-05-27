@@ -5,22 +5,36 @@
 set(UTIL_HEADERS
 	Stride.h
 	SizeGenerator.h)
+
 set(DATASTRUCTURES_HEADERS
 	BlockingInvokeFunctor.h
-	BlockingInvokeFunctorVPR.h
 	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h
 	WithHistory.h)
+
+if(VPR22_FOUND OR VPR20_FOUND)
+	list(APPEND DATASTRUCTURES_HEADERS
+		BlockingInvokeFunctorVPR.h)
+endif()
+
 set(MATH_HEADERS
 	RandomFloat.h
 	Saturate.h)
+
 set(FREEFUNCTION_HEADERS
 	ChangeFileExtension.h
 	GetLocalComputerName.h
-	gmtlToOsgMatrix.h
-	launchByAssociation.h
-	osgFindNamedNode.h)
+	launchByAssociation.h)
+
+if(OPENSCENEGRAPH_FOUND)
+	list(APPEND FREEFUNCTION_HEADERS
+		osgFindNamedNode.h)
+	if(GMTL_FOUND)
+		list(APPEND FREEFUNCTION_HEADERS
+			gmtlToOsgMatrix.h)
+	endif()
+endif()
 
 
 add_custom_target(util
