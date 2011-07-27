@@ -46,7 +46,7 @@ namespace util {
 			Scalar * _data[Dim];
 
 			template<typename OtherDerived>
-			Tie & _set(::Eigen::MatrixBase<OtherDerived> const& other) {
+			EIGEN_STRONG_INLINE Tie & _set(::Eigen::MatrixBase<OtherDerived> const& other) {
 				EIGEN_STATIC_ASSERT_VECTOR_SPECIFIC_SIZE(OtherDerived, int(Dim));
 				if (*this == other) {
 					return *this;
@@ -94,7 +94,7 @@ namespace util {
 				return _set(other);
 			}
 
-			Base convert() const {
+			EIGEN_STRONG_INLINE Base convert() const {
 				Base temp;
 				for (int i = 0; i < Dim; ++i) {
 					temp[i] = *(_data[i]);
@@ -102,23 +102,23 @@ namespace util {
 				return temp;
 			}
 
-			operator Base() const {
+			EIGEN_STRONG_INLINE operator Base() const {
 				return convert();
 			}
 
-			Scalar coeff(int i) const {
+			EIGEN_STRONG_INLINE Scalar coeff(int i) const {
 				return *(_data[i]);
 			}
 	};
 
 	template<typename StreamType, int _Dim, typename _Scalar>
-	StreamType & operator<<(StreamType & os, Tie<_Dim, _Scalar> const& val) {
+	EIGEN_STRONG_INLINE StreamType & operator<<(StreamType & os, Tie<_Dim, _Scalar> const& val) {
 		os << val.convert();
 		return os;
 	}
 
 	template<int _Dim, typename _Scalar1, typename _Scalar2>
-	inline bool operator==(Tie<_Dim, _Scalar1> const& lhs, Tie<_Dim, _Scalar2> const& rhs) {
+	EIGEN_STRONG_INLINE bool operator==(Tie<_Dim, _Scalar1> const& lhs, Tie<_Dim, _Scalar2> const& rhs) {
 		for (int i = 0; i < _Dim; ++i) {
 			if (lhs.coeff(i) != rhs.coeff(i)) {
 				return false;
@@ -128,32 +128,32 @@ namespace util {
 	}
 
 	template<int _Dim, typename _Scalar, typename Derived>
-	inline bool operator==(Tie<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
+	EIGEN_STRONG_INLINE bool operator==(Tie<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
 		return tieVal.convert() == other;
 	}
 
 	template<int _Dim, typename _Scalar, typename Derived>
-	inline bool operator==(::Eigen::MatrixBase<Derived> const& other, Tie<_Dim, _Scalar> const& tieVal) {
+	EIGEN_STRONG_INLINE bool operator==(::Eigen::MatrixBase<Derived> const& other, Tie<_Dim, _Scalar> const& tieVal) {
 		return tieVal.convert() == other;
 	}
 
 	template<int _Dim, typename _Scalar1, typename _Scalar2>
-	inline bool operator!=(Tie<_Dim, _Scalar1> const& lhs, Tie<_Dim, _Scalar2> const& rhs) {
+	EIGEN_STRONG_INLINE bool operator!=(Tie<_Dim, _Scalar1> const& lhs, Tie<_Dim, _Scalar2> const& rhs) {
 		return !(lhs == rhs);
 	}
 
 	template<int _Dim, typename _Scalar, typename Derived>
-	inline bool operator!=(Tie<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
+	EIGEN_STRONG_INLINE bool operator!=(Tie<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
 		return !(tieVal == other);
 	}
 
 	template<int _Dim, typename _Scalar, typename Derived>
-	inline bool operator!=(::Eigen::MatrixBase<Derived> const& other, Tie<_Dim, _Scalar> const& tieVal) {
+	EIGEN_STRONG_INLINE bool operator!=(::Eigen::MatrixBase<Derived> const& other, Tie<_Dim, _Scalar> const& tieVal) {
 		return !(tieVal == other);
 	}
 
 	template<typename Scalar>
-	inline Tie<3, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2) {
+	EIGEN_STRONG_INLINE Tie<3, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2) {
 		return Tie<3, Scalar>(x0, x1, x2);
 	}
 /// @}
