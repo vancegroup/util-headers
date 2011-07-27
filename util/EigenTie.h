@@ -156,6 +156,11 @@ namespace util {
 	EIGEN_STRONG_INLINE Tie<3, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2) {
 		return Tie<3, Scalar>(x0, x1, x2);
 	}
+
+	template<typename Scalar>
+	EIGEN_STRONG_INLINE Tie<4, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2, Scalar & x3) {
+		return Tie<4, Scalar>(x0, x1, x2, x3);
+	}
 /// @}
 
 } // end of namespace util
