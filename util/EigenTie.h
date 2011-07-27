@@ -152,15 +152,28 @@ namespace util {
 		return !(tieVal == other);
 	}
 
-	template<typename Scalar>
-	EIGEN_STRONG_INLINE Tie<3, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2) {
-		return Tie<3, Scalar>(x0, x1, x2);
-	}
+#define EIGEN_TIE_DEFINE_CREATION_FUNCTION( _DIM, _ARGS, _ARGNAMES) \
+	template<typename Scalar> \
+	EIGEN_STRONG_INLINE Tie<_DIM, Scalar> TieVector _ARGS { \
+		return Tie<_DIM, Scalar> _ARGNAMES ; \
+	} \
 
-	template<typename Scalar>
-	EIGEN_STRONG_INLINE Tie<4, Scalar> TieVector(Scalar & x0, Scalar & x1, Scalar & x2, Scalar & x3) {
-		return Tie<4, Scalar>(x0, x1, x2, x3);
-	}
+	EIGEN_TIE_DEFINE_CREATION_FUNCTION(2,
+	                                   (Scalar & x0, Scalar & x1),
+	                                   (x0, x1)
+	                                  )
+
+	EIGEN_TIE_DEFINE_CREATION_FUNCTION(3,
+	                                   (Scalar & x0, Scalar & x1, Scalar & x2),
+	                                   (x0, x1, x2)
+	                                  )
+
+	EIGEN_TIE_DEFINE_CREATION_FUNCTION(4,
+	                                   (Scalar & x0, Scalar & x1, Scalar & x2, Scalar & x3),
+	                                   (x0, x1, x2, x3)
+	                                  )
+
+#undef EIGEN_TIE_DEFINE_CREATION_FUNCTION
 /// @}
 
 } // end of namespace util
