@@ -58,7 +58,12 @@ add_boost_test(CountedUniqueValues
 
 add_boost_test(EigenTie
 	SOURCES
-	EigenTie.cpp)
+	EigenTie.cpp
+	TESTS
+	ThreeZerosAssign
+	ThreeOnesAssign
+	ThreeZerosTieTieAssign
+	ThreeOnesTieTieAssign)
 
 add_boost_test(WithHistory
 	SOURCES
