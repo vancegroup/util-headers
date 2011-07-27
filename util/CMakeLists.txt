@@ -19,6 +19,7 @@ if(VPR22_FOUND OR VPR20_FOUND)
 endif()
 
 set(MATH_HEADERS
+	EigenTie.h
 	RandomFloat.h
 	Saturate.h)
 
