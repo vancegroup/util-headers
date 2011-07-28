@@ -61,10 +61,11 @@ BOOST_AUTO_TEST_CASE(ThreeOnesAssign) {
 }
 
 BOOST_AUTO_TEST_CASE(ThreeZerosTieTieAssign) {
-	testAssign(0.0);
+	testTieTieAssign(0.0);
 }
 
 BOOST_AUTO_TEST_CASE(ThreeOnesTieTieAssign) {
-	testAssign(1.0);
+	testTieTieAssign(1.0);
+}
 }
 
