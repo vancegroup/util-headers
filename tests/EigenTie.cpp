@@ -91,6 +91,24 @@ BOOST_AUTO_TEST_CASE(ThreeOnesChainedAssign) {
 	testChainedAssign(1.0);
 }
 
+BOOST_AUTO_TEST_CASE(AliasingAcrossAssign) {
+	double a, b, c;
+	Eigen::Vector3d orig(1, 2, 3);
+	util::TieVector(a, b, c) = orig;
+	double x, y, z;
+	BOOST_CHECK( (util::TieVector(b, c, a) = util::TieVector(a, b, c)) == Eigen::Vector3d(1, 2, 3) );
+}
+
+BOOST_AUTO_TEST_CASE(NoThrowForRHSNotUnique) {
+	double a = 1, b = 0;
+	Eigen::Vector3d orig(Eigen::Vector3d::Zero());
+	BOOST_REQUIRE_NO_THROW(orig = util::TieVector(a, a, b));
+	BOOST_REQUIRE(orig == Eigen::Vector3d(1, 1, 0));
+
+	BOOST_REQUIRE_NO_THROW(orig = util::TieVector(b)(b)(a));
+	BOOST_REQUIRE(orig == Eigen::Vector3d(0, 0, 1));
+}
+
 BOOST_AUTO_TEST_CASE(ThrowsTwoNotUnique) {
 	Eigen::Vector3d orig(0, 0, 0);
 	double x, y;
