@@ -40,6 +40,7 @@
 namespace util {
 	namespace {
 		/// Utility function used when one of the unique assign checks is enabled.
+		/// @relates TieVector
 		void checkSameDimensions(int uniqueElts, int tieDimension);
 	}
 }
@@ -179,6 +180,7 @@ namespace util {
 		};
 
 		/// Stream output operator for TieVector that forwards to Eigen's stream output operators
+		/// @relates TieVector
 		template<typename StreamType, int _Dim, typename _Scalar>
 		EIGEN_STRONG_INLINE StreamType & operator<<(StreamType & os, TieVector<_Dim, _Scalar> const& val) {
 			os << val.convert();
@@ -186,6 +188,7 @@ namespace util {
 		}
 
 		/// Equality comparison operator for two TieVector objects.
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar1, typename _Scalar2>
 		EIGEN_STRONG_INLINE bool operator==(TieVector<_Dim, _Scalar1> const& lhs, TieVector<_Dim, _Scalar2> const& rhs) {
 			for (int i = 0; i < _Dim; ++i) {
@@ -197,30 +200,35 @@ namespace util {
 		}
 
 		/// Equality comparison operator for a TieVector and a vector value in Eigen
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar, typename Derived>
 		EIGEN_STRONG_INLINE bool operator==(TieVector<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
 			return tieVal.convert() == other;
 		}
 
 		/// Equality comparison operator for a vector value in Eigen and a TieVector - forwards to equality in other order
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar, typename Derived>
 		EIGEN_STRONG_INLINE bool operator==(::Eigen::MatrixBase<Derived> const& other, TieVector<_Dim, _Scalar> const& tieVal) {
 			return tieVal == other;
 		}
 
 		/// Inequality comparison operator for two TieVector objects - forwards to equality operator
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar1, typename _Scalar2>
 		EIGEN_STRONG_INLINE bool operator!=(TieVector<_Dim, _Scalar1> const& lhs, TieVector<_Dim, _Scalar2> const& rhs) {
 			return !(lhs == rhs);
 		}
 
 		/// Inequality comparison operator for a TieVector and a vector value in Eigen - forwards to equality operator
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar, typename Derived>
 		EIGEN_STRONG_INLINE bool operator!=(TieVector<_Dim, _Scalar> const& tieVal, ::Eigen::MatrixBase<Derived> const& other) {
 			return !(tieVal == other);
 		}
 
 		/// Inequality comparison operator for a vector value in Eigen and a TieVector - forwards to equality operator
+		/// @relates TieVector
 		template<int _Dim, typename _Scalar, typename Derived>
 		EIGEN_STRONG_INLINE bool operator!=(::Eigen::MatrixBase<Derived> const& other, TieVector<_Dim, _Scalar> const& tieVal) {
 			return !(tieVal == other);
