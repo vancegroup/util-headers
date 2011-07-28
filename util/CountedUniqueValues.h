@@ -1,4 +1,4 @@
-/** @file CountedUniqueValues.h
+/** @file
 	@brief
 
 	@date 2010

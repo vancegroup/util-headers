@@ -1,4 +1,4 @@
-/**	@file	SizeGenerator.h
+/**	@file
 	@brief	Utility header for a "generator" object simulating two nested loops.
 
 	@date	2010

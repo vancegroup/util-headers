@@ -1,4 +1,4 @@
-/** @file WithHistory.h
+/** @file
 	@brief
 
 	@date 2011

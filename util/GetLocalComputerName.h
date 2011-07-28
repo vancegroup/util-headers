@@ -1,5 +1,5 @@
 /**
-	@file  GetLocalComputerName.h
+	@file
 	@brief Provides a cross-platform interface to getting the computer name.
 
 	@date

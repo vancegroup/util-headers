@@ -1,4 +1,4 @@
-/** @file ChangeFileExtension.h
+/** @file
 	@brief Free function (inline) to change the last file extension.
 
 	@date 2010

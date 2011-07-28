@@ -1,4 +1,4 @@
-/**	@file	Stride.h
+/**	@file
 	@brief	A class for handling "do this every n times"
 
 	@date

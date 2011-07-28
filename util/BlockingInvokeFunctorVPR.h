@@ -1,4 +1,4 @@
-/** @file BlockingInvokeFunctorVPR.h
+/** @file
 	@brief
 
 	@date 2011

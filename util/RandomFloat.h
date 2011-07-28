@@ -1,4 +1,4 @@
-/**	@file	RandomFloat.h
+/**	@file
 	@brief	Utility header to generate a random float.
 
 	@date	2010-2011

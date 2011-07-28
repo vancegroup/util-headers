@@ -1,4 +1,4 @@
-/**	@file	Saturate.h
+/**	@file
 	@brief	Simple vector saturation.
 
 	@date

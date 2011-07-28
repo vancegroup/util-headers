@@ -1,4 +1,4 @@
-/**	@file	LockFreeBuffer.h
+/**	@file
 	@brief	A lock-free bounded buffer for haptics
 
 	@date

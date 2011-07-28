@@ -1,5 +1,5 @@
 /**
-	@file osgFindNamedNode.h
+	@file
 	@brief Contains an OSG utility function to search a scenegraph
 
 	@author

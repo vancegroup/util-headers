@@ -1,4 +1,4 @@
-/** @file	gmtlToOsgMatrix.h
+/** @file
 	@brief	Turn GMTL matrices into OSG ones.
 
 	@date	2010
