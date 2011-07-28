@@ -57,7 +57,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}" ${THIRD_PARTY_INCLUDE_DIRS})
 
 add_subdirectory(util)
 
-add_doxygen(Doxyfile)
+add_doxygen(Doxyfile NO_PDF)
 
 if(BUILD_TESTING)
 	include(BoostTestTargets)
