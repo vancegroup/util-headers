@@ -68,6 +68,17 @@ namespace util {
 //#define EIGEN_TIE_STATIC_ASSERT_DIMENSION(_NUMARGS) EIGEN_STATIC_ASSERT( (int(Dim) == int(_NUMARGS)), YOU_DID_NOT_PASS_THE_CORRECT_AMOUNT_OF_ARGUMENTS_TO_TIE_TOGETHER)
 #define EIGEN_TIE_INITIALIZE_ELEMENT(_ELT) _data[_ELT] = &x ## _ELT
 
+				TieVector(Scalar & x0) {
+					EIGEN_TIE_STATIC_ASSERT_DIMENSION(1);
+					EIGEN_TIE_INITIALIZE_ELEMENT(0);
+				}
+
+				TieVector(Scalar & x0, Scalar & x1) {
+					EIGEN_TIE_STATIC_ASSERT_DIMENSION(2);
+					EIGEN_TIE_INITIALIZE_ELEMENT(0);
+					EIGEN_TIE_INITIALIZE_ELEMENT(1);
+				}
+
 				TieVector(Scalar & x0, Scalar & x1, Scalar & x2) {
 					EIGEN_TIE_STATIC_ASSERT_DIMENSION(3);
 					EIGEN_TIE_INITIALIZE_ELEMENT(0);
@@ -166,6 +177,11 @@ namespace util {
 		return detail::TieVector<_DIM, Scalar> _ARGNAMES ; \
 	} \
  
+	EIGEN_TIE_DEFINE_CREATION_FUNCTION(1,
+	                                   (Scalar & x0),
+	                                   (x0)
+	                                  )
+
 	EIGEN_TIE_DEFINE_CREATION_FUNCTION(2,
 	                                   (Scalar & x0, Scalar & x1),
 	                                   (x0, x1)
