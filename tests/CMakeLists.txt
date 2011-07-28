@@ -63,7 +63,9 @@ add_boost_test(EigenTie
 	ThreeZerosAssign
 	ThreeOnesAssign
 	ThreeZerosTieTieAssign
-	ThreeOnesTieTieAssign)
+	ThreeOnesTieTieAssign
+	ThrowsTwoNotUnique
+	ThrowsThreeNotUnique)
 
 add_boost_test(WithHistory
 	SOURCES
