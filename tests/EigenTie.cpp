@@ -55,6 +55,16 @@ namespace {
 		x++;
 		BOOST_CHECK_NE(util::TieVector(x, y, z), util::TieVector(a, b, c));
 	}
+	void testChainedAssign(double val) {
+		double x, y, z;
+		Eigen::Vector3d orig(val, val, val);
+		BOOST_REQUIRE_NO_THROW(util::TieVector(x)(y)(z) = orig);
+		BOOST_CHECK_EQUAL(util::TieVector(x, y, z), orig);
+		BOOST_CHECK_EQUAL(util::TieVector(x)(y)(z), orig);
+		x++;
+		BOOST_CHECK_NE(util::TieVector(x, y, z), orig);
+		BOOST_CHECK_NE(util::TieVector(x)(y)(z), orig);
+	}
 }
 
 BOOST_AUTO_TEST_CASE(ThreeZerosAssign) {
@@ -71,6 +81,14 @@ BOOST_AUTO_TEST_CASE(ThreeZerosTieTieAssign) {
 
 BOOST_AUTO_TEST_CASE(ThreeOnesTieTieAssign) {
 	testTieTieAssign(1.0);
+}
+
+BOOST_AUTO_TEST_CASE(ThreeZerosChainedAssign) {
+	testChainedAssign(0.0);
+}
+
+BOOST_AUTO_TEST_CASE(ThreeOnesChainedAssign) {
+	testChainedAssign(1.0);
 }
 
 BOOST_AUTO_TEST_CASE(ThrowsTwoNotUnique) {

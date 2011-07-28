@@ -64,6 +64,8 @@ add_boost_test(EigenTie
 	ThreeOnesAssign
 	ThreeZerosTieTieAssign
 	ThreeOnesTieTieAssign
+	ThreeZerosChainedAssign
+	ThreeOnesChainedAssign
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
