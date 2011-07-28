@@ -54,9 +54,6 @@ namespace util {
 				template<typename OtherDerived>
 				EIGEN_STRONG_INLINE TieVector & _set(::Eigen::MatrixBase<OtherDerived> const& other) {
 					EIGEN_STATIC_ASSERT_VECTOR_SPECIFIC_SIZE(OtherDerived, int(Dim));
-					if (*this == other) {
-						return *this;
-					}
 					for (int i = 0; i < Dim; ++i) {
 						*(_data[i]) = other[i];
 					}
