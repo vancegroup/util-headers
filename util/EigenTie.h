@@ -63,6 +63,16 @@ namespace util {
 					return *this;
 				}
 
+				template<int _D, typename _S>
+				friend class TieVector;
+
+				/// Private constructor used for chained syntax
+				TieVector(TieVector < Dim - 1, Scalar > const& prev, Scalar & newVal) {
+					for (int i = 0; i < Dim - 1; ++i) {
+						_data[i] = prev._data[i];
+					}
+					_data[Dim - 1] = &newVal;
+				}
 			public:
 #define EIGEN_TIE_STATIC_ASSERT_DIMENSION(_NUMARGS) assert(Dim == _NUMARGS && "YOU_DID_NOT_PASS_THE_CORRECT_AMOUNT_OF_ARGUMENTS_TO_TIE_TOGETHER")
 //#define EIGEN_TIE_STATIC_ASSERT_DIMENSION(_NUMARGS) EIGEN_STATIC_ASSERT( (int(Dim) == int(_NUMARGS)), YOU_DID_NOT_PASS_THE_CORRECT_AMOUNT_OF_ARGUMENTS_TO_TIE_TOGETHER)
@@ -125,6 +135,10 @@ namespace util {
 
 				EIGEN_STRONG_INLINE Scalar coeff(int i) const {
 					return *(_data[i]);
+				}
+
+				EIGEN_STRONG_INLINE TieVector < Dim + 1, Scalar > operator()(Scalar & newVal) const {
+					return TieVector < Dim + 1, Scalar > (*this, newVal);
 				}
 		};
 
