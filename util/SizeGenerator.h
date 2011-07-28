@@ -10,6 +10,12 @@
 	Iowa State University Virtual Reality Applications Center
 	Human-Computer Interaction Graduate Program
 */
+
+//          Copyright Iowa State University 2010.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #pragma once
 #ifndef INCLUDED_SizeGenerator_h_GUID_46b0d167_fb36_4c0a_bacd_134533ccb6a5
 #define INCLUDED_SizeGenerator_h_GUID_46b0d167_fb36_4c0a_bacd_134533ccb6a5
