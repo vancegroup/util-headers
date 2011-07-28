@@ -1,6 +1,12 @@
 /** @file
 	@brief Header
 
+	Define UTIL_EIGEN_TIE_UNIQUE_ASSIGN_ASSERT or UTIL_EIGEN_TIE_UNIQUE_ASSIGN_EXCEPTION
+	to enable a debug-mode run-time	check that all tied variables are unique
+	when a tie is assigned to. This is fairly computationally expensive.
+	(std::set construction from iterators used to count unique pointers,
+	n log n for a tie of dimension n)
+
 	@date 2011
 
 	@author
@@ -28,6 +34,16 @@
 
 // Standard includes
 // - none
+#if (defined(UTIL_EIGEN_TIE_UNIQUE_ASSIGN_ASSERT) || defined(UTIL_EIGEN_TIE_UNIQUE_ASSIGN_EXCEPTION)) && !defined(NDEBUG)
+#	define UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK
+#	include <set>
+namespace util {
+	namespace {
+		void checkSameDimensions(int uniqueElts, int tieDimension);
+	}
+}
+#endif
+
 
 namespace util {
 
@@ -54,6 +70,12 @@ namespace util {
 				template<typename OtherDerived>
 				EIGEN_STRONG_INLINE TieVector & _set(::Eigen::MatrixBase<OtherDerived> const& other) {
 					EIGEN_STATIC_ASSERT_VECTOR_SPECIFIC_SIZE(OtherDerived, int(Dim));
+
+#if defined(UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK)
+					std::set<Scalar *> uniqueElements(_data, _data + Dim);
+					checkSameDimensions(static_cast<int>(uniqueElements.size()), Dim);
+#endif
+
 					for (int i = 0; i < Dim; ++i) {
 						*(_data[i]) = other[i];
 					}
@@ -212,5 +234,32 @@ namespace util {
 /// @}
 
 } // end of namespace util
+
+#ifdef UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK
+
+#	if defined(UTIL_EIGEN_TIE_UNIQUE_ASSIGN_EXCEPTION)
+#		include <stdexcept>
+
+namespace util {
+	namespace {
+		inline void checkSameDimensions(int uniqueElts, int tieDimension) {
+			if (uniqueElts != tieDimension) {
+				throw std::logic_error("A variable appears more than once in a vector tie that is being assigned to!");
+			}
+		}
+	}
+}
+#	elif defined(UTIL_EIGEN_TIE_UNIQUE_ASSIGN_ASSERT)
+#		include <cassert>
+namespace util {
+	namespace {
+		inline void checkSameDimensions(int uniqueElts, int tieDimension) {
+			assert(uniqueElts == tieDimension && "A variable should not appear more than once in a vector tie that is being assigned to!");
+		}
+	}
+}
+#	endif
+
+#endif // UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK
 
 #endif // INCLUDED_EigenTie_h_GUID_6c867047_6869_440c_8724_0d7733c6c7cd
