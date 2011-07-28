@@ -126,13 +126,11 @@ namespace util {
 #undef EIGEN_TIE_INITIALIZE_ELEMENT
 #undef EIGEN_TIE_STATIC_ASSERT_DIMENSION
 				EIGEN_STRONG_INLINE TieVector& operator=(const TieVector& other) {
-					if (*this == other) {
+					if (this == &other) {
 						return *this;
 					}
-					for (int i = 0; i < Dim; ++i) {
-						*(_data[i]) = *(other._data[i]);
-					}
-					return *this;
+					// Forcing conversion to Eigen::Vector to avoid aliasing problems
+					return _set(other.convert());
 				}
 
 				template<typename OtherDerived>
