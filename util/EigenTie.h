@@ -183,7 +183,7 @@ namespace util {
 
 		template<int _Dim, typename _Scalar, typename Derived>
 		EIGEN_STRONG_INLINE bool operator==(::Eigen::MatrixBase<Derived> const& other, TieVector<_Dim, _Scalar> const& tieVal) {
-			return tieVal.convert() == other;
+			return tieVal == other;
 		}
 
 		template<int _Dim, typename _Scalar1, typename _Scalar2>
