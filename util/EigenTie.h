@@ -156,6 +156,7 @@ namespace util {
 					return *(_data[i]);
 				}
 
+				/// Operator allowing you to make arbitrary sizes of tie vectors
 				EIGEN_STRONG_INLINE TieVector < Dim + 1, Scalar > operator()(Scalar & newVal) const {
 					return TieVector < Dim + 1, Scalar > (*this, newVal);
 				}
@@ -260,6 +261,7 @@ namespace util {
 }
 #	endif
 
+#	undef UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK
 #endif // UTIL_EIGEN_TIE_UNIQUE_ASSIGN_DO_CHECK
 
 #endif // INCLUDED_EigenTie_h_GUID_6c867047_6869_440c_8724_0d7733c6c7cd
