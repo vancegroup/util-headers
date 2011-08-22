@@ -46,4 +46,7 @@ BOOST_AUTO_TEST_CASE(BoolsAndInts) {
 	BOOST_CHECK_EQUAL((util::ValueToTemplate<Metafunc>(boost::make_tuple(5, false, 3))), 8);
 }
 
+
+BOOST_AUTO_TEST_CASE(RangedInts) {
+	BOOST_CHECK_EQUAL((util::ValueToTemplate<Metafunc>(boost::make_tuple(util::RangedInt<20, 30>(25), util::RangedInt < -30, -20 > (-25), util::RangedInt < -5, 5 > (3)))), 3);
 }
