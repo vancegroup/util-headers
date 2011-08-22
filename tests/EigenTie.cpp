@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(AliasingAcrossAssign) {
 	Eigen::Vector3d orig(1, 2, 3);
 	util::TieVector(a, b, c) = orig;
 	double x, y, z;
-	BOOST_CHECK( (util::TieVector(b, c, a) = util::TieVector(a, b, c)) == Eigen::Vector3d(1, 2, 3) );
+	BOOST_CHECK((util::TieVector(b, c, a) = util::TieVector(a, b, c)) == Eigen::Vector3d(1, 2, 3));
 }
 
 BOOST_AUTO_TEST_CASE(NoThrowForRHSNotUnique) {
