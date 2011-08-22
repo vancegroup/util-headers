@@ -71,6 +71,13 @@ add_boost_test(EigenTie
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
+add_boost_test(FusionMapToTemplate
+	SOURCES
+	FusionMapToTemplate.cpp
+	TESTS
+	SummingFunc
+	KeywiseFunc)
+
 add_boost_test(ValueToTemplate
 	SOURCES
 	ValueToTemplate.cpp
