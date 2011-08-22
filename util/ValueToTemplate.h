@@ -28,31 +28,16 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/push_back.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/int.hpp>
 #include <boost/tuple/tuple.hpp>
 
 // Standard includes
-// - none
+#include <string>
+#include <sstream>
+#include <stdexcept>
 
 namespace util {
 
-	struct DefaultValueToTemplatePolicy {
-		template<typename T>
-		struct Select {}; /* {
-			template<typename return_type, typename Next, typename T>
-			static inline return_type apply(typename boost::call_traits<T>::param_type input);
-		};*/
-
-
-	};
-	template<>
-	struct DefaultValueToTemplatePolicy::Select<bool> {
-		template<typename return_type, template<class> class Next, typename T>
-		static inline return_type apply(T const& input) {
-			if (input.get<0>()) {
-				return Next<typename boost::mpl::bool_<true> >::apply(input.get_tail());
-			}
-		}
-	};
 	namespace detail {
 		/*
 			template<typename T>
@@ -64,38 +49,107 @@ namespace util {
 			};
 
 			*/
-		template<typename Metafunc, typename SelectionPolicy, typename Params = boost::mpl::vector<> >
+		template<typename T, typename Metafunc, typename SelectionPolicy, typename Params = boost::mpl::vector<> >
 		struct ConvertHead {
-			template<typename Val>
-			struct Next : ConvertHead<Metafunc, SelectionPolicy, boost::mpl::push_back<Params, Val> > {};
+			typedef typename T::head_type head_type;
+			typedef typename T::tail_type tail_type;
+			typedef typename Metafunc::return_type return_type;
 
-			template<typename T>
-			static inline typename Metafunc::return_type apply(T const& input) {
-				return SelectionPolicy::template Select<typename T::head_type>::template apply<typename Metafunc::return_type, Next>(input);
+			template<typename Val>
+			struct Next : ConvertHead<tail_type, Metafunc, SelectionPolicy, typename boost::mpl::push_back<Params, Val>::type > {};
+
+			static inline return_type apply(T const& input) {
+				return SelectionPolicy::template Select<head_type>::template apply<return_type, Next>(input.get_head(), input.get_tail());
 			}
 
 		};
 		template<typename Metafunc, typename SelectionPolicy, typename Params>
-		struct ConvertHead<null_type, Metafunc, SelectionPolicy, Params> {
-			static inline typename Metafunc::return_type apply(boost::tuples::null_type const&) {
-				return Metafunc::apply<Params>();
+		struct ConvertHead<boost::tuples::null_type, Metafunc, SelectionPolicy, Params> {
+			typedef typename Metafunc::return_type return_type;
+
+
+			static inline return_type apply(boost::tuples::null_type const&) {
+				return Metafunc::template apply<Params>();
+			}
+
+		};
+
+		template<template<class> class Call, typename return_type, int Max, int Iter = 0>
+		struct call_type_from_int_impl {
+			template<typename FwdType>
+			static inline return_type apply(const char * paramName, int val, FwdType const & d, int maxval = Max) {
+				if (val == Iter) {
+					return Call<boost::mpl::int_<Iter> >::apply(d);
+				}
+				return call_type_from_int_impl < Call, return_type, Max, Iter + 1 >::apply(paramName, val, d);
+			}
+		};
+		inline std::string getOutOfRangeErrorString(const char * paramName, int val, int maxval) {
+			std::ostringstream s;
+			s << "Out-of-range value passed for parameter " << paramName << ": Given " << val << " when the max is  " << maxval;
+			return s.str();
+		}
+		/// specialization for base case
+		template<template<class> class Call, typename return_type, int MaxVal>
+		struct call_type_from_int_impl<Call, return_type, MaxVal, MaxVal> {
+			template<typename FwdType>
+			static inline return_type apply(const char * paramName, int val, FwdType & d) {
+				if (val > MaxVal) {
+					throw std::runtime_error(getOutOfRangeErrorString(paramName, val, MaxVal));
+				}
+				return Call<boost::mpl::int_<MaxVal> >::apply(d);
 			}
 		};
 	} // end of namespace detail
-/// @addtogroup GenericProgramming Generic Programming
-/// @{
-	/** @brief At run-time, given a tuple, calls an appropriate version
-		of the given metafunction with a mpl sequence template parameter equal
-		to the runtime values passed.
+	struct DefaultValueToTemplatePolicy {
+		template<typename T>
+		struct Select {};
+	};
+	template<>
+	struct DefaultValueToTemplatePolicy::Select<bool> {
 
-		@tparam Metafunc Metafunction class, must define a "return_type" typedef
-		and an "apply" static function template
+		template<typename return_type, template<class> class Next, typename T, typename U>
+		static inline return_type apply(T const& value, U const& forwarding_args) {
+			if (value) {
+				return Next<typename boost::mpl::bool_<true> >::apply(forwarding_args);
+			}
+			return Next<typename boost::mpl::bool_<false> >::apply(forwarding_args);
+		}
+
+	};
+	template<>
+	struct DefaultValueToTemplatePolicy::Select<int> {
+
+		template<typename return_type, template<class> class Next, typename T, typename U>
+		static inline return_type apply(T const& value, U const& forwarding_args) {
+			return detail::call_type_from_int_impl<Next, return_type, 10>::apply("", value, forwarding_args);
+		}
+	};
+
+	template<int MinVal, int MaxVal>
+	struct DefaultValueToTemplatePolicy::Select<RangedInt<MinVal, MaxVal> > {
+
+		template<typename return_type, template<class> class Next, typename T, typename U>
+		static inline return_type apply(T const& value, U const& forwarding_args) {
+			return detail::call_type_from_int_impl<Next, return_type, MaxVal, MinVal>::apply("", value, forwarding_args);
+		}
+
+	};
+	/// @addtogroup GenericProgramming Generic Programming
+	/// @{
+	/** @brief At run-time, given a tuple, calls an appropriate version
+	of the given metafunction with a mpl sequence template parameter equal
+	to the runtime values passed.
+
+	@tparam Metafunc Metafunction class, must define a "return_type" typedef
+	and an "apply" static function template
 	*/
-	template<typename Metafunc, typename Input, typename SelectionPolicy = DefaultValueToTemplatePolicy>
+	template<typename Metafunc, typename Input>
 	inline typename Metafunc::return_type ValueToTemplate(Input const& input) {
+		typedef DefaultValueToTemplatePolicy SelectionPolicy;
 		return detail::ConvertHead<Input, Metafunc, SelectionPolicy>::apply(input);
 	}
-/// @}
+	/// @}
 
 } // end of namespace util
 

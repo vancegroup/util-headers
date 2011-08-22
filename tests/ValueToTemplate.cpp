@@ -27,16 +27,17 @@ using namespace util;
 using boost::tuple;
 using boost::make_tuple;
 using std::string;
+namespace mpl = boost::mpl;
 
 struct Metafunc {
+	typedef int return_type;
 	template<typename Seq>
-	inline int apply() {
-		return boost::mpl::at<0>::value + boost::mpl::at<1>::value + boost::mpl::at<2>::value;
+	static inline int apply() {
+		return boost::mpl::at_c<Seq, 0 >::type::value + boost::mpl::at_c<Seq, 1>::type::value + boost::mpl::at_c<Seq, 2>::type::value;
 	}
 };
 
 BOOST_AUTO_TEST_CASE(ThreeFalseBools) {
 	boost::tuple<bool, bool, bool> val = boost::make_tuple(false, false, false);
-	CountedUniqueValues<string> a;
 	BOOST_CHECK_EQUAL(util::ValueToTemplate<Metafunc>(val), 0);
 }
