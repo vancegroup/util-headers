@@ -30,7 +30,7 @@ using std::string;
 namespace mpl = boost::mpl;
 
 struct Metafunc {
-	typedef int return_type;
+	typedef int result_type;
 	template<typename Seq>
 	static inline int apply() {
 		return boost::mpl::at_c<Seq, 0 >::type::value + boost::mpl::at_c<Seq, 1>::type::value + boost::mpl::at_c<Seq, 2>::type::value;

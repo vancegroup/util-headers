@@ -40,47 +40,47 @@ namespace util {
 	namespace detail {
 		/// Class template used to perform recursive conversion of values in a tuple
 		/// to template parameters - delegates the actual conversion to SelectionPolicy
-		template<typename T, typename Metafunc, typename SelectionPolicy, typename Params = boost::mpl::vector<> >
+		template<typename T, typename Op, template<class> class SelectionPolicy, typename Params = boost::mpl::vector<> >
 		struct ConvertHead {
 			typedef typename T::head_type head_type;
 			typedef typename T::tail_type tail_type;
-			typedef typename Metafunc::return_type return_type;
+			typedef typename Op::result_type result_type;
 
 			template<typename Val>
-			struct Next : ConvertHead<tail_type, Metafunc, SelectionPolicy, typename boost::mpl::push_back<Params, Val>::type > {};
+			struct Next : ConvertHead<tail_type, Op, SelectionPolicy, typename boost::mpl::push_back<Params, Val>::type > {};
 
-			static inline return_type apply(T const& input) {
-				return SelectionPolicy::template Select<head_type>::template apply<return_type, Next>(input.get_head(), input.get_tail());
+			static inline result_type apply(T const& input) {
+				return SelectionPolicy<head_type>::template apply<result_type, Next>(input.get_head(), input.get_tail());
 			}
 
 		};
 
 		/// Partial specialization for base case: have reached the end
 		/// of the tuple
-		template<typename Metafunc, typename SelectionPolicy, typename Params>
-		struct ConvertHead<boost::tuples::null_type, Metafunc, SelectionPolicy, Params> {
-			typedef typename Metafunc::return_type return_type;
-			static inline return_type apply(boost::tuples::null_type const&) {
-				return Metafunc::template apply<Params>();
+		template<typename Op, template<class> class SelectionPolicy, typename Params>
+		struct ConvertHead<boost::tuples::null_type, Op, SelectionPolicy, Params> {
+			typedef typename Op::result_type result_type;
+			static inline result_type apply(boost::tuples::null_type const&) {
+				return Op::template apply<Params>();
 			}
 		};
 
-		template<template<class> class Call, typename return_type, int Max, int Iter = 0>
+		template<template<class> class Call, typename result_type, int Max, int Iter = 0>
 		struct call_type_from_int_impl {
 			template<typename FwdType>
-			static inline return_type apply(int val, FwdType const & d) {
+			static inline result_type apply(int val, FwdType const & d) {
 				if (val == Iter) {
 					return Call<boost::mpl::int_<Iter> >::apply(d);
 				}
-				return call_type_from_int_impl < Call, return_type, Max, Iter + 1 >::apply(val, d);
+				return call_type_from_int_impl < Call, result_type, Max, Iter + 1 >::apply(val, d);
 			}
 		};
 
 		/// specialization for base case
-		template<template<class> class Call, typename return_type, int MaxVal>
-		struct call_type_from_int_impl<Call, return_type, MaxVal, MaxVal> {
+		template<template<class> class Call, typename result_type, int MaxVal>
+		struct call_type_from_int_impl<Call, result_type, MaxVal, MaxVal> {
 			template<typename FwdType>
-			static inline return_type apply(int val, FwdType const& d) {
+			static inline result_type apply(int val, FwdType const& d) {
 				if (val > MaxVal) {
 					std::ostringstream s;
 					s << "Out-of-range value passed for parameter - Given " << val << " when the max is " << MaxVal;
@@ -89,19 +89,19 @@ namespace util {
 				return Call<boost::mpl::int_<MaxVal> >::apply(d);
 			}
 		};
-		template<template<class> class Call, typename return_type, int MinVal, int MaxVal, typename FwdType>
-		inline return_type call_type_from_int_range(int val, FwdType const& fwdArgs) {
+		template<template<class> class Call, typename result_type, int MinVal, int MaxVal, typename FwdType>
+		inline result_type call_type_from_int_range(int val, FwdType const& fwdArgs) {
 			if (val < MinVal || val > MaxVal) {
 				std::ostringstream s;
 				s << "Out-of-range value passed for parameter - Given " << val << " when the range is [" << MinVal << ", " << MaxVal << "]";
 				throw std::runtime_error(s.str());
 			}
-			return call_type_from_int_impl<Call, return_type, MaxVal, MinVal>::apply(val, fwdArgs);
+			return call_type_from_int_impl<Call, result_type, MaxVal, MinVal>::apply(val, fwdArgs);
 		}
 
-		template<template<class> class Call, typename return_type, typename FwdType>
-		inline return_type call_type_from_int(int val, FwdType const& fwdArgs) {
-			return call_type_from_int_range<Call, return_type, 0, 10>(val, fwdArgs);
+		template<template<class> class Call, typename result_type, typename FwdType>
+		inline result_type call_type_from_int(int val, FwdType const& fwdArgs) {
+			return call_type_from_int_range<Call, result_type, 0, 10>(val, fwdArgs);
 		}
 	} // end of namespace detail
 
@@ -109,17 +109,17 @@ namespace util {
 	struct RangedInt {
 		int value;
 		RangedInt(int v) : value(v) {}
+		operator int() {
+			return value;
+		}
 	};
-
-	struct DefaultValueToTemplatePolicy {
-		template<typename T>
-		struct Select {};
-	};
+	template<typename T>
+	struct DefaultValueToTemplatePolicy;
 	template<>
-	struct DefaultValueToTemplatePolicy::Select<bool> {
+	struct DefaultValueToTemplatePolicy<bool> {
 
-		template<typename return_type, template<class> class Next, typename T, typename U>
-		static inline return_type apply(T const& value, U const& forwarding_args) {
+		template<typename result_type, template<class> class Next, typename T, typename U>
+		static inline result_type apply(T const& value, U const& forwarding_args) {
 			if (value) {
 				return Next<typename boost::mpl::bool_<true> >::apply(forwarding_args);
 			}
@@ -128,19 +128,18 @@ namespace util {
 
 	};
 	template<>
-	struct DefaultValueToTemplatePolicy::Select<int> {
-
-		template<typename return_type, template<class> class Next, typename T, typename U>
-		static inline return_type apply(T const& value, U const& forwarding_args) {
-			return detail::call_type_from_int<Next, return_type>(value, forwarding_args);
+	struct DefaultValueToTemplatePolicy<int> {
+		template<typename result_type, template<class> class Next, typename T, typename U>
+		static inline result_type apply(T const& value, U const& forwarding_args) {
+			return detail::call_type_from_int<Next, result_type>(value, forwarding_args);
 		}
 	};
 
 	template<int MinVal, int MaxVal>
-	struct DefaultValueToTemplatePolicy::Select<RangedInt<MinVal, MaxVal> > {
-		template<typename return_type, template<class> class Next, typename T, typename U>
-		static inline return_type apply(T const& value, U const& forwarding_args) {
-			return detail::call_type_from_int_range<Next, return_type, MinVal, MaxVal>(value.value, forwarding_args);
+	struct DefaultValueToTemplatePolicy<RangedInt<MinVal, MaxVal> > {
+		template<typename result_type, template<class> class Next, typename T, typename U>
+		static inline result_type apply(T const& value, U const& forwarding_args) {
+			return detail::call_type_from_int_range<Next, result_type, MinVal, MaxVal>(value.value, forwarding_args);
 		}
 
 	};
@@ -150,13 +149,12 @@ namespace util {
 	of the given metafunction with a mpl sequence template parameter equal
 	to the runtime values passed.
 
-	@tparam Metafunc Metafunction class, must define a "return_type" typedef
-	and an "apply" static function template
+	@tparam Op Class defining a static function template called "apply"
+	and a typedef called "result_type"
 	*/
-	template<typename Metafunc, typename Input>
-	inline typename Metafunc::return_type ValueToTemplate(Input const& input) {
-		typedef DefaultValueToTemplatePolicy SelectionPolicy;
-		return detail::ConvertHead<Input, Metafunc, SelectionPolicy>::apply(input);
+	template<typename Op, typename Input>
+	inline typename Op::result_type ValueToTemplate(Input const& input) {
+		return detail::ConvertHead<Input, Op, DefaultValueToTemplatePolicy>::apply(input);
 	}
 	/// @}
 
