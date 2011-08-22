@@ -71,6 +71,10 @@ add_boost_test(EigenTie
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
+add_boost_test(ValueToTemplate
+	SOURCES
+	ValueToTemplate.cpp)
+
 add_boost_test(WithHistory
 	SOURCES
 	WithHistory.cpp
