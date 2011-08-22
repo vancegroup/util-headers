@@ -37,7 +37,13 @@ struct Metafunc {
 	}
 };
 
-BOOST_AUTO_TEST_CASE(ThreeFalseBools) {
-	boost::tuple<bool, bool, bool> val = boost::make_tuple(false, false, false);
-	BOOST_CHECK_EQUAL(util::ValueToTemplate<Metafunc>(val), 0);
+BOOST_AUTO_TEST_CASE(AllBools) {
+	BOOST_CHECK_EQUAL((util::ValueToTemplate<Metafunc>(boost::make_tuple(false, false, false))), 0);
+	BOOST_CHECK_EQUAL((util::ValueToTemplate<Metafunc>(boost::make_tuple(false, true, false))), 1);
+}
+
+BOOST_AUTO_TEST_CASE(BoolsAndInts) {
+	BOOST_CHECK_EQUAL((util::ValueToTemplate<Metafunc>(boost::make_tuple(5, false, 3))), 8);
+}
+
 }
