@@ -73,7 +73,11 @@ add_boost_test(EigenTie
 
 add_boost_test(ValueToTemplate
 	SOURCES
-	ValueToTemplate.cpp)
+	ValueToTemplate.cpp
+	TESTS
+	AllBools
+	BoolsAndInts
+	RangedInts)
 
 add_boost_test(WithHistory
 	SOURCES
