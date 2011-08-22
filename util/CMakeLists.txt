@@ -12,6 +12,7 @@ set(DATASTRUCTURES_HEADERS
 	LockFreeBuffer.h
 	SplitMap.h
 	ValueToTemplate.h
+	ValueToTemplatePolicy.h
 	WithHistory.h)
 
 if(VPR22_FOUND OR VPR20_FOUND)
