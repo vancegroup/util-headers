@@ -32,23 +32,14 @@
 #include <boost/tuple/tuple.hpp>
 
 // Standard includes
-#include <string>
 #include <sstream>
 #include <stdexcept>
 
 namespace util {
 
 	namespace detail {
-		/*
-			template<typename T>
-			struct ValueContainer;
-			template<>
-			struct ValueWrapper<bool> {
-				template<bool>
-				struct type : boost::mpl::bool_<Val> {}
-			};
-
-			*/
+		/// Class template used to perform recursive conversion of values in a tuple
+		/// to template parameters - delegates the actual conversion to SelectionPolicy
 		template<typename T, typename Metafunc, typename SelectionPolicy, typename Params = boost::mpl::vector<> >
 		struct ConvertHead {
 			typedef typename T::head_type head_type;
@@ -63,15 +54,15 @@ namespace util {
 			}
 
 		};
+
+		/// Partial specialization for base case: have reached the end
+		/// of the tuple
 		template<typename Metafunc, typename SelectionPolicy, typename Params>
 		struct ConvertHead<boost::tuples::null_type, Metafunc, SelectionPolicy, Params> {
 			typedef typename Metafunc::return_type return_type;
-
-
 			static inline return_type apply(boost::tuples::null_type const&) {
 				return Metafunc::template apply<Params>();
 			}
-
 		};
 
 		template<template<class> class Call, typename return_type, int Max, int Iter = 0>
@@ -84,23 +75,16 @@ namespace util {
 				return call_type_from_int_impl < Call, return_type, Max, Iter + 1 >::apply(val, d);
 			}
 		};
-		inline std::string getOutOfRangeErrorString(int val, int minval, int maxval) {
-			std::ostringstream s;
-			s << "Out-of-range value passed for parameter - Given " << val << " when the range is [" << minval << ", " << maxval << "]";
-			return s.str();
-		}
-		inline std::string getOutOfRangeErrorString(int val, int maxval) {
-			std::ostringstream s;
-			s << "Out-of-range value passed for parameter - Given " << val << " when the max is " << maxval;
-			return s.str();
-		}
+
 		/// specialization for base case
 		template<template<class> class Call, typename return_type, int MaxVal>
 		struct call_type_from_int_impl<Call, return_type, MaxVal, MaxVal> {
 			template<typename FwdType>
 			static inline return_type apply(int val, FwdType const& d) {
 				if (val > MaxVal) {
-					throw std::runtime_error(getOutOfRangeErrorString(val, MaxVal));
+					std::ostringstream s;
+					s << "Out-of-range value passed for parameter - Given " << val << " when the max is " << MaxVal;
+					throw std::runtime_error(s.str());
 				}
 				return Call<boost::mpl::int_<MaxVal> >::apply(d);
 			}
@@ -108,7 +92,9 @@ namespace util {
 		template<template<class> class Call, typename return_type, int MinVal, int MaxVal, typename FwdType>
 		inline return_type call_type_from_int_range(int val, FwdType const& fwdArgs) {
 			if (val < MinVal || val > MaxVal) {
-				throw std::runtime_error(std::string(getOutOfRangeErrorString(val, MinVal, MaxVal)));
+				std::ostringstream s;
+				s << "Out-of-range value passed for parameter - Given " << val << " when the range is [" << MinVal << ", " << MaxVal << "]";
+				throw std::runtime_error(s.str());
 			}
 			return call_type_from_int_impl<Call, return_type, MaxVal, MinVal>::apply(val, fwdArgs);
 		}
