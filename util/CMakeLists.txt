@@ -11,6 +11,7 @@ set(DATASTRUCTURES_HEADERS
 	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h
+	ValueToTemplate.h
 	WithHistory.h)
 
 if(VPR22_FOUND OR VPR20_FOUND)
