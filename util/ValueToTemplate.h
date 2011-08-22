@@ -77,30 +77,54 @@ namespace util {
 		template<template<class> class Call, typename return_type, int Max, int Iter = 0>
 		struct call_type_from_int_impl {
 			template<typename FwdType>
-			static inline return_type apply(const char * paramName, int val, FwdType const & d, int maxval = Max) {
+			static inline return_type apply(int val, FwdType const & d) {
 				if (val == Iter) {
 					return Call<boost::mpl::int_<Iter> >::apply(d);
 				}
-				return call_type_from_int_impl < Call, return_type, Max, Iter + 1 >::apply(paramName, val, d);
+				return call_type_from_int_impl < Call, return_type, Max, Iter + 1 >::apply(val, d);
 			}
 		};
-		inline std::string getOutOfRangeErrorString(const char * paramName, int val, int maxval) {
+		inline std::string getOutOfRangeErrorString(int val, int minval, int maxval) {
 			std::ostringstream s;
-			s << "Out-of-range value passed for parameter " << paramName << ": Given " << val << " when the max is  " << maxval;
+			s << "Out-of-range value passed for parameter - Given " << val << " when the range is [" << minval << ", " << maxval << "]";
+			return s.str();
+		}
+		inline std::string getOutOfRangeErrorString(int val, int maxval) {
+			std::ostringstream s;
+			s << "Out-of-range value passed for parameter - Given " << val << " when the max is " << maxval;
 			return s.str();
 		}
 		/// specialization for base case
 		template<template<class> class Call, typename return_type, int MaxVal>
 		struct call_type_from_int_impl<Call, return_type, MaxVal, MaxVal> {
 			template<typename FwdType>
-			static inline return_type apply(const char * paramName, int val, FwdType & d) {
+			static inline return_type apply(int val, FwdType const& d) {
 				if (val > MaxVal) {
-					throw std::runtime_error(getOutOfRangeErrorString(paramName, val, MaxVal));
+					throw std::runtime_error(getOutOfRangeErrorString(val, MaxVal));
 				}
 				return Call<boost::mpl::int_<MaxVal> >::apply(d);
 			}
 		};
+		template<template<class> class Call, typename return_type, int MinVal, int MaxVal, typename FwdType>
+		inline return_type call_type_from_int_range(int val, FwdType const& fwdArgs) {
+			if (val < MinVal || val > MaxVal) {
+				throw std::runtime_error(std::string(getOutOfRangeErrorString(val, MinVal, MaxVal)));
+			}
+			return call_type_from_int_impl<Call, return_type, MaxVal, MinVal>::apply(val, fwdArgs);
+		}
+
+		template<template<class> class Call, typename return_type, typename FwdType>
+		inline return_type call_type_from_int(int val, FwdType const& fwdArgs) {
+			return call_type_from_int_range<Call, return_type, 0, 10>(val, fwdArgs);
+		}
 	} // end of namespace detail
+
+	template<int MinVal, int MaxVal>
+	struct RangedInt {
+		int value;
+		RangedInt(int v) : value(v) {}
+	};
+
 	struct DefaultValueToTemplatePolicy {
 		template<typename T>
 		struct Select {};
@@ -122,16 +146,15 @@ namespace util {
 
 		template<typename return_type, template<class> class Next, typename T, typename U>
 		static inline return_type apply(T const& value, U const& forwarding_args) {
-			return detail::call_type_from_int_impl<Next, return_type, 10>::apply("", value, forwarding_args);
+			return detail::call_type_from_int<Next, return_type>(value, forwarding_args);
 		}
 	};
 
 	template<int MinVal, int MaxVal>
 	struct DefaultValueToTemplatePolicy::Select<RangedInt<MinVal, MaxVal> > {
-
 		template<typename return_type, template<class> class Next, typename T, typename U>
 		static inline return_type apply(T const& value, U const& forwarding_args) {
-			return detail::call_type_from_int_impl<Next, return_type, MaxVal, MinVal>::apply("", value, forwarding_args);
+			return detail::call_type_from_int_range<Next, return_type, MinVal, MaxVal>(value.value, forwarding_args);
 		}
 
 	};
