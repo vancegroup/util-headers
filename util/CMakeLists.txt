@@ -11,6 +11,7 @@ set(DATASTRUCTURES_HEADERS
 	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h
+	FusionMapToTemplate.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
 	WithHistory.h)
