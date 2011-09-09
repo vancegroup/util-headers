@@ -12,6 +12,7 @@ set(DATASTRUCTURES_HEADERS
 	LockFreeBuffer.h
 	SplitMap.h
 	FusionMapToTemplate.h
+	RangedInt.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
 	WithHistory.h)
