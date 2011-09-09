@@ -109,6 +109,13 @@ namespace util {
 				CheckMax<actuallyCheck, MaxVal, ErrorPolicy>::check(val);
 			}
 		};
+		template<bool checked, int MinVal, int MaxVal, typename ErrorPolicy, typename SrcType>
+		struct CrossRangeCheck {
+			static void check(int val) {
+				detail::CheckMin < (checked && ((SrcType::min_val < MinVal) || !SrcType::checked)), MinVal, ErrorPolicy >::check(val);
+				detail::CheckMax < (checked && ((SrcType::max_val > MaxVal) || !SrcType::checked)), MaxVal, ErrorPolicy >::check(val);
+			}
+		};
 	} // end of namespace detail
 
 /// @addtogroup DataStructures Data Structures
@@ -150,8 +157,8 @@ namespace util {
 			template<int SrcMin, int SrcMax, typename SrcCheckingPolicy, typename SrcErrorPolicy>
 			RangedInt(RangedInt<SrcMin, SrcMax, SrcCheckingPolicy, SrcErrorPolicy> const& other)
 				: value(int(other)) {
-				detail::CheckMin < ((SrcMin < MinVal) && checked), MinVal, ErrorPolicy >::check(value);
-				detail::CheckMax < ((SrcMax > MaxVal) && checked), MaxVal, ErrorPolicy >::check(value);
+				typedef RangedInt<SrcMin, SrcMax, SrcCheckingPolicy, SrcErrorPolicy> OtherType;
+				detail::CrossRangeCheck<checked, MinVal, MaxVal, ErrorPolicy, OtherType>::check(value);
 			}
 
 			self_type & operator=(int v) {
@@ -169,8 +176,8 @@ namespace util {
 			template<int SrcMin, int SrcMax, typename SrcCheckingPolicy, typename SrcErrorPolicy>
 			self_type & operator=(RangedInt<SrcMin, SrcMax, SrcCheckingPolicy, SrcErrorPolicy> const& other) {
 				value = int(other);
-				detail::CheckMin < ((SrcMin < MinVal) && checked), MinVal, ErrorPolicy >::check(value);
-				detail::CheckMax < ((SrcMax > MaxVal) && checked), MaxVal, ErrorPolicy >::check(value);
+				typedef RangedInt<SrcMin, SrcMax, SrcCheckingPolicy, SrcErrorPolicy> OtherType;
+				detail::CrossRangeCheck<checked, MinVal, MaxVal, ErrorPolicy, OtherType>::check(value);
 				return *this;
 			}
 	};
