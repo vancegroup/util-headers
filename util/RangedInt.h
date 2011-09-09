@@ -128,7 +128,7 @@ namespace util {
 
 		private:
 			int value;
-			void verifyRange() const {
+			void _rangeCheck() const {
 				detail::DoRangeCheck<checked, MinVal, MaxVal, ErrorPolicy>::check(value);
 			}
 
@@ -145,7 +145,7 @@ namespace util {
 
 			RangedInt(int v)
 				: value(v) {
-				verifyRange();
+				_rangeCheck();
 			}
 
 			RangedInt(self_type const& other)
@@ -161,7 +161,7 @@ namespace util {
 
 			self_type & operator=(int v) {
 				value = v;
-				verifyRange();
+				_rangeCheck();
 				return *this;
 			}
 
