@@ -71,9 +71,21 @@ add_boost_test(EigenTie
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
+# grep --only-matching "BOOST_AUTO_TEST_CASE[(][^)]*[)]" RangedInt.cpp | sed -e 's/BOOST_AUTO_TEST_CASE[(]//g' -e 's/[)]//g'
 add_boost_test(RangedInt
 	SOURCES
-	RangedInt.cpp)
+	RangedInt.cpp
+	TESTS
+	InRangeConstructionDefaults
+	OutOfRangeConstructionDefaults
+	URUMath
+	URRMath
+	UURMath
+	RRUMath
+	RRRMath
+	InRangeConstructionNotChecked
+	OutOfRangeConstructionNotChecked
+	SameRangeCrossChecking)
 
 add_boost_test(FusionMapToTemplate
 	SOURCES
