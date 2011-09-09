@@ -49,12 +49,12 @@ namespace util {
 	struct ThrowOutOfRange {
 		template<int MinVal>
 		static void belowMin(int) {
-			throw std::out_of_range();
+			throw std::out_of_range("Below minimum value for a ranged int!");
 		}
 
 		template<int MaxVal>
 		static void aboveMax(int) {
-			throw std::out_of_range();
+			throw std::out_of_range("Above maximum value for a ranged int!");
 		}
 	};
 
@@ -81,7 +81,7 @@ namespace util {
 		struct CheckMin {
 			static void check(int val) {
 				if (val < MinVal) {
-					ErrorPolicy::belowMin(val, MinVal);
+					ErrorPolicy::template belowMin<MinVal>(val);
 				}
 			}
 		};
@@ -93,7 +93,7 @@ namespace util {
 		struct CheckMax {
 			static void check(int val) {
 				if (val > MaxVal) {
-					ErrorPolicy::aboveMax(val, MaxVal);
+					ErrorPolicy::template aboveMax<MaxVal>(val);
 				}
 			}
 		};
