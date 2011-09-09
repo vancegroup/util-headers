@@ -71,6 +71,10 @@ add_boost_test(EigenTie
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
+add_boost_test(RangedInt
+	SOURCES
+	RangedInt.cpp)
+
 add_boost_test(FusionMapToTemplate
 	SOURCES
 	FusionMapToTemplate.cpp
