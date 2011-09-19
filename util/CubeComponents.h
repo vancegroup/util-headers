@@ -146,6 +146,19 @@ namespace util {
 					VectorType getNormal() const {
 						return getCenter(); /// @todo center same as normal for centered 2x2x2 cube?
 					}
+
+					BitIDType getFixedBitIndex() const {
+						return _fixedBit;
+					}
+
+					BitValueType getFixedBitValue() const {
+						return _bitval;
+					}
+
+					IDType getID() const {
+						return _bitval * 3 + _fixedBit;
+					}
+
 				private:
 					BitIDType _fixedBit;
 					BitValueType _bitval;
