@@ -34,10 +34,10 @@ BOOST_AUTO_TEST_CASE(VertexConstructionBitset) {
 
 BOOST_AUTO_TEST_CASE(VertexConstructionInt) {
 	for (unsigned int i = 0; i < CUBE_CORNER_COUNT; ++i) {
-		BOOST_CHECK_NO_THROW(Cube::Vertex(Cube::Vertex::IDType(i)));
+		BOOST_CHECK_NO_THROW(Cube::Vertex(Cube::IDType(i)));
 	}
 	for (unsigned int i = CUBE_CORNER_COUNT; i < 10; ++i) {
-		BOOST_CHECK_THROW(Cube::Vertex(Cube::Vertex::IDType(i)), std::out_of_range);
+		BOOST_CHECK_THROW(Cube::Vertex(Cube::IDType(i)), std::out_of_range);
 	}
 }
 
