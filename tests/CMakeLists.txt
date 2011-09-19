@@ -56,6 +56,10 @@ add_boost_test(CountedUniqueValues
 	SOURCES
 	CountedUniqueValues.cpp)
 
+add_boost_test(CubeComponents
+	SOURCES
+	CubeComponents.cpp)
+
 add_boost_test(EigenTie
 	SOURCES
 	EigenTie.cpp
