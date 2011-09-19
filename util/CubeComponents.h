@@ -85,7 +85,9 @@ namespace util {
 						}
 					}
 
-					VectorType get() const;
+					VectorType get() const {
+						return VectorType(_v[0], _v[1], _v[2]) * 2 - VectorType::Constant(1);
+					}
 
 					IDType getID() const {
 						return _v.to_ulong();
@@ -157,11 +159,6 @@ namespace util {
 			struct FaceEdge;
 			struct Edge;
 	};
-
-	template<typename _VecType>
-	inline _VecType Cube<_VecType>::Vertex::get() const {
-		return _VecType(_v[0], _v[1], _v[2]) * 2 - _VecType::Constant(1);
-	}
 
 } // end of namespace util
 
