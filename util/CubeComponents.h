@@ -55,7 +55,7 @@ namespace util {
 					Vertex(IDType val)
 						: _v(val) {
 						if (val >= COUNT) {
-							throw std::out_of_range("Vertex index specified is out of range!");
+							throw std::out_of_range("Vertex index specified is out of range  {0, 1, ... 7} !");
 						}
 					}
 
