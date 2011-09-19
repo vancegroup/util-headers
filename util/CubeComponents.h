@@ -61,6 +61,12 @@ namespace util {
 			typedef bool BitValueType;
 			typedef _VecType VectorType;
 
+			class Vertex;
+			class Face;
+			class FaceVertex;
+
+
+
 			class Vertex {
 				public:
 					typedef Cube CubeType;
