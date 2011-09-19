@@ -37,6 +37,7 @@ namespace util {
 	template<typename _VecType = Eigen::Vector3d>
 	struct Cube {
 			typedef unsigned char BitIDType;
+			typedef unsigned char IDType;
 			typedef bool BitValueType;
 			typedef _VecType VectorType;
 
@@ -44,7 +45,6 @@ namespace util {
 				public:
 					typedef Cube CubeType;
 					typedef std::bitset<3> BitsetType;
-					typedef unsigned char IDType;
 					static const IDType COUNT = 8;
 
 					Vertex() {}
