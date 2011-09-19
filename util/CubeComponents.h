@@ -61,6 +61,14 @@ namespace util {
 
 					VectorType get() const;
 
+					IDType getID() const {
+						return _v.to_ulong();
+					}
+
+					BitsetType const& getBitset() const {
+						return _v;
+					}
+
 					Vertex getNeighbor(IDType m) {
 						assert(m < 3);
 						return Vertex(BitsetType(_v).flip(m));
