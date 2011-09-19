@@ -74,13 +74,7 @@ namespace util {
 						return Vertex(BitsetType(_v).flip(m));
 					}
 
-					bool operator==(Vertex const& other) const {
-						return _v == other._v;
-					}
 
-					bool operator!=(Vertex const& other) const {
-						return !(*this == other);
-					}
 
 				private:
 					BitsetType _v;
@@ -106,6 +100,16 @@ namespace util {
 	template<typename _VecType>
 	inline _VecType Cube<_VecType>::Vertex::get() const {
 		return _VecType(_v[0], _v[1], _v[2]) * 2 - _VecType::Constant(1);
+	}
+
+	template<typename _VecType>
+	inline bool operator==(typename Cube<_VecType>::Vertex const& lhs, typename Cube<_VecType>::Vertex const& rhs) {
+		return lhs.getBitset() == rhs.getBitset();
+	}
+
+	template<typename _VecType>
+	inline bool operator!=(typename Cube<_VecType>::Vertex const& lhs, typename Cube<_VecType>::Vertex const& rhs) {
+		return lhs.getBitset() != rhs.getBitset();
 	}
 
 } // end of namespace util
