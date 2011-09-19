@@ -166,8 +166,33 @@ namespace util {
 
 			class FaceVertex {
 				public:
-					operator Vertex() const;
+					typedef std::bitset<2> BitsetType;
+
+					static const IDType COUNT = 4;
+					FaceVertex(Face const& f, IDType k)
+						: _fixedBit(f.getFixedBitIndex())
+						, _bitval(f.getFixedBitValue())
+						, _vertexID(k) {
+						if (k >= COUNT) {
+							throw std::out_of_range("Face vertex index specified is out of range {0, 1, 2, 3} !");
+						}
+					}
+
+					Face getFace() const {
+						return Face(_fixedBit, _bitval);
+					}
+
+					IDType getID() const {
+						return _vertexID;
+					}
+
+					operator Vertex() const {
+						return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
+					}
 				private:
+					BitIDType _fixedBit;
+					BitValueType _bitval;
+					IDType _vertexID;
 			};
 			struct FaceEdge;
 			struct Edge;
