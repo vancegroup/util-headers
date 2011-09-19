@@ -127,6 +127,13 @@ namespace util {
 							throw std::out_of_range("Face index specified is out of range {0, 1, ... 5} !");
 						}
 					}
+					Face(BitIDType fixedBit, BitValueType bitval)
+						: _fixedBit(fixedBit)
+						, _bitval(bitval) {
+						if (fixedBit >= 3) {
+							throw std::out_of_range("Face fixed bit index specified is out of range {0, 1, 2} !");
+						}
+					}
 
 					VectorType getCenter() const {
 						return VectorType(_fixedBit == 0 ? _bitval * 2 - 1 : 0,
