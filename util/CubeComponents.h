@@ -74,11 +74,11 @@ namespace util {
 					static const IDType COUNT = 8;
 
 					Vertex() {}
-					Vertex(BitsetType const& val)
+					explicit Vertex(BitsetType const& val)
 						: _v(val)
 					{}
 
-					Vertex(IDType val)
+					explicit Vertex(IDType val)
 						: _v(val) {
 						if (val >= COUNT) {
 							throw std::out_of_range("Vertex index specified is out of range  {0, 1, ... 7} !");
@@ -120,7 +120,7 @@ namespace util {
 						, _bitval(false)
 					{}
 
-					Face(IDType j)
+					explicit Face(IDType j)
 						: _fixedBit(j % 3)
 						, _bitval(j / 3) {
 						if (j >= COUNT) {
