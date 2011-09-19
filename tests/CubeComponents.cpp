@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(VertexConstructionDefault) {
 
 BOOST_AUTO_TEST_CASE(VertexConstructionBitset) {
 	for (unsigned int i = 0; i < CUBE_CORNER_COUNT; ++i) {
-		BOOST_CHECK_NO_THROW(Cube::Vertex(std::bitset<3>(i)));
+		BOOST_CHECK_NO_THROW(Cube::Vertex(Cube::Vertex::BitsetType(i)));
 	}
 }
 
