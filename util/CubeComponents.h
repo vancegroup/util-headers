@@ -191,6 +191,13 @@ namespace util {
 						return _vertexID;
 					}
 
+					FaceVertex getNeighbor(IDType n) const {
+						if (n >= 2) {
+							throw std::out_of_range("Face vertex neighbor index specified is out of range {0, 1} !");
+						}
+						return FaceVertex(getFace(), BitsetType(_vertexID).flip(n).to_ulong());
+					}
+
 					operator Vertex() const {
 						return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
 					}
