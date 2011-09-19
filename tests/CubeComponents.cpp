@@ -21,6 +21,13 @@ using namespace boost::unit_test;
 
 typedef util::Cube<> Cube;
 static const int CUBE_CORNER_COUNT = 8;
+namespace util {
+	std::ostream & operator<<(std::ostream & os, Cube<Eigen::Vector3d>::Vertex const& val) {
+		os << "Vertex " << val.getID();
+		return os;
+	}
+
+}
 
 BOOST_AUTO_TEST_CASE(VertexConstructionDefault) {
 	BOOST_CHECK_NO_THROW(Cube::Vertex());
@@ -43,6 +50,14 @@ BOOST_AUTO_TEST_CASE(VertexConstructionInt) {
 
 BOOST_AUTO_TEST_CASE(VertexUniqueGeneration) {
 	for (unsigned int i = 0; i < CUBE_CORNER_COUNT; ++i) {
-		BOOST_CHECK_NO_THROW(Cube::Vertex(Cube::Vertex::BitsetType(i)));
+		for (unsigned int j = 0; j < CUBE_CORNER_COUNT; ++j) {
+			if (i == j) {
+				BOOST_CHECK_EQUAL(Cube::Vertex(Cube::IDType(i)), Cube::Vertex(Cube::IDType(j)));
+				BOOST_CHECK_EQUAL(Cube::Vertex(Cube::IDType(i)).get(), Cube::Vertex(Cube::IDType(j)).get());
+			} else {
+				BOOST_CHECK_NE(Cube::Vertex(Cube::IDType(i)), Cube::Vertex(Cube::IDType(j)));
+				BOOST_CHECK_NE(Cube::Vertex(Cube::IDType(i)).get(), Cube::Vertex(Cube::IDType(j)).get());
+			}
+		}
 	}
 }
