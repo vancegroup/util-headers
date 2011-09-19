@@ -88,7 +88,29 @@ namespace util {
 
 			class Face {
 				public:
+					static const IDType COUNT = 6;
+					Face()
+						: _fixedBit(0)
+						, _bitval(false)
+					{}
 
+					Face(IDType j)
+						: _fixedBit(j % 3)
+						, _bitval(j / 3) {
+						if (j >= COUNT) {
+							throw std::out_of_range("Face index specified is out of range {0, 1, ... 5} !");
+						}
+					}
+
+					VectorType getCenter() const {
+						return VectorType(_fixedBit == 0 ? _bitval * 2 - 1 : 0,
+						                  _fixedBit == 1 ? _bitval * 2 - 1 : 0,
+						                  _fixedBit == 2 ? _bitval * 2 - 1 : 0);
+					}
+
+					VectorType getNormal() const {
+						return getCenter(); /// @todo center same as normal for centered 2x2x2 cube?
+					}
 				private:
 					BitIDType _fixedBit;
 					BitValueType _bitval;
