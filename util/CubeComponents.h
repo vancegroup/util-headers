@@ -61,6 +61,23 @@ namespace util {
 
 	namespace CubeComponents {
 
+		namespace detail {
+			/// @internal
+			/// @brief interface for inserting into an output stream
+			class Outputable {
+				private:
+				/// Method to insert a human-readable description
+				/// into a std::ostream
+				virtual void streamTo(std::ostream & os) const = 0;
+				friend std::ostream & operator<<(std::ostream & os, Outputable const& val);
+			};
+
+			/// @internal
+			/// @brief operator<< for inserting into an output stream
+			std::ostream & operator<<(std::ostream & os, Outputable const& val) {
+				val.streamTo(os);
+				return os;
+			}
 		template<typename _VecType = Eigen::Vector3d>
 		struct Cube {
 				typedef unsigned char BitIDType;
@@ -79,7 +96,7 @@ namespace util {
 					0 -> -1 and 1 -> 1. A vertex's neighbors vary in one bit from the
 					its own value.
 				*/
-				class Vertex {
+				class Vertex : public detail::Outputable {
 					public:
 						typedef Cube CubeType;
 						typedef std::bitset<3> BitsetType;
@@ -133,12 +150,12 @@ namespace util {
 							return _v != other._v;
 						}
 
-						/// Method to insert a human-readable description
-						/// into a std::ostream
+
+					private:
 						void streamTo(std::ostream & os) const {
 							os << "Vertex " << getID();
 						}
-					private:
+
 						BitsetType _v;
 				};
 
@@ -147,7 +164,7 @@ namespace util {
 					A face consists of a bit index to fix and a value to fix it at. The
 					remaining two bits indicate the particular vertex in that face.
 				*/
-				class Face {
+				class Face : public detail::Outputable {
 					public:
 						static const IDType COUNT = 6;
 						/// Default constructor: constructs face 0
@@ -211,13 +228,13 @@ namespace util {
 							return getID() == other.getID();
 						}
 
+					private:
 						/// Method to insert a human-readable description
 						/// into a std::ostream
 						void streamTo(std::ostream & os) const {
 							os << "Face " << getID();
 						}
 
-					private:
 						BitIDType _fixedBit;
 						BitValueType _bitval;
 				};
@@ -227,7 +244,7 @@ namespace util {
 					Convertible to a cube vertex, but also usable as a face vertex
 					since it has only two neighbors on the same face.
 				*/
-				class FaceVertex {
+				class FaceVertex : public detail::Outputable {
 					public:
 						typedef std::bitset<2> BitsetType;
 
@@ -271,12 +288,14 @@ namespace util {
 							return operator Vertex();
 						}
 
+
+					private:
 						/// Method to insert a human-readable description
 						/// into a std::ostream
 						void streamTo(std::ostream & os) const {
 							os << "Face vertex " << _vertexID << " on face " << getFace().getID();
 						}
-					private:
+
 						BitIDType _fixedBit;
 						BitValueType _bitval;
 						IDType _vertexID;
@@ -284,13 +303,6 @@ namespace util {
 				struct FaceEdge;
 				struct Edge;
 		}; // end of class Cube
-
-		/// Output insertion operator, found using argument-dependent lookup
-		template<typename ComponentType>
-		std::ostream & operator<<(std::ostream & os, ComponentType const& val) {
-			val.streamTo(os);
-			return os;
-		}
 	} // end of namespace CubeComponents
 
 	using CubeComponents::Cube;
