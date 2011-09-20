@@ -57,11 +57,26 @@ add_boost_test(Set2
 
 add_boost_test(CountedUniqueValues
 	SOURCES
-	CountedUniqueValues.cpp)
+	CountedUniqueValues.cpp
+	TESTS
+	DefaultConstruction
+	IncrementalCounts
+	SimpleRetrieve
+	ValueIdentity)
 
 add_boost_test(CubeComponents
 	SOURCES
-	CubeComponents.cpp)
+	CubeComponents.cpp
+	TESTS
+	VertexConstructionDefault
+	VertexConstructionBitset
+	VertexConstructionInt
+	VertexUniqueGeneration
+	FaceConstructionDefault
+	FaceConstructionInt
+	FaceIdentity
+	FaceVertexAccess
+	FaceVertexIdentity)
 
 add_boost_test(EigenTie
 	SOURCES
