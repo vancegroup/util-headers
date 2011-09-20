@@ -102,6 +102,7 @@ BOOST_AUTO_TEST_CASE(FaceVertexIdentity) {
 		Cube::Face face = Cube::Face(Cube::IDType(i));
 		for (unsigned int k = 0; k < 4; ++k) {
 			BOOST_CHECK_EQUAL(face.getFaceVertex(k).getFace(), face);
+			BOOST_CHECK_EQUAL(face.getFaceVertex(k).getID(), k);
 		}
 	}
 }
