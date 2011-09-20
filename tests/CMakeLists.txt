@@ -3,6 +3,9 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+# Script list-tests.sh will extract all test names defined with BOOST_AUTO_TEST_CASE
+# in the given file
+
 add_boost_test(Saturate
 	SOURCES
 	Saturate.cpp
@@ -75,7 +78,6 @@ add_boost_test(EigenTie
 	ThrowsTwoNotUnique
 	ThrowsThreeNotUnique)
 
-# grep --only-matching "BOOST_AUTO_TEST_CASE[(][^)]*[)]" RangedInt.cpp | sed -e 's/BOOST_AUTO_TEST_CASE[(]//g' -e 's/[)]//g'
 add_boost_test(RangedInt
 	SOURCES
 	RangedInt.cpp
