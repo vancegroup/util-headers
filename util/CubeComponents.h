@@ -183,6 +183,11 @@ namespace util {
 						return _bitval * 3 + _fixedBit;
 					}
 
+					/// Get one of the vertices of this face, with id in 0, 1, 2, 3
+					FaceVertex getVertex(IDType k) {
+						return FaceVertex(*this, k);
+					}
+
 				private:
 					BitIDType _fixedBit;
 					BitValueType _bitval;
