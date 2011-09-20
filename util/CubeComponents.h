@@ -35,28 +35,6 @@
 namespace util {
 
 	namespace {
-		inline std::bitset<3> constructBitset(bool bit0, bool bit1, bool bit2) {
-			return (std::bitset<3>(bit0)) | (std::bitset<3>(bit1) << 1) | (std::bitset<3>(bit2) << 2);
-		}
-
-		inline std::bitset<3> bitsetInsert(std::bitset<2> const & input, bool val, size_t location) {
-			switch (location) {
-				case 0:
-					return constructBitset(val, input[0], input[1]);
-					break;
-
-				case 1:
-					return constructBitset(input[0], val, input[1]);
-					break;
-
-				case 2:
-					return constructBitset(input[0], input[1], val);
-					break;
-
-				default:
-					throw std::out_of_range("Location to insert bit is out of range!");
-			}
-		}
 	} // end of unnamed namespace
 
 	namespace CubeComponents {
@@ -78,6 +56,31 @@ namespace util {
 				val.streamTo(os);
 				return os;
 			}
+
+			inline std::bitset<3> constructBitset(bool bit0, bool bit1, bool bit2) {
+				return (std::bitset<3>(bit0)) | (std::bitset<3>(bit1) << 1) | (std::bitset<3>(bit2) << 2);
+			}
+
+			inline std::bitset<3> bitsetInsert(std::bitset<2> const & input, bool val, size_t location) {
+				switch (location) {
+					case 0:
+						return constructBitset(val, input[0], input[1]);
+						break;
+
+					case 1:
+						return constructBitset(input[0], val, input[1]);
+						break;
+
+					case 2:
+						return constructBitset(input[0], input[1], val);
+						break;
+
+					default:
+						throw std::out_of_range("Location to insert bit is out of range!");
+				}
+			}
+		} // end of namespace detail
+
 		template<typename _VecType = Eigen::Vector3d>
 		struct Cube {
 				typedef unsigned char BitIDType;
@@ -280,7 +283,7 @@ namespace util {
 
 						/// Conversion operator to (Cube) Vertex
 						operator Vertex() const {
-							return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
+							return Vertex(detail::bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
 						}
 
 						/// Explicit method for converting to cube Vertex
