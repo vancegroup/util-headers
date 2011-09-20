@@ -69,6 +69,12 @@ BOOST_AUTO_TEST_CASE(FaceConstructionInt) {
 	}
 }
 
+BOOST_AUTO_TEST_CASE(FaceIdentity) {
+	for (unsigned int i = 0; i < CUBE_FACE_COUNT; ++i) {
+		BOOST_CHECK_EQUAL(Cube::Face(Cube::IDType(i)).getID(), i);
+	}
+}
+
 BOOST_AUTO_TEST_CASE(FaceVertexAccess) {
 	for (unsigned int i = 0; i < CUBE_FACE_COUNT; ++i) {
 		Cube::Face face = Cube::Face(Cube::IDType(i));
@@ -86,6 +92,16 @@ BOOST_AUTO_TEST_CASE(FaceVertexAccess) {
 
 		for (unsigned int k = 4; k < 6; ++k) {
 			BOOST_CHECK_THROW(face.getFaceVertex(k), std::out_of_range);
+		}
+	}
+}
+
+
+BOOST_AUTO_TEST_CASE(FaceVertexIdentity) {
+	for (unsigned int i = 0; i < CUBE_FACE_COUNT; ++i) {
+		Cube::Face face = Cube::Face(Cube::IDType(i));
+		for (unsigned int k = 0; k < 4; ++k) {
+			BOOST_CHECK_EQUAL(face.getFaceVertex(k).getFace(), face);
 		}
 	}
 }
