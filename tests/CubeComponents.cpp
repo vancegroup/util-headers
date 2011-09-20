@@ -22,13 +22,6 @@ using namespace boost::unit_test;
 typedef util::Cube<> Cube;
 static const int CUBE_CORNER_COUNT = 8;
 static const int CUBE_FACE_COUNT = 6;
-namespace util {
-	std::ostream & operator<<(std::ostream & os, Cube<Eigen::Vector3d>::Vertex const& val) {
-		os << "Vertex " << val.getID();
-		return os;
-	}
-
-}
 
 BOOST_AUTO_TEST_CASE(VertexConstructionDefault) {
 	BOOST_CHECK_NO_THROW(Cube::Vertex());
