@@ -82,7 +82,15 @@ BOOST_AUTO_TEST_CASE(FaceVertexAccess) {
 		BOOST_CHECK_NO_THROW(face.getCenter());
 		for (unsigned int k = 0; k < 4; ++k) {
 			BOOST_CHECK_NO_THROW(face.getFaceVertex(k));
+			for (unsigned int k2 = 0; k2 < 4; ++k2) {
+				if (k == k2) {
+					BOOST_CHECK_EQUAL(face.getFaceVertex(k).getCubeVertex(), face.getFaceVertex(k2).getCubeVertex());
+				} else {
+					BOOST_CHECK_NE(face.getFaceVertex(k).getCubeVertex(), face.getFaceVertex(k2).getCubeVertex());
+				}
+			}
 		}
+
 		for (unsigned int k = 4; k < 6; ++k) {
 			BOOST_CHECK_THROW(face.getFaceVertex(k), std::out_of_range);
 		}
