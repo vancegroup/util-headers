@@ -52,7 +52,7 @@ namespace util {
 
 			/// @internal
 			/// @brief operator<< for inserting into an output stream
-			std::ostream & operator<<(std::ostream & os, Outputable const& val) {
+			inline std::ostream & operator<<(std::ostream & os, Outputable const& val) {
 				val.streamTo(os);
 				return os;
 			}
