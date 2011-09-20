@@ -30,6 +30,7 @@
 #include <bitset>
 #include <cassert>
 #include <stdexcept>
+#include <iosfwd>
 
 namespace util {
 
@@ -58,185 +59,241 @@ namespace util {
 		}
 	} // end of unnamed namespace
 
-	template<typename _VecType = Eigen::Vector3d>
-	struct Cube {
-			typedef unsigned char BitIDType;
-			typedef unsigned char IDType;
-			typedef bool BitValueType;
-			typedef _VecType VectorType;
+	namespace CubeComponents {
 
-			class Vertex;
-			class Face;
-			class FaceVertex;
+		template<typename _VecType = Eigen::Vector3d>
+		struct Cube {
+				typedef unsigned char BitIDType;
+				typedef unsigned char IDType;
+				typedef bool BitValueType;
+				typedef _VecType VectorType;
 
-			/// Representation of a vertex of a 2x2x2 cube centered at the origin
-			class Vertex {
-				public:
-					typedef Cube CubeType;
-					typedef std::bitset<3> BitsetType;
-					static const IDType COUNT = 8;
+				class Vertex;
+				class Face;
+				class FaceVertex;
 
-					/// Default constructor: constructs vertex 0
-					Vertex() {}
+				/** @brief Representation of a vertex of a 2x2x2 cube centered at the origin
 
-					/// Constructor from a bitset
-					explicit Vertex(BitsetType const& val)
-						: _v(val)
-					{}
+					A set of 3 bits is used to represent a vertex, where each bit
+					corresponds to a dimension (in {x, y, z}), and values are mapped
+					0 -> -1 and 1 -> 1. A vertex's neighbors vary in one bit from the
+					its own value.
+				*/
+				class Vertex {
+					public:
+						typedef Cube CubeType;
+						typedef std::bitset<3> BitsetType;
+						static const IDType COUNT = 8;
 
-					/// Constructor from a vertex ID in range 0, 1, ..., 7
-					explicit Vertex(IDType val)
-						: _v(val) {
-						if (val >= COUNT) {
-							throw std::out_of_range("Vertex index specified is out of range  {0, 1, ..., 7} !");
+						/// Default constructor: constructs vertex 0
+						Vertex() {}
+
+						/// Constructor from a bitset
+						explicit Vertex(BitsetType const& val)
+							: _v(val)
+						{}
+
+						/// Constructor from a vertex ID in range 0, 1, ..., 7
+						explicit Vertex(IDType val)
+							: _v(val) {
+							if (val >= COUNT) {
+								throw std::out_of_range("Vertex index specified is out of range  {0, 1, ..., 7} !");
+							}
 						}
-					}
 
-					/// Get the coordinates of this vertex in a 2x2x2 cube centered
-					/// on the origin. (All components will be +-1)
-					VectorType get() const {
-						return VectorType(_v[0], _v[1], _v[2]) * 2 - VectorType::Constant(1);
-					}
-
-					/// Get vertex ID in range 0, 1, ..., 7
-					IDType getID() const {
-						return _v.to_ulong();
-					}
-
-					/// Get bitset corresponding to this vertex
-					BitsetType const& getBitset() const {
-						return _v;
-					}
-
-					/// Get vertex neighbor m, where m is in 0, 1, 2
-					Vertex getNeighbor(IDType m) {
-						assert(m < 3);
-						return Vertex(BitsetType(_v).flip(m));
-					}
-
-					/// Compare vertex equality based on ID
-					bool operator==(Vertex const& other) const {
-						return _v == other._v;
-					}
-
-					/// Compare vertex inequality based on ID
-					bool operator!=(Vertex const& other) const {
-						return _v != other._v;
-					}
-
-				private:
-					BitsetType _v;
-			};
-
-			/// Representation of a face of a 2x2x2 cube centered at the origin
-			class Face {
-				public:
-					static const IDType COUNT = 6;
-					/// Default constructor: constructs face 0
-					Face()
-						: _fixedBit(0)
-						, _bitval(false)
-					{}
-
-					/// Constructor from a face ID in range 0, 1, ..., 5
-					explicit Face(IDType j)
-						: _fixedBit(j % 3)
-						, _bitval(j / 3) {
-						if (j >= COUNT) {
-							throw std::out_of_range("Face index specified is out of range {0, 1, ..., 5} !");
+						/// Get the coordinates of this vertex in a 2x2x2 cube centered
+						/// on the origin. (All components will be +-1)
+						VectorType get() const {
+							return VectorType(_v[0], _v[1], _v[2]) * 2 - VectorType::Constant(1);
 						}
-					}
 
-					/// Constructor from a bit ID to fix (in 0, 1, 2) and a value for that bit (bool)
-					Face(BitIDType fixedBit, BitValueType bitval)
-						: _fixedBit(fixedBit)
-						, _bitval(bitval) {
-						if (fixedBit >= 3) {
-							throw std::out_of_range("Face fixed bit index specified is out of range {0, 1, 2} !");
+						/// Get vertex ID in range 0, 1, ..., 7
+						IDType getID() const {
+							return _v.to_ulong();
 						}
-					}
 
-					/// Get coordinates of the center of this face
-					VectorType getCenter() const {
-						return VectorType(_fixedBit == 0 ? _bitval * 2 - 1 : 0,
-						                  _fixedBit == 1 ? _bitval * 2 - 1 : 0,
-						                  _fixedBit == 2 ? _bitval * 2 - 1 : 0);
-					}
-
-					/// Get outward-pointing normal of this face
-					VectorType getNormal() const {
-						return getCenter(); /// @todo center same as normal for centered 2x2x2 cube?
-					}
-
-					/// Get the ID of the bit that is fixed for this face
-					BitIDType getFixedBitIndex() const {
-						return _fixedBit;
-					}
-
-					/// Get the value assigned to the fixed bit for this face
-					BitValueType getFixedBitValue() const {
-						return _bitval;
-					}
-
-					/// Get face ID in range 0, 1, ..., 5
-					IDType getID() const {
-						return _bitval * 3 + _fixedBit;
-					}
-
-					/// Get one of the vertices of this face, with id in 0, 1, 2, 3
-					FaceVertex getFaceVertex(IDType k) {
-						return FaceVertex(*this, k);
-					}
-
-				private:
-					BitIDType _fixedBit;
-					BitValueType _bitval;
-			};
-
-			class FaceVertex {
-				public:
-					typedef std::bitset<2> BitsetType;
-
-					static const IDType COUNT = 4;
-					FaceVertex(Face const& f, IDType k)
-						: _fixedBit(f.getFixedBitIndex())
-						, _bitval(f.getFixedBitValue())
-						, _vertexID(k) {
-						if (k >= COUNT) {
-							throw std::out_of_range("Face vertex index specified is out of range {0, 1, 2, 3} !");
+						/// Get bitset corresponding to this vertex
+						BitsetType const& getBitset() const {
+							return _v;
 						}
-					}
 
-					Face getFace() const {
-						return Face(_fixedBit, _bitval);
-					}
-
-					IDType getID() const {
-						return _vertexID;
-					}
-
-					FaceVertex getNeighbor(IDType n) const {
-						if (n >= 2) {
-							throw std::out_of_range("Face vertex neighbor index specified is out of range {0, 1} !");
+						/// Get vertex neighbor m, where m is in 0, 1, 2
+						Vertex getNeighbor(IDType m) {
+							assert(m < 3);
+							return Vertex(BitsetType(_v).flip(m));
 						}
-						return FaceVertex(getFace(), BitsetType(_vertexID).flip(n).to_ulong());
-					}
 
-					operator Vertex() const {
-						return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
-					}
+						/// Compare vertex equality based on ID
+						bool operator==(Vertex const& other) const {
+							return _v == other._v;
+						}
 
-					Vertex getCubeVertex() const {
-						return operator Vertex();
-					}
-				private:
-					BitIDType _fixedBit;
-					BitValueType _bitval;
-					IDType _vertexID;
-			};
-			struct FaceEdge;
-			struct Edge;
-	};
+						/// Compare vertex inequality based on ID
+						bool operator!=(Vertex const& other) const {
+							return _v != other._v;
+						}
+
+						/// Method to insert a human-readable description
+						/// into a std::ostream
+						void streamTo(std::ostream & os) const {
+							os << "Vertex " << getID();
+						}
+					private:
+						BitsetType _v;
+				};
+
+				/** @brief Representation of a face of a 2x2x2 cube centered at the origin.
+
+					A face consists of a bit index to fix and a value to fix it at. The
+					remaining two bits indicate the particular vertex in that face.
+				*/
+				class Face {
+					public:
+						static const IDType COUNT = 6;
+						/// Default constructor: constructs face 0
+						Face()
+							: _fixedBit(0)
+							, _bitval(false)
+						{}
+
+						/// Constructor from a face ID in range 0, 1, ..., 5
+						explicit Face(IDType j)
+							: _fixedBit(j % 3)
+							, _bitval(j / 3) {
+							if (j >= COUNT) {
+								throw std::out_of_range("Face index specified is out of range {0, 1, ..., 5} !");
+							}
+						}
+
+						/// Constructor from a bit ID to fix (in 0, 1, 2) and a value for that bit (bool)
+						Face(BitIDType fixedBit, BitValueType bitval)
+							: _fixedBit(fixedBit)
+							, _bitval(bitval) {
+							if (fixedBit >= 3) {
+								throw std::out_of_range("Face fixed bit index specified is out of range {0, 1, 2} !");
+							}
+						}
+
+						/// Get coordinates of the center of this face
+						VectorType getCenter() const {
+							return VectorType(_fixedBit == 0 ? _bitval * 2 - 1 : 0,
+							                  _fixedBit == 1 ? _bitval * 2 - 1 : 0,
+							                  _fixedBit == 2 ? _bitval * 2 - 1 : 0);
+						}
+
+						/// Get outward-pointing normal of this face
+						VectorType getNormal() const {
+							return getCenter(); /// @todo center same as normal for centered 2x2x2 cube?
+						}
+
+						/// Get the ID of the bit that is fixed for this face
+						BitIDType getFixedBitIndex() const {
+							return _fixedBit;
+						}
+
+						/// Get the value assigned to the fixed bit for this face
+						BitValueType getFixedBitValue() const {
+							return _bitval;
+						}
+
+						/// Get face ID in range 0, 1, ..., 5
+						IDType getID() const {
+							return _bitval * 3 + _fixedBit;
+						}
+
+						/// Get one of the vertices of this face, with id in 0, 1, 2, 3
+						FaceVertex getFaceVertex(IDType k) {
+							return FaceVertex(*this, k);
+						}
+
+						/// Comparison operator based on face ID
+						bool operator==(Face const& other) const {
+							return getID() == other.getID();
+						}
+
+						/// Method to insert a human-readable description
+						/// into a std::ostream
+						void streamTo(std::ostream & os) const {
+							os << "Face " << getID();
+						}
+
+					private:
+						BitIDType _fixedBit;
+						BitValueType _bitval;
+				};
+
+				/** @brief Representation of a vertex of a cube face.
+
+					Convertible to a cube vertex, but also usable as a face vertex
+					since it has only two neighbors on the same face.
+				*/
+				class FaceVertex {
+					public:
+						typedef std::bitset<2> BitsetType;
+
+						static const IDType COUNT = 4;
+
+						/// Constructor from a face and an ID in {0, 1, 2, 3}
+						FaceVertex(Face const& f, IDType k)
+							: _fixedBit(f.getFixedBitIndex())
+							, _bitval(f.getFixedBitValue())
+							, _vertexID(k) {
+							if (k >= COUNT) {
+								throw std::out_of_range("Face vertex index specified is out of range {0, 1, 2, 3} !");
+							}
+						}
+
+						/// Get the face this vertex belongs to
+						Face getFace() const {
+							return Face(_fixedBit, _bitval);
+						}
+
+						/// Get the ID in {0, 1, 2, 3}
+						IDType getID() const {
+							return _vertexID;
+						}
+
+						/// Get vertex's neighbor on this face, given n in {0, 1}
+						FaceVertex getNeighbor(IDType n) const {
+							if (n >= 2) {
+								throw std::out_of_range("Face vertex neighbor index specified is out of range {0, 1} !");
+							}
+							return FaceVertex(getFace(), BitsetType(_vertexID).flip(n).to_ulong());
+						}
+
+						/// Conversion operator to (Cube) Vertex
+						operator Vertex() const {
+							return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
+						}
+
+						/// Explicit method for converting to cube Vertex
+						Vertex getCubeVertex() const {
+							return operator Vertex();
+						}
+
+						/// Method to insert a human-readable description
+						/// into a std::ostream
+						void streamTo(std::ostream & os) const {
+							os << "Face vertex " << _vertexID << " on face " << getFace().getID();
+						}
+					private:
+						BitIDType _fixedBit;
+						BitValueType _bitval;
+						IDType _vertexID;
+				};
+				struct FaceEdge;
+				struct Edge;
+		}; // end of class Cube
+
+		/// Output insertion operator, found using argument-dependent lookup
+		template<typename ComponentType>
+		std::ostream & operator<<(std::ostream & os, ComponentType const& val) {
+			val.streamTo(os);
+			return os;
+		}
+	} // end of namespace CubeComponents
+
+	using CubeComponents::Cube;
 
 } // end of namespace util
 
