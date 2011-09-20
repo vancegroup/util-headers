@@ -184,7 +184,7 @@ namespace util {
 					}
 
 					/// Get one of the vertices of this face, with id in 0, 1, 2, 3
-					FaceVertex getVertex(IDType k) {
+					FaceVertex getFaceVertex(IDType k) {
 						return FaceVertex(*this, k);
 					}
 
@@ -224,6 +224,10 @@ namespace util {
 
 					operator Vertex() const {
 						return Vertex(bitsetInsert(BitsetType(_vertexID), _bitval, _fixedBit));
+					}
+
+					Vertex getCubeVertex() const {
+						return operator Vertex();
 					}
 				private:
 					BitIDType _fixedBit;

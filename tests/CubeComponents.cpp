@@ -81,10 +81,10 @@ BOOST_AUTO_TEST_CASE(FaceVertexAccess) {
 		Cube::Face face = Cube::Face(Cube::IDType(i));
 		BOOST_CHECK_NO_THROW(face.getCenter());
 		for (unsigned int k = 0; k < 4; ++k) {
-			BOOST_CHECK_NO_THROW(face.getVertex(k));
+			BOOST_CHECK_NO_THROW(face.getFaceVertex(k));
 		}
 		for (unsigned int k = 4; k < 6; ++k) {
-			BOOST_CHECK_THROW(face.getVertex(k), std::out_of_range);
+			BOOST_CHECK_THROW(face.getFaceVertex(k), std::out_of_range);
 		}
 	}
 }
