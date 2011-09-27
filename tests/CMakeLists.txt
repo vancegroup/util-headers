@@ -153,7 +153,10 @@ if(Boost_SERIALIZATION_LIBRARY)
 	add_boost_test(EigenMatrixSerialize
 		SOURCES
 		EigenMatrixSerialize.cpp
-		LIBRARIES ${Boost_SERIALIZATION_LIBRARY})
+		LIBRARIES ${Boost_SERIALIZATION_LIBRARY}
+		TESTS
+		IdentityRoundTrip
+		ConstantVecRoundTrip)
 endif()
 
 add_subdirectory(cleanbuild)
