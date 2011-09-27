@@ -25,6 +25,7 @@ endif()
 set(MATH_HEADERS
 	CubeComponents.h
 	EigenTie.h
+	EigenMatrixSerialize.h
 	RandomFloat.h
 	Saturate.h)
 
