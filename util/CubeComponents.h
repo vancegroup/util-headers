@@ -44,10 +44,10 @@ namespace util {
 			/// @brief interface for inserting into an output stream
 			class Outputable {
 				private:
-				/// Method to insert a human-readable description
-				/// into a std::ostream
-				virtual void streamTo(std::ostream & os) const = 0;
-				friend std::ostream & operator<<(std::ostream & os, Outputable const& val);
+					/// Method to insert a human-readable description
+					/// into a std::ostream
+					virtual void streamTo(std::ostream & os) const = 0;
+					friend std::ostream & operator<<(std::ostream & os, Outputable const& val);
 			};
 
 			/// @internal

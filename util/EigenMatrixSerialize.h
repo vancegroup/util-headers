@@ -31,13 +31,13 @@
 // - none
 
 namespace boost {
-namespace serialization {
+	namespace serialization {
 
-template<class Archive, class Scalar, int RowsAtCompileTime, int ColsAtCompileTime>
-void serialize(Archive & ar, ::Eigen::Matrix<Scalar, RowsAtCompileTime, ColsAtCompileTime> & m, const unsigned int /*version*/) {
-	ar & boost::serialization::make_array(m.data(), RowsAtCompileTime * ColsAtCompileTime);
-}
+		template<class Archive, class Scalar, int RowsAtCompileTime, int ColsAtCompileTime>
+		void serialize(Archive & ar, ::Eigen::Matrix<Scalar, RowsAtCompileTime, ColsAtCompileTime> & m, const unsigned int /*version*/) {
+			ar & boost::serialization::make_array(m.data(), RowsAtCompileTime * ColsAtCompileTime);
+		}
 
-} // end of namespace serialization
+	} // end of namespace serialization
 } // end of namespace boost
 #endif // INCLUDED_EigenMatrixSerialize_h_GUID_3ebee56a_057c_4186_9e5a_b8efbae15236
