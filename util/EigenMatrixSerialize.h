@@ -25,6 +25,7 @@
 
 // Library/third-party includes
 #include <Eigen/Core>
+#include <boost/serialization/array.hpp>
 
 // Standard includes
 // - none
@@ -34,11 +35,7 @@ namespace serialization {
 
 template<class Archive, class Scalar, int RowsAtCompileTime, int ColsAtCompileTime>
 void serialize(Archive & ar, ::Eigen::Matrix<Scalar, RowsAtCompileTime, ColsAtCompileTime> & m, const unsigned int /*version*/) {
-	for (int row = 0; row < RowsAtCompileTime; ++row) {
-		for (int col = 0; col < ColsAtCompileTime; ++col) {
-			ar & m(row, col);
-		}
-	}
+	ar & boost::serialization::make_array(m.data(), RowsAtCompileTime * ColsAtCompileTime);
 }
 
 } // end of namespace serialization
