@@ -81,6 +81,7 @@ namespace util {
 
 			/// @name Accessors
 			/// @{
+
 			/// @brief Get prefix: the part before the placeholder
 			std::string const& getPrefix() const;
 
@@ -110,6 +111,7 @@ namespace util {
 
 			/// @name Mutators
 			/// @{
+
 			/// @brief Set prefix
 			void setPrefix(std::string const & s);
 
