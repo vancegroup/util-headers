@@ -30,6 +30,7 @@
 #include <string>
 #include <deque>
 #include <iostream>
+#include <sstream>
 
 namespace util {
 
@@ -128,6 +129,19 @@ namespace util {
 			ret.push_back(SearchPathElement(*it));
 		}
 		return ret;
+	}
+
+	inline std::string convertSearchPathToString(SearchPath const& input,
+	        std::string const& placeholder = std::string(1, SearchPathElement::PLACEHOLDER),
+	        const char separator = ';') {
+		std::ostringstream os;
+		for (int i = 0, n = input.size(); i < n; ++i) {
+			os << input[i].getFullWithSubstitution(placeholder);
+			if (i + 1 < n) {
+				os << separator;
+			}
+		}
+		return os.str();
 	}
 
 	inline std::string const& SearchPathElement::getPrefix() const {
