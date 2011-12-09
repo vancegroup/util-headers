@@ -157,6 +157,7 @@ add_boost_test(SearchPath
 	ElementConstructionString2
 	ElementConstructionString3
 	ElementConstructionString4
+	ElementConstructionString5
 	ElementGetStringWithSubstitution1
 	ElementGetStringWithSubstitution2
 	ElementGetStringWithSubstitution3
@@ -168,11 +169,16 @@ add_boost_test(SearchPath
 	ElementPrefixMutator
 	ElementSuffixMutator
 	ElementPrefixAndSuffixMutator
-	SearchPathEmpty
-	SearchPathJustDelimiter
-	SearchPathOneElement
-	SearchPathOneElementWithTrailing
-	SearchPathTwoElements)
+	LuaListEmpty
+	LuaListJustDelimiter
+	LuaListOneElement
+	LuaListOneElementWithTrailing
+	LuaListTwoElements
+	DirectoryListEmpty
+	DirectoryListJustDelimiter
+	DirectoryListOneElement
+	DirectoryListOneElementWithTrailing
+	DirectoryListTwoElements)
 
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
