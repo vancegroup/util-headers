@@ -50,7 +50,7 @@ namespace util {
 				Three cases:
 					1. /bla/bla/
 					2. /bla/bla/?
-					3. /bla/bla/?.lua
+					3. /bla/bla/?.lua or /bla/bla/lib?.so
 			*/
 			SearchPathElement(std::string const& elt) {
 				std::size_t placeholder = elt.find(PLACEHOLDER);
