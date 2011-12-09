@@ -113,11 +113,13 @@ namespace util {
 	/// @brief A container class for SearchPathElements.
 	typedef std::deque<SearchPathElement> SearchPath;
 
-	/// @brief Parse a search path string into a SearchPath (list of search path elements).
+	/** @brief Parse a search path string into a SearchPath (list of search path elements).
+
+		Empty elements are dropped.
+	*/
 	inline SearchPath parseSearchPathFromString(std::string const& input, const char separator[] = ";") {
 		SearchPath ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-		/// @todo do we want to keep empty tokens?
 		boost::char_separator<char> sep(separator);
 		tokenizer tokens(input, sep);
 		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
