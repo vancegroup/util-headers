@@ -96,6 +96,11 @@ namespace util {
 			std::string _suffix;
 	};
 
+	/// @brief Equality comparison operator for path elements.
+	inline bool operator==(SearchPathElement const& lhs, SearchPathElement const& rhs) {
+		return (lhs.getPrefix() == rhs.getPrefix()) && (lhs.getSuffix() == rhs.getSuffix());
+	}
+
 	inline std::string const& SearchPathElement::getPrefix() const {
 		return _prefix;
 	}
