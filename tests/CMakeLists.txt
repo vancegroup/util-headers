@@ -157,11 +157,11 @@ add_boost_test(SearchPath
 	ElementConstructionString2
 	ElementConstructionString3
 	ElementConstructionString4
-	ElementGetFullSubstitution1
-	ElementGetFullSubstitution2
-	ElementGetFullSubstitution3
-	ElementGetFullSubstitution4
-	ElementGetFullSubstitution5
+	ElementGetStringWithSubstitution1
+	ElementGetStringWithSubstitution2
+	ElementGetStringWithSubstitution3
+	ElementGetStringWithSubstitution4
+	ElementGetStringWithSubstitution5
 	ElementConstructionTwoString1
 	ElementConstructionTwoString2
 	ElementConstructionTwoString3

@@ -30,12 +30,14 @@ BOOST_AUTO_TEST_CASE(ElementDefaultConstruction) {
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
 	SearchPathElement a("/bla/bla/");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString2) {
 	SearchPathElement a("/bla/bla/?");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
@@ -47,49 +49,60 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
+	SearchPathElement a("/bla/bla/Fallback");
+	BOOST_CHECK(!a.hasPlaceholder());
+	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/Fallback");
+	BOOST_CHECK_EQUAL(a.getSuffix(), "");
+}
+
+BOOST_AUTO_TEST_CASE(ElementConstructionString5) {
 	SearchPathElement a("");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
-BOOST_AUTO_TEST_CASE(ElementGetFullSubstitution1) {
+BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution1) {
 	SearchPathElement a("/bla/bla/");
-	BOOST_CHECK_EQUAL(a.getFullWithSubstitution(), "/bla/bla/?");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
-BOOST_AUTO_TEST_CASE(ElementGetFullSubstitution2) {
+BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution2) {
 	SearchPathElement a("/bla/bla/?");
-	BOOST_CHECK_EQUAL(a.getFullWithSubstitution(), "/bla/bla/?");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
-BOOST_AUTO_TEST_CASE(ElementGetFullSubstitution3) {
+BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution3) {
 	SearchPathElement a("/bla/bla/?.lua");
-	BOOST_CHECK_EQUAL(a.getFullWithSubstitution(), "/bla/bla/?.lua");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?.lua");
+}
+BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution4) {
+	SearchPathElement a("/bla/bla/Fallback");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/Fallback");
 }
 
-BOOST_AUTO_TEST_CASE(ElementGetFullSubstitution4) {
+BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution5) {
 	SearchPathElement a("");
-	BOOST_CHECK_EQUAL(a.getFullWithSubstitution(), "?");
-}
-BOOST_AUTO_TEST_CASE(ElementGetFullSubstitution5) {
-	SearchPathElement a("pre", "suff");
-	BOOST_CHECK_EQUAL(a.getFullWithSubstitution(), "pre?suff");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "?");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString1) {
 	SearchPathElement a("pre", "suff");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString2) {
 	SearchPathElement a("", "suff");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString3) {
 	SearchPathElement a("pre", "");
+	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
