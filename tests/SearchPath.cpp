@@ -29,61 +29,61 @@ BOOST_AUTO_TEST_CASE(ElementDefaultConstruction) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
-	SearchPathElement a("/bla/bla/");
+	SearchPathElement a = SearchPathElement::createFromDirectory("/bla/bla/");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString2) {
-	SearchPathElement a("/bla/bla/?");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
-	SearchPathElement a("/bla/bla/?.lua");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?.lua");
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), ".lua");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
-	SearchPathElement a("/bla/bla/Fallback");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/Fallback");
 	BOOST_CHECK(!a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/Fallback");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString5) {
-	SearchPathElement a("");
-	BOOST_CHECK(a.hasPlaceholder());
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("");
+	BOOST_CHECK(!a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution1) {
-	SearchPathElement a("/bla/bla/");
+	SearchPathElement a = SearchPathElement::createFromDirectory("/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution2) {
-	SearchPathElement a("/bla/bla/?");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution3) {
-	SearchPathElement a("/bla/bla/?.lua");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?.lua");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?.lua");
 }
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution4) {
-	SearchPathElement a("/bla/bla/Fallback");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/Fallback");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/Fallback");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution5) {
-	SearchPathElement a("");
-	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "?");
+	SearchPathElement a = SearchPathElement::createFromPlaceholderString("");
+	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString1) {
@@ -130,30 +130,30 @@ BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
 }
 
 BOOST_AUTO_TEST_CASE(SearchPathEmpty) {
-	BOOST_CHECK(parseSearchPathFromString("").empty());
+	BOOST_CHECK(parseSearchPathFromLuaString("").empty());
 }
 
 BOOST_AUTO_TEST_CASE(SearchPathJustDelimiter) {
-	BOOST_CHECK(parseSearchPathFromString(";").empty());
+	BOOST_CHECK(parseSearchPathFromLuaString(";").empty());
 }
 
 BOOST_AUTO_TEST_CASE(SearchPathOneElement) {
-	SearchPath a = parseSearchPathFromString("one");
+	SearchPath a = parseSearchPathFromLuaString("one");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 }
 
 BOOST_AUTO_TEST_CASE(SearchPathOneElementWithTrailing) {
-	SearchPath a = parseSearchPathFromString("one;");
+	SearchPath a = parseSearchPathFromLuaString("one;");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 }
 
 BOOST_AUTO_TEST_CASE(SearchPathTwoElements) {
-	SearchPath a = parseSearchPathFromString("one;two");
+	SearchPath a = parseSearchPathFromLuaString("one;two");
 	BOOST_CHECK_EQUAL(a.size(), 2);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
-	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement("two"));
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
+	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromPlaceholderString("two"));
 }
 
 

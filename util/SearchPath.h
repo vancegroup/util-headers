@@ -69,41 +69,6 @@ namespace util {
 			static SearchPathElement createFromPlaceholderString(std::string const& elt,
 			        const char placeholderChar = PLACEHOLDER);
 
-			/** @brief Constructor from either a prefix alone or a path
-				with a placeholder (a "Lua-style" search path element).
-
-				Tries to guess what you mean - usually you want to use
-				one of the named constructors.
-
-				Five cases:
-					1. /bla/bla/ - assumed to be equivalent to case 2.
-					2. /bla/bla/?
-					3. /bla/bla/?.lua or /bla/bla/lib?.so
-					4. /bla/bla/fallback.lua - not converted to case 2 because
-						it doesn't end in a path separator.
-					5. Empty input - degenerate case, treated as case 1.
-			*/
-			explicit SearchPathElement(std::string const& elt)
-				: _hasPlaceholder(true) {
-				std::size_t placeholder = elt.find(PLACEHOLDER);
-				if (placeholder == std::string::npos) {
-					// Handle case 1 and 4
-					// Didn't find a placeholder, so treat the whole thing as the prefix
-					_prefix = elt;
-					// Is this a directory? or a fixed path?
-					_hasPlaceholder = !_endsInPathSeparator(elt);
-				} else {
-					// Found a placeholder: split into prefix and suffix
-					// We're in case 2 or 3
-					_prefix = elt.substr(0, placeholder);
-					if (placeholder + 1 < elt.size()) {
-						// We actually have a suffix: case 3
-						_suffix = elt.substr(placeholder + 1);
-					}
-				}
-				assert(_suffix.empty() || _hasPlaceholder);
-			}
-
 			/** @brief Constructor from a prefix and suffix
 			*/
 			SearchPathElement(std::string const & pre, std::string const & suff)
@@ -188,13 +153,13 @@ namespace util {
 
 		Empty elements are dropped.
 	*/
-	inline SearchPath parseSearchPathFromString(std::string const& input, const char separator[] = ";") {
+	inline SearchPath parseSearchPathFromLuaString(std::string const& input, const char separator[] = ";") {
 		SearchPath ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 		boost::char_separator<char> sep(separator);
 		tokenizer tokens(input, sep);
 		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
-			ret.push_back(SearchPathElement(*it));
+			ret.push_back(SearchPathElement::createFromPlaceholderString(*it));
 		}
 		return ret;
 	}
@@ -219,9 +184,9 @@ namespace util {
 
 	inline SearchPathElement SearchPathElement::createFromDirectory(std::string const& elt) {
 		if (_endsInPathSeparator(elt)) {
-			return SearchPathElement(elt, "", false);
+			return SearchPathElement(elt, "", true);
 		} else {
-			return SearchPathElement(elt + "/", "", false);
+			return SearchPathElement(elt + "/", "", true);
 		}
 	}
 
