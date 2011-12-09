@@ -29,6 +29,7 @@
 // Standard includes
 #include <string>
 #include <deque>
+#include <iostream>
 
 namespace util {
 
@@ -101,6 +102,12 @@ namespace util {
 	/// @brief Equality comparison operator for path elements.
 	inline bool operator==(SearchPathElement const& lhs, SearchPathElement const& rhs) {
 		return (lhs.getPrefix() == rhs.getPrefix()) && (lhs.getSuffix() == rhs.getSuffix());
+	}
+
+	/// @brief Output operator for path elements.
+	inline std::ostream & operator<<(std::ostream & os, SearchPathElement const& rhs) {
+		os << rhs.getFullWithSubstitution();
+		return os;
 	}
 
 	/// @brief A container class for SearchPathElements.
