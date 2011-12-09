@@ -118,7 +118,7 @@ namespace util {
 		SearchPath ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 		/// @todo do we want to keep empty tokens?
-		boost::char_separator<char> sep(separator, "" /* no kept delimiters */, boost::keep_empty_tokens);
+		boost::char_separator<char> sep(separator);
 		tokenizer tokens(input, sep);
 		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
 			ret.push_back(SearchPathElement(*it));
