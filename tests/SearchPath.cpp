@@ -156,4 +156,36 @@ BOOST_AUTO_TEST_CASE(LuaListTwoElements) {
 	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromPlaceholderString("two"));
 }
 
+BOOST_AUTO_TEST_CASE(DirectoryListEmpty) {
+	BOOST_CHECK(SearchPathElement::splitListOfDirectories("").empty());
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")), "");
+}
+
+BOOST_AUTO_TEST_CASE(DirectoryListJustDelimiter) {
+	BOOST_CHECK(SearchPathElement::splitListOfDirectories(";").empty());
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")), "");
+}
+
+BOOST_AUTO_TEST_CASE(DirectoryListOneElement) {
+	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one");
+	BOOST_CHECK_EQUAL(a.size(), 1);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/");
+}
+
+BOOST_AUTO_TEST_CASE(DirectoryListOneElementWithTrailing) {
+	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one;");
+	BOOST_CHECK_EQUAL(a.size(), 1);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/");
+}
+
+BOOST_AUTO_TEST_CASE(DirectoryListTwoElements) {
+	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one;two");
+	BOOST_CHECK_EQUAL(a.size(), 2);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromDirectory("two"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/;two/");
+}
+
 
