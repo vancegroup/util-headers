@@ -75,11 +75,50 @@ namespace util {
 				: _prefix(pre)
 				, _suffix(suff)
 			{}
+
+			/// @brief Get prefix: the part before the placeholder
+			std::string const& getPrefix() const;
+
+			/// @brief Get suffix: the part after the placeholder
+			std::string const& getSuffix() const;
+
+			/// @brief Combine prefix, placeholder or value of your choice, and suffix
+			std::string getFullWithSubstitution(std::string const& substitution = std::string(1, PLACEHOLDER)) const;
+
+			/// @brief Set prefix
+			void setPrefix(std::string const& s);
+
+			/// @brief Set suffix
+			void setSuffix(std::string const& s);
 		private:
 			static const char PLACEHOLDER = '?';
 			std::string _prefix;
 			std::string _suffix;
 	};
+
+	inline std::string const& SearchPathElement::getPrefix() const {
+		return _prefix;
+	}
+
+	inline std::string const& SearchPathElement::getSuffix() const {
+		return _suffix;
+	}
+
+	inline std::string SearchPathElement::getFullWithSubstitution(std::string const& substitution) const {
+		return _prefix + substitution + _suffix;
+	}
+
+	inline void SearchPathElement::setPrefix(std::string const& s) {
+		/// @todo Check for placeholder in this value and handle it?
+		/// Setting the prefix to something like /bla/?/ would be weird.
+		_prefix = s;
+	}
+
+	inline void SearchPathElement::setSuffix(std::string const& s) {
+		/// @todo Check for placeholder in this value and handle it?
+		/// Setting the prefix to something like /bla/?/ would be weird.
+		_suffix = s;
+	}
 
 
 /// @}
