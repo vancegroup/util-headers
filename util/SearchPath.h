@@ -93,8 +93,10 @@ namespace util {
 
 			/// @brief Set suffix
 			void setSuffix(std::string const& s);
-		private:
+
+			/// @brief Default placeholder item
 			static const char PLACEHOLDER = '?';
+		private:
 			std::string _prefix;
 			std::string _suffix;
 	};
