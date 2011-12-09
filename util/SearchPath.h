@@ -33,14 +33,7 @@ namespace util {
 
 /// @addtogroup DataStructures Data Structures
 /// @{
-
-	namespace detail {
-		namespace {
-			const char PATH_SEPARATOR = ';';
-			const char PLACEHOLDER = '?';
-		} // end of anonymous namespace
-	} // end of namespace detail
-
+	/// @todo static const char PATH_SEPARATOR = ";";
 	/** @brief Class representing an element in a search path.
 
 		This uses the generalized concept of a search path as used
@@ -60,7 +53,7 @@ namespace util {
 					3. /bla/bla/?.lua
 			*/
 			SearchPathElement(std::string const& elt) {
-				std::size_t placeholder = elt.find(detail::PLACEHOLDER);
+				std::size_t placeholder = elt.find(PLACEHOLDER);
 				if (placeholder == std::string::npos) {
 					// Handle case 1
 					// Didn't find a placeholder, so treat the whole thing as the prefix
@@ -83,6 +76,7 @@ namespace util {
 				, _suffix(suff)
 			{}
 		private:
+			static const char PLACEHOLDER = '?';
 			std::string _prefix;
 			std::string _suffix;
 	};
