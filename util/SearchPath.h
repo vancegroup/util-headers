@@ -80,6 +80,12 @@ namespace util {
 				, _suffix(suff)
 			{}
 
+			/// @brief Named constructor for constructing from a directory (that is, a prefix-only)
+			static SearchPathElement createFromDirectory(std::string const & dir) {
+				/// @todo make sure it ends in /
+				return SearchPathElement(dir, "");
+			}
+
 			/// @brief Get prefix: the part before the placeholder
 			std::string const& getPrefix() const;
 
