@@ -131,6 +131,11 @@ namespace util {
 		return ret;
 	}
 
+	/** @brief Join all elements of a search path, using a placeholder.
+
+		If this is a "directories-style" search path (no suffixes on any)
+		instead of a Lua-style search path, use convertSearchPathDirectoriesToString.
+	*/
 	inline std::string convertSearchPathToString(SearchPath const& input,
 	        std::string const& placeholder = std::string(1, SearchPathElement::PLACEHOLDER),
 	        const char separator = ';') {
