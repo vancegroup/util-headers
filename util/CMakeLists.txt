@@ -11,6 +11,7 @@ set(DATASTRUCTURES_HEADERS
 	CountedUniqueValues.h
 	LockFreeBuffer.h
 	SplitMap.h
+	SearchPath.h
 	FusionMapToTemplate.h
 	RangedInt.h
 	ValueToTemplate.h
