@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_CASE(ElementDefaultConstruction) {
 BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
 	SearchPathElement a = SearchPathElement::createFromDirectory("/bla/bla/");
 	BOOST_CHECK(a.hasPlaceholder());
+	BOOST_CHECK(a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
@@ -38,12 +39,15 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
 BOOST_AUTO_TEST_CASE(ElementConstructionString2) {
 	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?");
 	BOOST_CHECK(a.hasPlaceholder());
+	BOOST_CHECK(a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
 	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?.lua");
+	BOOST_CHECK(a.hasPlaceholder());
+	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getSuffix(), ".lua");
 }
@@ -51,6 +55,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
 BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
 	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/Fallback");
 	BOOST_CHECK(!a.hasPlaceholder());
+	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/Fallback");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
@@ -58,6 +63,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
 BOOST_AUTO_TEST_CASE(ElementConstructionString5) {
 	SearchPathElement a = SearchPathElement::createFromPlaceholderString("");
 	BOOST_CHECK(!a.hasPlaceholder());
+	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
@@ -131,22 +137,26 @@ BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
 
 BOOST_AUTO_TEST_CASE(LuaListEmpty) {
 	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates("").empty());
+	BOOST_CHECK(SearchPathElement::listOfPathTemplatesToString(SearchPathElement::splitListOfPathTemplates("")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(LuaListJustDelimiter) {
 	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates(";").empty());
+	BOOST_CHECK(SearchPathElement::listOfPathTemplatesToString(SearchPathElement::splitListOfPathTemplates(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(LuaListOneElement) {
 	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one");
 	BOOST_CHECK_EQUAL(a.size(), 1);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one");
 }
 
 BOOST_AUTO_TEST_CASE(LuaListOneElementWithTrailing) {
 	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one;");
 	BOOST_CHECK_EQUAL(a.size(), 1);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one");
 }
 
 BOOST_AUTO_TEST_CASE(LuaListTwoElements) {
@@ -154,16 +164,17 @@ BOOST_AUTO_TEST_CASE(LuaListTwoElements) {
 	BOOST_CHECK_EQUAL(a.size(), 2);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromPlaceholderString("two"));
+	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one;two");
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListEmpty) {
 	BOOST_CHECK(SearchPathElement::splitListOfDirectories("").empty());
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")), "");
+	BOOST_CHECK(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListJustDelimiter) {
 	BOOST_CHECK(SearchPathElement::splitListOfDirectories(";").empty());
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")), "");
+	BOOST_CHECK(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListOneElement) {
