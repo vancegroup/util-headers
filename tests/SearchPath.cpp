@@ -116,7 +116,31 @@ BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
+BOOST_AUTO_TEST_CASE(SearchPathEmpty) {
+	BOOST_CHECK(parseSearchPathFromString("").empty());
+}
 
+BOOST_AUTO_TEST_CASE(SearchPathJustDelimiter) {
+	BOOST_CHECK(parseSearchPathFromString(";").empty());
+}
 
+BOOST_AUTO_TEST_CASE(SearchPathOneElement) {
+	SearchPath a = parseSearchPathFromString("one");
+	BOOST_CHECK_EQUAL(a.size(), 1);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
+}
+
+BOOST_AUTO_TEST_CASE(SearchPathOneElementWithTrailing) {
+	SearchPath a = parseSearchPathFromString("one;");
+	BOOST_CHECK_EQUAL(a.size(), 1);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
+}
+
+BOOST_AUTO_TEST_CASE(SearchPathTwoElements) {
+	SearchPath a = parseSearchPathFromString("one;two");
+	BOOST_CHECK_EQUAL(a.size(), 2);
+	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement("one"));
+	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement("two"));
+}
 
 
