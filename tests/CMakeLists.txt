@@ -150,7 +150,29 @@ add_boost_test(WithHistory
 
 add_boost_test(SearchPath
 	SOURCES
-	SearchPath.cpp)
+	SearchPath.cpp
+	TESTS
+	ElementDefaultConstruction
+	ElementConstructionString1
+	ElementConstructionString2
+	ElementConstructionString3
+	ElementConstructionString4
+	ElementGetFullSubstitution1
+	ElementGetFullSubstitution2
+	ElementGetFullSubstitution3
+	ElementGetFullSubstitution4
+	ElementGetFullSubstitution5
+	ElementConstructionTwoString1
+	ElementConstructionTwoString2
+	ElementConstructionTwoString3
+	ElementPrefixMutator
+	ElementSuffixMutator
+	ElementPrefixAndSuffixMutator
+	SearchPathEmpty
+	SearchPathJustDelimiter
+	SearchPathOneElement
+	SearchPathOneElementWithTrailing
+	SearchPathTwoElements)
 
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
