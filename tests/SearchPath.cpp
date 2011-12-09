@@ -129,28 +129,28 @@ BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
-BOOST_AUTO_TEST_CASE(SearchPathEmpty) {
-	BOOST_CHECK(parseSearchPathFromLuaString("").empty());
+BOOST_AUTO_TEST_CASE(LuaListEmpty) {
+	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates("").empty());
 }
 
-BOOST_AUTO_TEST_CASE(SearchPathJustDelimiter) {
-	BOOST_CHECK(parseSearchPathFromLuaString(";").empty());
+BOOST_AUTO_TEST_CASE(LuaListJustDelimiter) {
+	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates(";").empty());
 }
 
-BOOST_AUTO_TEST_CASE(SearchPathOneElement) {
-	SearchPath a = parseSearchPathFromLuaString("one");
+BOOST_AUTO_TEST_CASE(LuaListOneElement) {
+	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one");
 	BOOST_CHECK_EQUAL(a.size(), 1);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 }
 
-BOOST_AUTO_TEST_CASE(SearchPathOneElementWithTrailing) {
-	SearchPath a = parseSearchPathFromLuaString("one;");
+BOOST_AUTO_TEST_CASE(LuaListOneElementWithTrailing) {
+	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one;");
 	BOOST_CHECK_EQUAL(a.size(), 1);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 }
 
-BOOST_AUTO_TEST_CASE(SearchPathTwoElements) {
-	SearchPath a = parseSearchPathFromLuaString("one;two");
+BOOST_AUTO_TEST_CASE(LuaListTwoElements) {
+	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one;two");
 	BOOST_CHECK_EQUAL(a.size(), 2);
 	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
 	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromPlaceholderString("two"));

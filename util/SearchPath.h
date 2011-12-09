@@ -117,8 +117,24 @@ namespace util {
 			void setSuffix(std::string const & s);
 			/// @}
 
+			/// @name Search Path Manipulation
+			/// @{
+
+			/// @brief A list of search path elements, also known as a search path.
+			typedef std::deque<SearchPathElement> List;
+
+			static List splitListOfPathTemplates(std::string const & input, const char delimiter = DEFAULT_DELIMITER, const char placeholderChar = PLACEHOLDER);
+			static List splitListOfDirectories(std::string const & input, const char delimiter = DEFAULT_DELIMITER);
+
+			static std::string listOfPathTemplatesToString(List const& input, const char delimiter = DEFAULT_DELIMITER, std::string const& placeholder = std::string(1, PLACEHOLDER));
+			static std::string listOfDirectoriesToString(List const& input, const char delimiter = DEFAULT_DELIMITER);
+			/// @}
+
 			/// @brief Default placeholder item
 			static const char PLACEHOLDER = '?';
+
+			/// @brief Default path list delimiter
+			static const char DEFAULT_DELIMITER = ';';
 		private:
 			/// @brief Private constructor used by named constructors.
 			SearchPathElement(std::string const & pre, std::string const & suff, bool hasPlaceholder)
@@ -146,37 +162,65 @@ namespace util {
 		return os;
 	}
 
-	/// @brief A container class for SearchPathElements.
-	typedef std::deque<SearchPathElement> SearchPath;
-
-	/** @brief Parse a search path string into a SearchPath (list of search path elements).
+	/** @brief Parse a search path string into a list of search path elements.
 
 		Empty elements are dropped.
 	*/
-	inline SearchPath parseSearchPathFromLuaString(std::string const& input, const char separator[] = ";") {
-		SearchPath ret;
+	inline SearchPathElement::List SearchPathElement::splitListOfPathTemplates(std::string const & input, const char delimiter, const char placeholderChar) {
+
+		SearchPathElement::List ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-		boost::char_separator<char> sep(separator);
+		std::string const delimString(1, delimiter);
+		boost::char_separator<char> sep(delimString.c_str());
 		tokenizer tokens(input, sep);
 		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
-			ret.push_back(SearchPathElement::createFromPlaceholderString(*it));
+			ret.push_back(SearchPathElement::createFromPlaceholderString(*it, placeholderChar));
 		}
 		return ret;
 	}
+	/** @brief Parse a search path directory list string into a list of search path elements.
 
+		Empty elements are dropped.
+	*/
+	inline SearchPathElement::List SearchPathElement::splitListOfDirectories(std::string const & input, const char delimiter) {
+		SearchPathElement::List ret;
+		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+		std::string const delimString(1, delimiter);
+		boost::char_separator<char> sep(delimString.c_str());
+		tokenizer tokens(input, sep);
+		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
+			ret.push_back(SearchPathElement::createFromDirectory(*it));
+		}
+		return ret;
+
+	}
 	/** @brief Join all elements of a search path, using a placeholder.
 
 		If this is a "directories-style" search path (no suffixes on any)
-		instead of a Lua-style search path, use convertSearchPathDirectoriesToString.
+		instead of a Lua-style search path, use SearchPathElement::listOfDirectoriesToString().
 	*/
-	inline std::string convertSearchPathToString(SearchPath const& input,
-	        std::string const& placeholder = std::string(1, SearchPathElement::PLACEHOLDER),
-	        const char separator = ';') {
+	inline std::string SearchPathElement::listOfPathTemplatesToString(SearchPathElement::List const& input, const char delimiter, std::string const& placeholder) {
 		std::ostringstream os;
 		for (int i = 0, n = input.size(); i < n; ++i) {
 			os << input[i].getStringWithSubstitution(placeholder);
 			if (i + 1 < n) {
-				os << separator;
+				os << delimiter;
+			}
+		}
+		return os.str();
+
+	}
+	/** @brief Join all directories of a search path.
+
+		If this is a "Lua-style" search path that you want to contain placeholders,
+		use listOfPathTemplatesToString.
+	*/
+	inline std::string SearchPathElement::listOfDirectoriesToString(SearchPathElement::List const& input, const char delimiter) {
+		std::ostringstream os;
+		for (int i = 0, n = input.size(); i < n; ++i) {
+			os << input[i].getDirectory();
+			if (i + 1 < n) {
+				os << delimiter;
 			}
 		}
 		return os.str();
