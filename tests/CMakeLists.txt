@@ -148,6 +148,10 @@ add_boost_test(WithHistory
 	CopyFromValueConstructionVector
 	CopyFromDualValueConstructionVector)
 
+add_boost_test(SearchPath
+	SOURCES
+	SearchPath.cpp)
+
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
 	add_boost_test(EigenMatrixSerialize
