@@ -24,10 +24,11 @@
 // - none
 
 // Library/third-party includes
-// - none
+#include <boost/tokenizer.hpp>
 
 // Standard includes
 #include <string>
+#include <deque>
 
 namespace util {
 
@@ -100,6 +101,22 @@ namespace util {
 	/// @brief Equality comparison operator for path elements.
 	inline bool operator==(SearchPathElement const& lhs, SearchPathElement const& rhs) {
 		return (lhs.getPrefix() == rhs.getPrefix()) && (lhs.getSuffix() == rhs.getSuffix());
+	}
+
+	/// @brief A container class for SearchPathElements.
+	typedef std::deque<SearchPathElement> SearchPath;
+
+	/// @brief Parse a search path string into a SearchPath (list of search path elements).
+	inline SearchPath parseSearchPathFromString(std::string const& input, const char separator[] = ";") {
+		SearchPath ret;
+		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+		/// @todo do we want to keep empty tokens?
+		boost::char_separator<char> sep(separator, "" /* no kept delimiters */, boost::keep_empty_tokens);
+		tokenizer tokens(input, sep);
+		for (tokenizer::const_iterator it = tokens.begin(), end = tokens.end(); it != end; ++it) {
+			ret.push_back(SearchPathElement(*it));
+		}
+		return ret;
 	}
 
 	inline std::string const& SearchPathElement::getPrefix() const {
