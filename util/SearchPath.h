@@ -152,6 +152,15 @@ namespace util {
 				use listOfPathTemplatesToString.
 			*/
 			static std::string listOfDirectoriesToString(List const& input, const char delimiter = DEFAULT_DELIMITER);
+
+			template<typename T>
+			static void forEachElement(List const& input, T functor);
+
+			template<typename T>
+			static void forEachElementWithPlaceholder(List const& input, T functor);
+
+			template<typename T>
+			static void forEachDirectory(List const& input, T functor);
 			/// @}
 
 			/// @brief Default placeholder item
@@ -232,6 +241,31 @@ namespace util {
 			}
 		}
 		return os.str();
+	}
+
+	template<typename T>
+	inline void SearchPathElement::forEachElement(SearchPathElement::List const& input, T functor) {
+		for (int i = 0, n = input.size(); i < n; ++i) {
+			functor(input[i]);
+		}
+	}
+
+	template<typename T>
+	inline void SearchPathElement::forEachElementWithPlaceholder(SearchPathElement::List const& input, T functor) {
+		for (int i = 0, n = input.size(); i < n; ++i) {
+			if (input[i].hasPlaceholder()) {
+				functor(input[i]);
+			}
+		}
+	}
+
+	template<typename T>
+	inline void SearchPathElement::forEachDirectory(SearchPathElement::List const& input, T functor)  {
+		for (int i = 0, n = input.size(); i < n; ++i) {
+			if (input[i].isDirectory()) {
+				functor(input[i].getDirectory());
+			}
+		}
 	}
 
 	inline SearchPathElement SearchPathElement::createFromDirectory(std::string const& elt) {
