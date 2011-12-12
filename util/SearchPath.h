@@ -67,7 +67,7 @@ namespace util {
 				element into a prefix and suffix).
 			*/
 			static SearchPathElement createFromPlaceholderString(std::string const& elt,
-			        const char placeholderChar = PLACEHOLDER);
+			        const char placeholderChar = DEFAULT_PLACEHOLDER);
 
 			/** @brief Constructor from a prefix and suffix
 			*/
@@ -107,7 +107,7 @@ namespace util {
 
 			/// @brief Combine prefix, placeholder or value of your choice
 			/// (if this element has a placeholder), and suffix
-			std::string getStringWithSubstitution(std::string const& substitution = std::string(1, PLACEHOLDER)) const;
+			std::string getStringWithSubstitution(std::string const& substitution = std::string(1, DEFAULT_PLACEHOLDER)) const;
 
 			/** @brief Get the directory
 
@@ -138,7 +138,7 @@ namespace util {
 
 				Empty elements are dropped.
 			*/
-			static List splitListOfPathTemplates(std::string const & input, const char delimiter = DEFAULT_DELIMITER, const char placeholderChar = PLACEHOLDER);
+			static List splitListOfPathTemplates(std::string const & input, const char delimiter = DEFAULT_DELIMITER, const char placeholderChar = DEFAULT_PLACEHOLDER);
 			/** @brief Given a search path string of directories, split it into a list of elements.
 
 				Empty elements are dropped.
@@ -150,7 +150,7 @@ namespace util {
 				If this is a "directories-style" search path (no suffixes on any)
 				instead of a Lua-style search path, use SearchPathElement::listOfDirectoriesToString().
 			*/
-			static std::string listOfPathTemplatesToString(List const& input, const char delimiter = DEFAULT_DELIMITER, std::string const& placeholder = std::string(1, PLACEHOLDER));
+			static std::string listOfPathTemplatesToString(List const& input, const char delimiter = DEFAULT_DELIMITER, std::string const& placeholder = std::string(1, DEFAULT_PLACEHOLDER));
 			/** @brief Given a list of elements, produce a search path string of directories. Throws if not all elements are directories.
 
 				If this is a "Lua-style" search path that you want to contain placeholders,
@@ -169,7 +169,7 @@ namespace util {
 			/// @}
 
 			/// @brief Default placeholder item
-			static const char PLACEHOLDER = '?';
+			static const char DEFAULT_PLACEHOLDER = '?';
 
 			/// @brief Default path list delimiter
 			static const char DEFAULT_DELIMITER = ';';
