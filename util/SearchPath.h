@@ -93,6 +93,11 @@ namespace util {
 			/// If not, the suffix is mandated to be empty.
 			bool hasPlaceholder() const;
 
+			/// @brief Is this is a fixed path rather than a template? (Opposite of hasPlaceholder())
+			bool isFixedPath() const {
+				return !hasPlaceholder();
+			}
+
 			/** @brief Does this represent a directory?
 
 				That is, does it have a placeholder, no suffix, and a trailing
