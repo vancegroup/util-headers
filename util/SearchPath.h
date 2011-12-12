@@ -93,7 +93,11 @@ namespace util {
 			/// If not, the suffix is mandated to be empty.
 			bool hasPlaceholder() const;
 
-			/// @brief Does this represent a directory?
+			/** @brief Does this represent a directory?
+
+				That is, does it have a placeholder, no suffix, and a trailing
+				slash in the prefix?
+			*/
 			bool isDirectory() const;
 
 			/// @brief Combine prefix, placeholder or value of your choice
@@ -125,10 +129,28 @@ namespace util {
 			/// @brief A list of search path elements, also known as a search path.
 			typedef std::deque<SearchPathElement> List;
 
+			/** @brief Given a "lua-style" search path string, split it into a list of elements.
+
+				Empty elements are dropped.
+			*/
 			static List splitListOfPathTemplates(std::string const & input, const char delimiter = DEFAULT_DELIMITER, const char placeholderChar = PLACEHOLDER);
+			/** @brief Given a search path string of directories, split it into a list of elements.
+
+				Empty elements are dropped.
+			*/
 			static List splitListOfDirectories(std::string const & input, const char delimiter = DEFAULT_DELIMITER);
 
+			/** @brief Given a list of elements, produce a "lua-style" search path string
+
+				If this is a "directories-style" search path (no suffixes on any)
+				instead of a Lua-style search path, use SearchPathElement::listOfDirectoriesToString().
+			*/
 			static std::string listOfPathTemplatesToString(List const& input, const char delimiter = DEFAULT_DELIMITER, std::string const& placeholder = std::string(1, PLACEHOLDER));
+			/** @brief Given a list of elements, produce a search path string of directories. Throws if not all elements are directories.
+
+				If this is a "Lua-style" search path that you want to contain placeholders,
+				use listOfPathTemplatesToString.
+			*/
 			static std::string listOfDirectoriesToString(List const& input, const char delimiter = DEFAULT_DELIMITER);
 			/// @}
 
@@ -164,12 +186,7 @@ namespace util {
 		return os;
 	}
 
-	/** @brief Parse a search path string into a list of search path elements.
-
-		Empty elements are dropped.
-	*/
 	inline SearchPathElement::List SearchPathElement::splitListOfPathTemplates(std::string const & input, const char delimiter, const char placeholderChar) {
-
 		SearchPathElement::List ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 		std::string const delimString(1, delimiter);
@@ -180,10 +197,7 @@ namespace util {
 		}
 		return ret;
 	}
-	/** @brief Parse a search path directory list string into a list of search path elements.
 
-		Empty elements are dropped.
-	*/
 	inline SearchPathElement::List SearchPathElement::splitListOfDirectories(std::string const & input, const char delimiter) {
 		SearchPathElement::List ret;
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
@@ -196,11 +210,7 @@ namespace util {
 		return ret;
 
 	}
-	/** @brief Join all elements of a search path, using a placeholder.
 
-		If this is a "directories-style" search path (no suffixes on any)
-		instead of a Lua-style search path, use SearchPathElement::listOfDirectoriesToString().
-	*/
 	inline std::string SearchPathElement::listOfPathTemplatesToString(SearchPathElement::List const& input, const char delimiter, std::string const& placeholder) {
 		std::ostringstream os;
 		for (int i = 0, n = input.size(); i < n; ++i) {
@@ -212,11 +222,7 @@ namespace util {
 		return os.str();
 
 	}
-	/** @brief Join all directories of a search path.
 
-		If this is a "Lua-style" search path that you want to contain placeholders,
-		use listOfPathTemplatesToString.
-	*/
 	inline std::string SearchPathElement::listOfDirectoriesToString(SearchPathElement::List const& input, const char delimiter) {
 		std::ostringstream os;
 		for (int i = 0, n = input.size(); i < n; ++i) {
