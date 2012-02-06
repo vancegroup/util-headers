@@ -20,16 +20,16 @@
 
 
 using namespace boost::unit_test;
-using namespace util;
+using namespace util::SearchPath;
 
 BOOST_AUTO_TEST_CASE(ElementDefaultConstruction) {
-	SearchPathElement a;
+	FilenameTemplate a;
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
-	SearchPathElement a = SearchPathElement::createFromDirectory("/bla/bla/");
+	FilenameTemplate a = FilenameTemplate::createFromDirectory("/bla/bla/");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK(a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString1) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString2) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/?");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK(a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString2) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?.lua");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/?.lua");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/");
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString3) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/Fallback");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/Fallback");
 	BOOST_CHECK(!a.hasPlaceholder());
 	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "/bla/bla/Fallback");
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString4) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionString5) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("");
 	BOOST_CHECK(!a.hasPlaceholder());
 	BOOST_CHECK(!a.isDirectory());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
@@ -69,66 +69,66 @@ BOOST_AUTO_TEST_CASE(ElementConstructionString5) {
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution1) {
-	SearchPathElement a = SearchPathElement::createFromDirectory("/bla/bla/");
+	FilenameTemplate a = FilenameTemplate::createFromDirectory("/bla/bla/");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution2) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/?");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution3) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/?.lua");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/?.lua");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/?.lua");
 }
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution4) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("/bla/bla/Fallback");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("/bla/bla/Fallback");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "/bla/bla/Fallback");
 }
 
 BOOST_AUTO_TEST_CASE(ElementGetStringWithSubstitution5) {
-	SearchPathElement a = SearchPathElement::createFromPlaceholderString("");
+	FilenameTemplate a = FilenameTemplate::createFromTemplate("");
 	BOOST_CHECK_EQUAL(a.getStringWithSubstitution(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString1) {
-	SearchPathElement a("pre", "suff");
+	FilenameTemplate a("pre", "suff");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString2) {
-	SearchPathElement a("", "suff");
+	FilenameTemplate a("", "suff");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
 BOOST_AUTO_TEST_CASE(ElementConstructionTwoString3) {
-	SearchPathElement a("pre", "");
+	FilenameTemplate a("pre", "");
 	BOOST_CHECK(a.hasPlaceholder());
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementPrefixMutator) {
-	SearchPathElement a;
+	FilenameTemplate a;
 	a.setPrefix("pre");
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "");
 }
 
 BOOST_AUTO_TEST_CASE(ElementSuffixMutator) {
-	SearchPathElement a;
+	FilenameTemplate a;
 	a.setSuffix("suff");
 	BOOST_CHECK_EQUAL(a.getPrefix(), "");
 	BOOST_CHECK_EQUAL(a.getSuffix(), "suff");
 }
 
 BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
-	SearchPathElement a;
+	FilenameTemplate a;
 	a.setPrefix("pre");
 	a.setSuffix("suff");
 	BOOST_CHECK_EQUAL(a.getPrefix(), "pre");
@@ -136,67 +136,67 @@ BOOST_AUTO_TEST_CASE(ElementPrefixAndSuffixMutator) {
 }
 
 BOOST_AUTO_TEST_CASE(LuaListEmpty) {
-	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates("").empty());
-	BOOST_CHECK(SearchPathElement::listOfPathTemplatesToString(SearchPathElement::splitListOfPathTemplates("")).empty());
+	BOOST_CHECK(FilenameTemplate::splitListOfFilenameTemplates("").empty());
+	BOOST_CHECK(FilenameTemplate::listOfFilenameTemplatesToString(FilenameTemplate::splitListOfFilenameTemplates("")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(LuaListJustDelimiter) {
-	BOOST_CHECK(SearchPathElement::splitListOfPathTemplates(";").empty());
-	BOOST_CHECK(SearchPathElement::listOfPathTemplatesToString(SearchPathElement::splitListOfPathTemplates(";")).empty());
+	BOOST_CHECK(FilenameTemplate::splitListOfFilenameTemplates(";").empty());
+	BOOST_CHECK(FilenameTemplate::listOfFilenameTemplatesToString(FilenameTemplate::splitListOfFilenameTemplates(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(LuaListOneElement) {
-	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfFilenameTemplates("one");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromTemplate("one"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfFilenameTemplatesToString(a), "one");
 }
 
 BOOST_AUTO_TEST_CASE(LuaListOneElementWithTrailing) {
-	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one;");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfFilenameTemplates("one;");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromTemplate("one"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfFilenameTemplatesToString(a), "one");
 }
 
 BOOST_AUTO_TEST_CASE(LuaListTwoElements) {
-	SearchPathElement::List a = SearchPathElement::splitListOfPathTemplates("one;two");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfFilenameTemplates("one;two");
 	BOOST_CHECK_EQUAL(a.size(), 2);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromPlaceholderString("one"));
-	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromPlaceholderString("two"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfPathTemplatesToString(a), "one;two");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromTemplate("one"));
+	BOOST_CHECK_EQUAL(a.at(1), FilenameTemplate::createFromTemplate("two"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfFilenameTemplatesToString(a), "one;two");
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListEmpty) {
-	BOOST_CHECK(SearchPathElement::splitListOfDirectories("").empty());
-	BOOST_CHECK(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")).empty());
+	BOOST_CHECK(FilenameTemplate::splitListOfDirectories("").empty());
+	BOOST_CHECK(FilenameTemplate::listOfDirectoriesToString(FilenameTemplate::splitListOfDirectories(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListJustDelimiter) {
-	BOOST_CHECK(SearchPathElement::splitListOfDirectories(";").empty());
-	BOOST_CHECK(SearchPathElement::listOfDirectoriesToString(SearchPathElement::splitListOfDirectories(";")).empty());
+	BOOST_CHECK(FilenameTemplate::splitListOfDirectories(";").empty());
+	BOOST_CHECK(FilenameTemplate::listOfDirectoriesToString(FilenameTemplate::splitListOfDirectories(";")).empty());
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListOneElement) {
-	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfDirectories("one");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfDirectoriesToString(a), "one/");
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListOneElementWithTrailing) {
-	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one;");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfDirectories("one;");
 	BOOST_CHECK_EQUAL(a.size(), 1);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfDirectoriesToString(a), "one/");
 }
 
 BOOST_AUTO_TEST_CASE(DirectoryListTwoElements) {
-	SearchPathElement::List a = SearchPathElement::splitListOfDirectories("one;two");
+	FilenameTemplate::List a = FilenameTemplate::splitListOfDirectories("one;two");
 	BOOST_CHECK_EQUAL(a.size(), 2);
-	BOOST_CHECK_EQUAL(a.at(0), SearchPathElement::createFromDirectory("one"));
-	BOOST_CHECK_EQUAL(a.at(1), SearchPathElement::createFromDirectory("two"));
-	BOOST_CHECK_EQUAL(SearchPathElement::listOfDirectoriesToString(a), "one/;two/");
+	BOOST_CHECK_EQUAL(a.at(0), FilenameTemplate::createFromDirectory("one"));
+	BOOST_CHECK_EQUAL(a.at(1), FilenameTemplate::createFromDirectory("two"));
+	BOOST_CHECK_EQUAL(FilenameTemplate::listOfDirectoriesToString(a), "one/;two/");
 }
 
 
