@@ -1,3 +1,5 @@
+add_custom_target(headercompile)
+
 
 if(VRJUGGLER_FOUND)
 	include_directories(${VRJUGGLER_INCLUDE_DIRS})
@@ -27,5 +29,6 @@ foreach(HEADER ${HEADERS})
 		target_link_libraries(${stem} ${LIBRARIES_${SHORTNAME}})
 	endif()
 	add_test(${stem}_executes ${stem})
+	add_dependencies(headercompile ${stem})
 endforeach()
 
