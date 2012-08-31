@@ -14,6 +14,7 @@ set(DATASTRUCTURES_HEADERS
 	RangedInt.h
 	SearchPath.h
 	SplitMap.h
+	TupleTransmission.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
 	WithHistory.h)
