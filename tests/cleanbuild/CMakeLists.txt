@@ -19,12 +19,13 @@ endif()
 
 foreach(HEADER ${HEADERS})
 	string(REPLACE ".h" "" SHORTNAME "${HEADER}")
-	configure_file(test_headercompile.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/test_headercompile_${SHORTNAME}.cpp" @ONLY)
+	set(stem "test_headercompile_${SHORTNAME}")
+	configure_file(test_headercompile.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/${stem}.cpp" @ONLY)
 
-	add_executable(test_headercompile_${SHORTNAME} "${CMAKE_CURRENT_BINARY_DIR}/test_headercompile_${SHORTNAME}.cpp")
+	add_executable(${stem} "${CMAKE_CURRENT_BINARY_DIR}/${stem}.cpp")
 	if(LIBRARIES_${SHORTNAME})
-		target_link_libraries(test_headercompile_${SHORTNAME} ${LIBRARIES_${SHORTNAME}})
+		target_link_libraries(${stem} ${LIBRARIES_${SHORTNAME}})
 	endif()
-	add_test(test_headercompile_${SHORTNAME}_executes test_headercompile_${SHORTNAME})
+	add_test(${stem}_executes ${stem})
 endforeach()
 
