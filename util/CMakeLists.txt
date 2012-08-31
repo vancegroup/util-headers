@@ -3,17 +3,17 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(UTIL_HEADERS
-	Stride.h
-	SizeGenerator.h)
+	SizeGenerator.h
+	Stride.h)
 
 set(DATASTRUCTURES_HEADERS
 	BlockingInvokeFunctor.h
 	CountedUniqueValues.h
-	LockFreeBuffer.h
-	SplitMap.h
-	SearchPath.h
 	FusionMapToTemplate.h
+	LockFreeBuffer.h
 	RangedInt.h
+	SearchPath.h
+	SplitMap.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
 	WithHistory.h)
@@ -25,8 +25,8 @@ endif()
 
 set(MATH_HEADERS
 	CubeComponents.h
-	EigenTie.h
 	EigenMatrixSerialize.h
+	EigenTie.h
 	RandomFloat.h
 	Saturate.h)
 
