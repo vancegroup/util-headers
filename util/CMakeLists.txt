@@ -8,6 +8,7 @@ set(UTIL_HEADERS
 
 set(DATASTRUCTURES_HEADERS
 	BlockingInvokeFunctor.h
+	booststdint.h
 	CountedUniqueValues.h
 	FusionMapToTemplate.h
 	LockFreeBuffer.h
