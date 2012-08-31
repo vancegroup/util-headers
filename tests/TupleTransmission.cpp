@@ -10,6 +10,7 @@
 
 // Internal Includes
 #include <util/TupleTransmission.h>
+#include <util/booststdint.h>
 
 // Library/third-party includes
 #include <BoostTestTargetConfig.h>
@@ -18,15 +19,21 @@
 #include <string>
 #include <sstream>
 
+
 using namespace boost::unit_test;
+using namespace stdint;
 
-/*
-BOOST_AUTO_TEST_CASE(IdentityRoundTrip) {
 
-	BOOST_CHECK_EQUAL(Eigen::Matrix4d::Identity(), deserialized);
+BOOST_AUTO_TEST_CASE(SizeofSimple) {
+	using util::transmission::MessageDescription;
+	namespace mpl = boost::mpl;
+	BOOST_CHECK_EQUAL( int(MessageDescription<mpl::vector<int16_t, int16_t, int16_t> >::message_size) , 3 * 2);
+	BOOST_CHECK_EQUAL( int(MessageDescription<mpl::vector<uint16_t, uint16_t, uint16_t> >::message_size) , 3 * 2);
+	BOOST_CHECK_EQUAL( int(MessageDescription<mpl::vector<int8_t> >::message_size) , 1);
+	BOOST_CHECK_EQUAL( int(MessageDescription<mpl::vector<> >::message_size) , 0);
 }
 
-
+/*
 BOOST_AUTO_TEST_CASE(ConstantVecRoundTrip) {
 
 	Eigen::Vector3d deserialized;
