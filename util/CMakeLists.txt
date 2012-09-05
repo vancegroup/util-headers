@@ -12,6 +12,7 @@ set(DATASTRUCTURES_HEADERS
 	CountedUniqueValues.h
 	FusionMapToTemplate.h
 	LockFreeBuffer.h
+	MPLFindIndex.h
 	RangedInt.h
 	SearchPath.h
 	SplitMap.h
