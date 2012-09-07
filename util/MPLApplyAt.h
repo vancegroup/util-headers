@@ -72,7 +72,7 @@ namespace util {
 				/// of the validity check for tag-dispatching of recusive call or base case.
 				template<typename Current>
 				static void apply(IntType i, F op) {
-					type::apply<Current>(i, op, boost::mpl::apply<validity_check, Current>());
+					type::apply<Current>(i, op, typename boost::mpl::apply<validity_check, Current>::type());
 				}
 
 		};
@@ -83,7 +83,7 @@ namespace util {
 
 			template<typename Index>
 			void operator()() {
-				op.template operator()<boost::mpl::at<Sequence, Index> >();
+				op.template operator()<typename boost::mpl::at<Sequence, Index>::type >();
 			}
 
 			F op;
@@ -92,8 +92,8 @@ namespace util {
 	} // end of namespace detail
 
 	template<typename Sequence, typename F>
-	inline void apply_at(typename boost::uint_value_t<boost::mpl::size<Sequence>::value>::least index, F operation) {
-		typedef boost::mpl::size<Sequence> sequence_length;
+	inline void apply_at(typename boost::uint_value_t<boost::mpl::size<Sequence>::type::value>::least index, F operation) {
+		typedef typename boost::mpl::size<Sequence>::type sequence_length;
 		typedef typename boost::uint_value_t<sequence_length::value>::least index_type;
 		typedef detail::apply_at_functor_impl<F, Sequence> functor_wrapper;
 		typedef detail::runtime_int_to_type_impl<index_type, sequence_length, functor_wrapper &> int_to_type;
