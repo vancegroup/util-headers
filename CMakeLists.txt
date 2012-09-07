@@ -72,7 +72,9 @@ create_dashboard_scripts()
 
 message(STATUS "")
 message(STATUS "Configuring Git revision and upstream source info into temporary copy of headers.")
-message(STATUS "Building the install target will copy these versions into CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Building the install target will copy these versions into a util directory under")
+message(STATUS "CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
+message(STATUS "")
 get_git_head_revision(REFSPEC VERSION_DESCRIPTION)
 
 set(versioninfo "This header is maintained as a part of 'util-headers' - you can always
@@ -83,10 +85,10 @@ set(versioninfo "This header is maintained as a part of 'util-headers' - you can
 	This copy of the header is from the revision that Git calls
 	${VERSION_DESCRIPTION}")
 
-foreach(HEADER ${HEADERS})
+foreach(HEADER ${HEADERS} ${UNTESTED_HEADERS})
 	configure_file("${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}" @ONLY)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}"
-		DESTINATION include/util/)
+		DESTINATION util)
 #	install(CODE "configure_file(\"${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}\"
 endforeach()
 
