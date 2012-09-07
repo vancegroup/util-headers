@@ -12,7 +12,6 @@ set(DATASTRUCTURES_HEADERS
 	CountedUniqueValues.h
 	FusionMapToTemplate.h
 	LockFreeBuffer.h
-	MPLFindIndex.h
 	RangedInt.h
 	SearchPath.h
 	SplitMap.h
@@ -25,6 +24,10 @@ if(VPR22_FOUND OR VPR20_FOUND)
 	list(APPEND DATASTRUCTURES_HEADERS
 		BlockingInvokeFunctorVPR.h)
 endif()
+
+set(METAPROGRAMMING_HEADERS
+	MPLApplyAt.h
+	MPLFindIndex.h)
 
 set(MATH_HEADERS
 	CubeComponents.h
@@ -60,8 +63,12 @@ add_custom_target(util-Math
 	SOURCES
 	${MATH_HEADERS})
 
+add_custom_target(util-Metaprogramming
+	SOURCES
+	${METAPROGRAMMING_HEADERS})
+
 add_custom_target(util-FreeFunctions
 	SOURCES
 	${FREEFUNCTION_HEADERS})
 
-set(HEADERS ${UTIL_HEADERS} ${DATASTRUCTURES_HEADERS} ${MATH_HEADERS} ${FREEFUNCTION_HEADERS} PARENT_SCOPE)
+set(HEADERS ${UTIL_HEADERS} ${DATASTRUCTURES_HEADERS} ${MATH_HEADERS} ${METAPROGRAMMING_HEADERS} ${FREEFUNCTION_HEADERS} PARENT_SCOPE)
