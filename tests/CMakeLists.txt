@@ -213,6 +213,14 @@ add_boost_test(TupleTransmission
 #	DirectoryListTwoElements
 	)
 
+add_boost_test(MPLApplyAt
+	SOURCES
+	MPLApplyAt.cpp
+	TESTS
+	NumberGetter
+	NumberGetterBigger
+	ActualTypes)
+
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
 	add_boost_test(EigenMatrixSerialize
