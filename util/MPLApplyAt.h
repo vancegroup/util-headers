@@ -32,6 +32,7 @@
 #include <boost/mpl/apply.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/identity.hpp>
 
 // Standard includes
 // - none
@@ -83,7 +84,7 @@ namespace util {
 
 			template<typename Index>
 			void operator()() {
-				op.template operator()<typename boost::mpl::at<Sequence, Index>::type >();
+				op.operator()(boost::mpl::identity<typename boost::mpl::at<Sequence, Index>::type >());
 			}
 
 			F op;
@@ -91,6 +92,8 @@ namespace util {
 
 	} // end of namespace detail
 
+	/// @brief A template function that will call a user-provided functor
+	///
 	template<typename Sequence, typename F>
 	inline void apply_at(typename boost::uint_value_t<boost::mpl::size<Sequence>::type::value>::least index, F operation) {
 		typedef typename boost::mpl::size<Sequence>::type sequence_length;

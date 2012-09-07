@@ -28,7 +28,7 @@ struct NumberGetterFunctor {
 	NumberGetterFunctor(int & dst) : dest(dst) {}
 
 	template<typename Num>
-	void operator()() {
+	void operator()(boost::mpl::identity<Num> const&) {
 		dest = Num();
 	}
 	int & dest;
@@ -66,7 +66,7 @@ struct TypeInfoAddressFunctor {
 	TypeInfoAddressFunctor(typeinfoptr & dst) : dest(dst) {}
 
 	template<typename T>
-	void operator()() {
+	void operator()(boost::mpl::identity<T> const&) {
 		dest = &typeid(T);
 	}
 	typeinfoptr & dest;
