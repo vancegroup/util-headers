@@ -78,6 +78,8 @@ get_git_head_revision(REFSPEC VERSION_DESCRIPTION)
 set(versioninfo "This header is maintained as a part of 'util-headers' - you can always
 	find the latest version online at https://github.com/vancegroup/util-headers
 
+	This GUID can help identify the project: d1dbc94e-e863-49cf-bc08-ab4d9f486613
+
 	This copy of the header is from the revision that Git calls
 	${VERSION_DESCRIPTION}")
 
