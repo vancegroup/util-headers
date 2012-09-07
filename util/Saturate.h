@@ -1,6 +1,8 @@
 /**	@file
 	@brief	Simple vector saturation.
 
+	@versioninfo@
+
 	@date
 	2009-2010
 

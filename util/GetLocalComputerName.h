@@ -2,6 +2,8 @@
 	@file
 	@brief Provides a cross-platform interface to getting the computer name.
 
+	@versioninfo@
+
 	@date
 	2009-2011
 

@@ -1,6 +1,8 @@
 /**	@file
 	@brief	A class for handling "do this every n times"
 
+	@versioninfo@
+
 	@date
 	2009-2010
 

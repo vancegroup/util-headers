@@ -2,6 +2,8 @@
 	@brief Template class for holding two interchangeable elements that
 	we nevertheless want to be compatible with STL containers and algos
 
+	@versioninfo@
+
 	@date 2010
 
 	@author

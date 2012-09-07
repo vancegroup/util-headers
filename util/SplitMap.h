@@ -2,6 +2,8 @@
 	@brief	header to split std::maps (or things that look like them)
 	into things you'd rather have.
 
+	@versioninfo@
+
 	@date	2010
 
 	@author

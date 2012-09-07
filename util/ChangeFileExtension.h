@@ -1,6 +1,8 @@
 /** @file
 	@brief Free function (inline) to change the last file extension.
 
+	@versioninfo@
+
 	@date 2010
 
 	@author

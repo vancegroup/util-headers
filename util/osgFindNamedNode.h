@@ -2,6 +2,8 @@
 	@file
 	@brief Contains an OSG utility function to search a scenegraph
 
+	@versioninfo@
+
 	@author
 	Ryan Pavlik
 	<rpavlik@iastate.edu> and <abiryan@ryand.net>

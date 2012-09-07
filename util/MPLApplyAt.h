@@ -2,6 +2,8 @@
 	@brief Header for invoking a functor with a type parameter chosen at
 	runtime from a typelist.
 
+	@versioninfo@
+
 	@date 2012
 
 	@author

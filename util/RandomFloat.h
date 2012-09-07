@@ -1,6 +1,8 @@
 /**	@file
 	@brief	Utility header to generate a random float.
 
+	@versioninfo@
+
 	@date	2010-2011
 
 	@author

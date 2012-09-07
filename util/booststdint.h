@@ -10,6 +10,9 @@
 
 	@date 2012
 
+	@versioninfo@
+
+
 	@author
 	Ryan Pavlik
 	<rpavlik@iastate.edu> and <abiryan@ryand.net>

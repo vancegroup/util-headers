@@ -1,6 +1,8 @@
 /**	@file
 	@brief	Utility header for a "generator" object simulating two nested loops.
 
+	@versioninfo@
+
 	@date	2010
 
 	@author

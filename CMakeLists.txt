@@ -28,6 +28,7 @@ include(UseBackportedModules)
 include(CppcheckTargets)
 include(DoxygenTargets)
 include(EnableExtraCompilerWarnings)
+include(GetGitRevisionDescription)
 
 include(CTest)
 include(CreateDashboardScripts)
@@ -65,6 +66,28 @@ if(BUILD_TESTING)
 endif()
 
 create_dashboard_scripts()
+
+
+#git_describe(VERSION_DESCRIPTION)
+
+message(STATUS "")
+message(STATUS "Configuring Git revision and upstream source info into temporary copy of headers.")
+message(STATUS "Building the install target will copy these versions into CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
+get_git_head_revision(REFSPEC VERSION_DESCRIPTION)
+
+set(versioninfo "This header is maintained as a part of 'util-headers' - you can always
+	find the latest version online at https://github.com/vancegroup/util-headers
+
+	This copy of the header is from the revision that Git calls
+	${VERSION_DESCRIPTION}")
+
+foreach(HEADER ${HEADERS})
+	configure_file("${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}" @ONLY)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}"
+		DESTINATION include/util/)
+#	install(CODE "configure_file(\"${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}\"
+endforeach()
+
 
 ###
 # Set packaging options (for CPack)

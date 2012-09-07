@@ -1,6 +1,8 @@
 /** @file
 	@brief Header
 
+	@versioninfo@
+
 	@date 2011
 
 	@author

@@ -1,6 +1,8 @@
 /** @file
 	@brief Template class providing a blocking cross-thread invoke functor.
 
+	@versioninfo@
+
 	@date 2011
 
 	@author
