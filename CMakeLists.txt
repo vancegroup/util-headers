@@ -83,7 +83,8 @@ set(versioninfo "This header is maintained as a part of 'util-headers' - you can
 	This GUID can help identify the project: d1dbc94e-e863-49cf-bc08-ab4d9f486613
 
 	This copy of the header is from the revision that Git calls
-	${VERSION_DESCRIPTION}")
+	${VERSION_DESCRIPTION}
+")
 
 
 find_package(Git QUIET)
@@ -95,8 +96,7 @@ if(GIT_FOUND)
 		ERROR_QUIET
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
 	if(res EQUAL 0)
-		set(versioninfo "
-${versioninfo}
+		set(versioninfo "${versioninfo}
 	Commit date: ${COMMIT_DATE}")
 	endif()
 endif()
