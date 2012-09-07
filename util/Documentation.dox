@@ -1,0 +1,41 @@
+/*
+	@author
+	Ryan Pavlik
+	<rpavlik@iastate.edu> and <abiryan@ryand.net>
+	http://academic.cleardefinition.com/
+	Iowa State University Virtual Reality Applications Center
+	Human-Computer Interaction Graduate Program
+*/
+
+//          Copyright Iowa State University 2012.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+// Internal Includes
+// - none
+
+// Library/third-party includes
+// - none
+
+// Standard includes
+// - none
+
+namespace util {
+	/// 
+	/** @addtogroup Metaprogramming
+	
+		@brief Tools to work with compile-time structures, template meta-programming,
+		and Boost MPL.
+		
+		Useful associated references:
+		
+		Boost MPL documentation: http://www.boost.org/doc/libs/1_51_0/libs/mpl/
+		
+		Book: "C++ Template Metaprogramming", by David Abrahams and Aleksey Gurtovoy, ISBN 0321227255
+		Available online to Iowa State University users at http://proquest.safaribooksonline.com.proxy.lib.iastate.edu/book/programming/cplusplus/0321227255
+		
+	*/
+	/// @{
+	/// @}
+}

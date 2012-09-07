@@ -53,6 +53,7 @@ endif()
 
 add_custom_target(util
 	SOURCES
+	Documentation.dox
 	${UTIL_HEADERS})
 
 add_custom_target(util-DataStructures
