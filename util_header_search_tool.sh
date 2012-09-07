@@ -7,8 +7,6 @@ defineLineToGUID() {
 	sed -n 's/[#]ifndef INCLUDED_.*_GUID_\(.*\)$/\1/p' $@
 }
 
-[ -e ${DATADIR}/guid.list.txt -a -e ${DATADIR}/guid.transforms.txt ] || $0 --update
-
 if [ "x$1" = "x--update" ]; then
 	echo "Updating GUID databases."
 	(
