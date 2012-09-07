@@ -39,13 +39,21 @@ namespace util {
 	namespace detail {
 		/// @brief Utility template to call a functor's apply method, templated
 		/// on the MPL integral constant with value equal to that provided at runtime.
+		///
+		/// Iteration will find the appropriate constant in the half-open range
+		/// [0, Limit) by default. (Directly calling the templated apply method
+		/// with an alternate starting point is also possible)
 		template<typename IntType, typename Limit, typename F>
 		struct runtime_int_to_type_impl {
 			private:
+				/// @brief Self typedef for convenience.
 				typedef runtime_int_to_type_impl<IntType, Limit, F> type;
+
 				/// @brief Metafunction to determine when to stop recursing
 				template<typename Current>
 				struct IsValidIndex : boost::mpl::less<Current, Limit>::type {};
+
+
 				/// @brief Main recursive function: checks for equality and either
 				/// runs functor or recurses with the next integer.
 				template<typename Current>
@@ -57,6 +65,8 @@ namespace util {
 					}
 				}
 
+				/// @brief "base case" - when we've reached the end of where we should
+				/// be iterating.
 				template<typename Current>
 				static void apply(IntType, F, boost::mpl::bool_<false> const&) {
 					/// @todo appropriate error behavior?
@@ -78,6 +88,12 @@ namespace util {
 
 		};
 
+		/// @brief Utility struct for apply_at
+		///
+		/// Templated functor with templated function call operator that
+		/// looks up the element at the given index, and calls the user-provided
+		/// functor with this type wrapped in boost::mpl::identity as the only
+		/// argument
 		template<typename F, typename Sequence>
 		struct apply_at_functor_impl {
 			apply_at_functor_impl(F operation) : op(operation) {}
@@ -93,9 +109,10 @@ namespace util {
 	} // end of namespace detail
 
 	/// @brief A template function that will call a user-provided functor
-	///
+	/// passing a single parameter, a boost::mpl::identity object parameterized
+	/// by the ith element of the given MPL sequence
 	template<typename Sequence, typename F>
-	inline void apply_at(typename boost::uint_value_t<boost::mpl::size<Sequence>::type::value>::least index, F operation) {
+	inline void apply_at(typename boost::uint_value_t<boost::mpl::size<Sequence>::type::value>::least i, F operation) {
 		typedef typename boost::mpl::size<Sequence>::type sequence_length;
 		typedef typename boost::uint_value_t<sequence_length::value>::least index_type;
 		typedef detail::apply_at_functor_impl<F, Sequence> functor_wrapper;
@@ -103,7 +120,7 @@ namespace util {
 
 		functor_wrapper wrappedOp(operation);
 
-		int_to_type::apply(index, wrappedOp);
+		int_to_type::apply(i, wrappedOp);
 	}
 } // end of namespace util
 
