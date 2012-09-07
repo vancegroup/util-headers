@@ -27,9 +27,7 @@
 #include <boost/integer.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
-#include <boost/mpl/lambda.hpp>
 #include <boost/mpl/less.hpp>
-#include <boost/mpl/apply.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/identity.hpp>
@@ -44,8 +42,10 @@ namespace util {
 		template<typename IntType, typename Limit, typename F>
 		struct runtime_int_to_type_impl {
 			private:
-				typedef typename boost::mpl::lambda<boost::mpl::less<boost::mpl::_, Limit> >::type validity_check;
 				typedef runtime_int_to_type_impl<IntType, Limit, F> type;
+				/// @brief Metafunction to determine when to stop recursing
+				template<typename Current>
+				struct IsValidIndex : boost::mpl::less<Current, Limit>::type {};
 				/// @brief Main recursive function: checks for equality and either
 				/// runs functor or recurses with the next integer.
 				template<typename Current>
@@ -73,7 +73,7 @@ namespace util {
 				/// of the validity check for tag-dispatching of recusive call or base case.
 				template<typename Current>
 				static void apply(IntType i, F op) {
-					type::apply<Current>(i, op, typename boost::mpl::apply<validity_check, Current>::type());
+					type::apply<Current>(i, op, IsValidIndex<Current>());
 				}
 
 		};
