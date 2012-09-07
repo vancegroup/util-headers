@@ -1,5 +1,6 @@
 /** @file
-	@brief Header
+	@brief Header for invoking a functor with a type parameter chosen at
+	runtime from a typelist.
 
 	@date 2012
 
@@ -36,6 +37,10 @@
 // - none
 
 namespace util {
+	/// @addtogroup Metaprogramming
+	/// @{
+
+	/// @internal
 	namespace detail {
 		/// @brief Utility template to call a functor's apply method, templated
 		/// on the MPL integral constant with value equal to that provided at runtime.
@@ -43,6 +48,8 @@ namespace util {
 		/// Iteration will find the appropriate constant in the half-open range
 		/// [0, Limit) by default. (Directly calling the templated apply method
 		/// with an alternate starting point is also possible)
+		///
+		/// @internal
 		template<typename IntType, typename Limit, typename F>
 		struct runtime_int_to_type_impl {
 			private:
@@ -94,6 +101,8 @@ namespace util {
 		/// looks up the element at the given index, and calls the user-provided
 		/// functor with this type wrapped in boost::mpl::identity as the only
 		/// argument
+		///
+		/// @internal
 		template<typename F, typename Sequence>
 		struct apply_at_functor_impl {
 			apply_at_functor_impl(F operation) : op(operation) {}
@@ -108,7 +117,10 @@ namespace util {
 
 	} // end of namespace detail
 
-	/// @brief A template function that will call a user-provided functor
+	/// @brief Invokes a functor with a type parameter chosen at runtime by index
+	/// from a type sequence.
+	///
+	/// A template function that will call a user-provided functor
 	/// passing a single parameter, a boost::mpl::identity object parameterized
 	/// by the ith element of the given MPL sequence
 	template<typename Sequence, typename F>
@@ -122,6 +134,7 @@ namespace util {
 
 		int_to_type::apply(i, wrappedOp);
 	}
+	/// @}
 } // end of namespace util
 
 

@@ -34,8 +34,12 @@
 // - none
 
 namespace util {
+	/// @addtogroup Metaprogramming
+	/// @{
 	namespace detail {
 		/// @brief Utility template used by find_index
+		///
+		/// @internal
 		template<typename Sequence, typename Target>
 		struct find_index_impl {
 			BOOST_MPL_ASSERT((boost::mpl::contains<Sequence, Target>));
@@ -52,6 +56,8 @@ namespace util {
 	/// Builds on boost::mpl::find and boost::mpl::distance
 	template<typename Sequence, typename Target>
 	struct find_index : boost::mpl::int_<detail::find_index_impl<Sequence, Target>::value>  {};
+
+	/// @}
 } // end of namespace util
 
 #endif // INCLUDED_MPLFindIndex_h_GUID_85ff7967_6f99_4669_91c8_2b6c63e12e00
