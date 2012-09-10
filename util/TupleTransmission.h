@@ -32,6 +32,9 @@
 #include <boost/mpl/placeholders.hpp>
 #include <boost/mpl/sizeof.hpp>
 #include <boost/mpl/transform_view.hpp>
+#include <boost/fusion/mpl.hpp> // mpl to fusion link
+#include <boost/fusion/include/as_vector.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
 
 // Standard includes
 // - none
@@ -45,17 +48,26 @@ namespace util {
 	namespace transmission {
 		namespace detail {
 			using namespace boost::mpl;
-			template<typename Types>
+			namespace fusion = boost::fusion;
+
+			template<typename MPLTypesVector>
 			struct MessageDescription {
-				typedef Types types;
-				typedef typename transform_view<Types, sizeof_<_> >::type sizeof_view;
+				typedef MPLTypesVector types;
+				typedef typename fusion::result_of::as_vector<types>::type fusion_vec_type;
+				typedef typename transform_view<types, sizeof_<_> >::type sizeof_view;
 
 				enum {
-					message_size = (accumulate < types
+					message_size = (accumulate
+					< types
 					, int_<0>
 					, plus<_1, sizeof_<_2> >
 					>::type::value)
 				};
+
+				template<BOOST_PP_ENUM_PARAMS(3, typename T)>
+				static fusion_vec_type create(BOOST_PP_ENUM_BINARY_PARAMS(3,  T, a)) {
+					return fusion_vec_type(BOOST_PP_ENUM_PARAMS(3, a));
+				}
 
 			};
 		} // end of namespace detail

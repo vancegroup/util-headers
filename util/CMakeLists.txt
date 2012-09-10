@@ -13,11 +13,13 @@ set(DATASTRUCTURES_HEADERS
 	FusionMapToTemplate.h
 	LockFreeBuffer.h
 	RangedInt.h
+	ReceiveBuffer.h
 	SearchPath.h
 	SplitMap.h
 	TupleTransmission.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
+	VectorSimulator.h
 	WithHistory.h)
 
 if(VPR22_FOUND OR VPR20_FOUND)
