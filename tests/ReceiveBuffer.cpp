@@ -97,10 +97,10 @@ BOOST_AUTO_TEST_CASE(SlideAppend) {
 	std::string baz("baz");
 	std::string barbaz("barbaz");
 
-	ReceiveBuffer<7, char> a(foobar.begin(), foobar.end());
+	ReceiveBuffer<6, char> a(foobar.begin(), foobar.end());
 	BOOST_CHECK_EQUAL(a.size(), foobar.size());
 
-	typedef ReceiveBuffer<7, char>::iterator iterator;
+	typedef ReceiveBuffer<6, char>::iterator iterator;
 	iterator begin = a.begin();
 	iterator end = a.end();
 
