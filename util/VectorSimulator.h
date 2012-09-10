@@ -33,8 +33,8 @@ namespace util {
 
 	class vector_simulator_access {
 			template<typename T, typename TI>
-			static bool range_check(T const& obj, TI index) {
-				return obj.range_check(index);
+			static bool rangecheck(T const& obj, TI index) {
+				return obj.rangecheck(index);
 			}
 	};
 
@@ -47,7 +47,7 @@ namespace util {
 			typedef value_type const & const_reference;
 
 			reference at(std::size_t i) {
-				if (vector_simulator_access::range_check(getDerived(), i)) {
+				if (vector_simulator_access::rangecheck(getDerived(), i)) {
 					return getDerived()[i];
 				} else {
 					throw std::out_of_range("Out of range access in at()");
@@ -55,7 +55,7 @@ namespace util {
 			}
 
 			const_reference at(size_type i) const {
-				if (vector_simulator_access::range_check(getDerived(), i)) {
+				if (vector_simulator_access::rangecheck(getDerived(), i)) {
 					return getDerived()[i];
 				} else {
 					throw std::out_of_range("Out of range access in constant at()");

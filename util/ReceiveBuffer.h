@@ -27,39 +27,20 @@
 // Library/third-party includes
 #include <boost/array.hpp>
 #include <boost/integer.hpp>
-//#include <boost/iterator/iterator_facade.hpp>
 #include <boost/assert.hpp>
 
 // Standard includes
-#include <stdexcept>
 #include <algorithm>
 
 namespace util {
-	/*
-		namespace detail {
-			template<typename Values>
-			class ReceiveBufferIterator
-				: public boost::iterator_facade <
-				ReceiveBufferIterator<Values>,
-				Values,
-					boost::random_access_traversal_tag > {
 
-				public:
-					ReceiveBufferIterator()
-						: m_elt(NULL) {}
-
-					explicit ReceiveBufferIterator(Values * p)
-						: m_elt(p) {}
-				private:
-					friend class boost::iterator_core_access;
-
-
-					Values * m_elt;
-			};
-
-		} // end of namespace detail
-	*/
-	template<int SIZE, typename Values = stdint::uint8_t>
+	/// @brief A receive buffer class, designed for piecemeal or bulk back-insertion/removal,
+	/// and front access/removal.
+	///
+	/// To minimize the number of times the buffer contents must be shifted
+	/// internally in the wrapped container, suggest setting SIZE to twice
+	/// your maximum message size.
+	template<std::size_t SIZE, typename Values = stdint::uint8_t>
 	class ReceiveBuffer : public vector_simulator<ReceiveBuffer<SIZE, Values>, Values, typename boost::uint_value_t< SIZE >::least> {
 		public:
 			typedef ReceiveBuffer<SIZE, Values> type;
@@ -77,20 +58,42 @@ namespace util {
 				CAPACITY = SIZE
 			};
 
+			/// @brief Default constructor
 			ReceiveBuffer()
-				: _start(0)
+				: _begin(0)
 				, _pastEnd(0)
 				, _contents()
 			{}
 
+			/// @brief Copy constructor
 			ReceiveBuffer(type const& other)
-				: _start(0)
+				: _begin(0)
 				, _pastEnd(other.size())
 				, _contents() {
 				idealContentsCopy(other, *this);
-//				std::copy(other._contents.begin() + other._start, other._contents.begin() + other._pastEnd, _contents.begin());
 			}
 
+			/// @brief Copy from array
+			ReceiveBuffer(value_type * v, size_type len)
+				: _begin(0)
+				, _pastEnd(len)
+				, _contents() {
+				std::copy(v, v + len, _contents.begin());
+			}
+
+			/// @brief Copy from array
+			template<typename InputIterator>
+			ReceiveBuffer(InputIterator first, InputIterator last)
+				: _begin(0)
+				, _pastEnd(0)
+				, _contents() {
+				push_back(first, last);
+			}
+
+			/// @brief Assignment operator from another buffer.
+			///
+			/// Performs an ideal copy. Invalidates iterators.
+			/// Self-assignment performs a clean-up (invalidating iterators)
 			type & operator=(type const& other) {
 				if (this == &other) {
 					slide_contents_forward(); /// A cleanup no-op
@@ -100,69 +103,180 @@ namespace util {
 				return *this;
 			}
 
-			bool isEmpty() const {
-				return _start == _pastEnd;
+			/// @brief Is the buffer empty?
+			bool empty() const {
+				return _begin == _pastEnd;
 			}
 
+			/// @brief Number of elements currently in buffer
 			size_type size() const {
-				return _pastEnd - _start;
+				return _pastEnd - _begin;
 			}
 
-			reference operator[](size_type i) {
-				/*
-				if (i == size()) {
-					/// Assume this means they're inserting
-					/// @todo is this a smart assumption?
-					ensure_space(1);
-					increment_end();
-				}
-				*/
+			/// @brief Max size is fixed by type declaration
+			static size_type max_size() {
+				return CAPACITY;
+			}
 
+			/// @brief Direct access to (read-only) data
+			const value_type * data() const {
+				return &_contents[adjusted_index(0)];
+			}
+
+			/// @brief Element reference access operator
+			///
+			/// @note Does not forcibly check bounds!
+			reference operator[](size_type i) {
 				BOOST_ASSERT_MSG(adjusted_index(i) < size(), "out of range");
 				return _contents[adjusted_index(i)];
 			}
 
+			/// @brief Element const reference access operator
+			///
+			/// @note Does not forcibly check bounds!
 			const_reference operator[](size_type i) const {
 				BOOST_ASSERT_MSG(adjusted_index(i) < size(), "out of range");
 				return _contents[adjusted_index(i)];
 			}
 
+			/// @brief Reset begin and end so the buffer is empty.
+			///
+			/// @note Does not call destructors!
+			void clear() {
+				_begin = 0;
+				_pastEnd = 0;
+			}
+
+			/// @brief Single element push back
+			///
+			/// @note May invalidate iterators!
+			/// @note Does not forcibly check bounds!
 			void push_back(const_reference x) {
-				ensure_space(1);
-				_contents[_pastEnd] = x;
 				increment_pastEnd();
+				*this[size() - 1] = x;
 			}
 
+			/// @brief Range push back
+			///
+			/// @note May invalidate iterators!
+			/// @note Does not forcibly check bounds!
+			template<typename InputIterator>
+			void push_back(InputIterator input_begin, InputIterator input_end) {
+				ensure_space(input_end - input_begin);
+				std::copy(input_begin, input_end, end());
+				_pastEnd += input_end - input_begin;
+
+				verify_invariants(); // just because I'm a little nervous
+			}
+
+			/// @brief Pop back, by default a single element
+			///
+			/// @note Does not call destructors!
+			/// @note Does not forcibly check bounds!
+			value_type pop_back(size_type count = 1) {
+				value_type ret(base_type::back());
+				for (size_type i = 0; i < count; ++i) {
+					decrement_pastEnd();
+				}
+				return ret;
+			}
+
+			/// @brief Pop front, by default a single element
+			///
+			/// @note Does not call destructors!
+			/// @note Does not forcibly check bounds!
+			value_type pop_front(size_type count = 1) {
+				value_type ret(base_type::front());
+				for (size_type i = 0; i < count; ++i) {
+					increment_begin();
+				}
+				return ret;
+			}
+
+			/// @brief Return an iterator to the beginning of the buffer
 			iterator begin() {
-				return _contents.begin() + _start;
+				return _contents.begin() + _begin;
 			}
 
+			/// @brief Return an const_iterator to the beginning of the buffer
 			const_iterator begin() const {
-				return _contents.begin() + _start;
+				return _contents.begin() + _begin;
 			}
 
+			/// @brief Return an iterator to the end of the buffer
 			iterator end() {
 				return _contents.begin() + _pastEnd;
 			}
 
+			/// @brief Return an const_iterator to the end of the buffer
 			const_iterator end() const {
 				return _contents.begin() + _pastEnd;
+			}
+
+			iterator erase(iterator position) {
+				/*
+				size_type index = position - begin();
+				if (index == 0) {
+					pop_front();
+				} else if (position == end() - 1) {
+					pop_back();
+				} else {
+					// Ick, the slow case.
+					BOOST_ASSERT_MSG( begin() < position, "Iterator to erase before our beginning");
+					BOOST_ASSERT_MSG( position < end(), "Iterator to erase after our end");
+					size_type index = position - begin();
+					std::copy(position + 1, end(), begin() + index);
+					decrement_pastEnd();
+				}
+				return begin() + index;
+				*/
+				return erase(position, position + 1);
+			}
+
+			iterator erase(iterator first, iterator last) {
+				size_type startIndex = first - begin();
+				size_type endIndex = last - begin();
+				BOOST_ASSERT_MSG(first < last, "Iterators in wrong order!");
+				size_type len = endIndex - startIndex;
+				if (len == 0) {
+					return first;
+				}
+				BOOST_ASSERT_MSG(len <= size(), "Can't erase more than are there");
+				if (startIndex == 0) {
+					pop_front(len);
+				} else if (last == end()) {
+					pop_back(len);
+				} else {
+					// Ick, the slow case.
+					BOOST_ASSERT_MSG(begin() < startIndex, "Iterator to erase before our beginning");
+					BOOST_ASSERT_MSG(endIndex < end(), "Iterator to erase after our end");
+					std::copy(last, end(), begin() + startIndex);
+					for (size_type i = 0; i < len; ++i) {
+						decrement_pastEnd();
+					}
+				}
+				return begin() + startIndex;
 			}
 
 		private:
 			friend class vector_simulator_access;
 
+			/// @brief If we're empty, may as well be empty at the beginning
 			void opportunistic_reset() {
-				if (isEmpty()) {
-					_start = 0;
+				if (empty()) {
+					_begin = 0;
 					_pastEnd = 0;
 				}
 			}
 
+			/// @brief Adapt a buffer index into an index in the wrapped container
 			size_type adjusted_index(size_type i) {
-				return _start + i;
+				return _begin + i;
 			}
 
+			/// @brief Opportunistically reset if possible, and ensure there is room
+			/// for n more elements to be added, shifting contents in the container
+			/// if necessary.
 			void ensure_space(size_type n) {
 				opportunistic_reset();
 				if (_pastEnd + n <= CAPACITY) {
@@ -172,18 +286,19 @@ namespace util {
 					BOOST_ASSERT_MSG(size() + n < CAPACITY, "Impossible to ensure that much space");
 					slide_contents_forward();
 					/*
-					std::copy(_contents.begin() + _start, _contents.begin() + _pastEnd, _contents.begin());
-					_pastEnd -= _start;
-					_start = 0;
+					std::copy(_contents.begin() + _begin, _contents.begin() + _pastEnd, _contents.begin());
+					_pastEnd -= _begin;
+					_begin = 0;
 					*/
 				}
 			}
 
+			/// @brief Copies the whole buffer to the front of the wrapped container
 			void slide_contents_forward() {
 				idealContentsCopy(*this, *this);
 			}
 
-			bool range_check(size_type i) const {
+			bool rangecheck(size_type i) const {
 				return i < size();
 			}
 
@@ -193,18 +308,41 @@ namespace util {
 				BOOST_ASSERT_MSG(_pastEnd <= CAPACITY, "Consuming more space than possible");
 			}
 
-			static void idealContentsCopy(type const& source, type & dest) {
-				std::copy(source._contents.begin() + source._start, source._contents.begin() + source._pastEnd, dest._contents.begin());
-				dest._pastEnd = source.size();
-				dest._start = 0;
+			void decrement_pastEnd() {
+				BOOST_ASSERT_MSG(_pastEnd > _begin, "End moved before beginning");
+				_pastEnd--;
 			}
-			size_type _start;
+
+			void increment_begin() {
+				_begin++;
+				BOOST_ASSERT_MSG(_begin < _pastEnd, "Beginning moved past end");
+			}
+
+			/// @brief Copies the whole buffer of one object to the front of another (which may be the same)
+			static void idealContentsCopy(type const& source, type & dest) {
+				std::copy(source.begin(), source.end(), dest._contents.begin());
+				dest._pastEnd = source.size();
+				dest._begin = 0;
+			}
+
+			void verify_invariants() const {
+				BOOST_ASSERT_MSG(_begin < _pastEnd, "Beginning moved past end");
+				BOOST_ASSERT_MSG(_pastEnd <= CAPACITY, "Consuming more space than possible");
+			}
+
+			size_type _begin;
 			size_type _pastEnd;
 			wrapped_type _contents;
 
 
 	};
 
+#if 0
+	template<typename T, std::size_t N>
+	std::size_t hash_value(ReceiveBuffer<N, T> const & buf) {
+		return boost::hash_range(buf.begin(), buf.end());
+	}
+#endif
 
 } // end of namespace util
 
