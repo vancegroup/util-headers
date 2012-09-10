@@ -303,7 +303,7 @@ namespace util {
 					return;
 				} else {
 					/// Slide back to the front of the array
-					BOOST_ASSERT_MSG(size() + n < CAPACITY, "Impossible to ensure that much space");
+					BOOST_ASSERT_MSG(size() + n <= CAPACITY, "Impossible to ensure that much space");
 					slide_contents_forward();
 					/*
 					std::copy(_contents.begin() + _begin, _contents.begin() + _pastEnd, _contents.begin());
