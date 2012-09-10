@@ -3,6 +3,7 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(UTIL_HEADERS
+	BoostAssertMsg.h
 	SizeGenerator.h
 	Stride.h)
 
