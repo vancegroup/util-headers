@@ -97,7 +97,7 @@ namespace util {
 			/// Self-assignment performs a clean-up (invalidating iterators)
 			type & operator=(type const& other) {
 				if (this == &other) {
-					slide_contents_forward(); /// A cleanup no-op
+					slide_contents_forward(); /// A cleanup externally-nearly-no-op
 				} else {
 					idealContentsCopy(other, *this);
 				}
@@ -215,27 +215,15 @@ namespace util {
 			}
 
 			/// @brief Erase an element - similar to std::vector<>::erase
+			///
+			/// @note Does not call destructors! Invalidates iterators!
 			iterator erase(iterator position) {
-				/*
-				size_type index = position - begin();
-				if (index == 0) {
-					pop_front();
-				} else if (position == end() - 1) {
-					pop_back();
-				} else {
-					// Ick, the slow case.
-					BOOST_ASSERT_MSG( begin() < position, "Iterator to erase before our beginning");
-					BOOST_ASSERT_MSG( position < end(), "Iterator to erase after our end");
-					size_type index = position - begin();
-					std::copy(position + 1, end(), begin() + index);
-					decrement_pastEnd();
-				}
-				return begin() + index;
-				*/
 				return erase(position, position + 1);
 			}
 
 			/// @brief Erase a range - similar to std::vector<>::erase
+			///
+			/// @note Does not call destructors! Invalidates iterators!
 			iterator erase(iterator first, iterator last) {
 				size_type startIndex = first - begin();
 				size_type endIndex = last - begin();
@@ -260,56 +248,30 @@ namespace util {
 				}
 				return begin() + startIndex;
 			}
-#ifdef RECEIVE_BUFFER_DEBUGGING
-			void dumpStatus() const {
-				std::cout << "-------------" << std::endl;
-				std::cout << "_begin: " << int(_begin) << std::endl;
-				std::cout << "_pastEnd: " << int(_pastEnd) << std::endl;
-				std::cout << "size(): " << int(size()) << std::endl;
-				std::cout << "-------------" << std::endl;
-			}
-			void dumpContents() const {
-				for (int i = 0; i < CAPACITY; ++i) {
-					std::cout << "[" << (_contents[i] ? : ' ') << "]";
-				}
-				std::cout << std::endl;
-			}
-#endif
+
 		private:
 			friend class vector_simulator_access;
 
-			/// @brief If we're empty, may as well be empty at the beginning
-			void opportunistic_reset() {
+
+			/// @brief Adapt a buffer index into an index in the wrapped container
+			size_type adjusted_index(size_type i) {
+				return _begin + i;
+			}
+
+			/// @brief Ensure there is room for n more elements to be
+			/// added, shifting contents in the container if necessary.
+			void ensure_space(size_type n) {
+				// If we're empty, may as well be empty at the beginning
 				if (empty()) {
 					_begin = 0;
 					_pastEnd = 0;
 				}
-			}
-
-			/// @brief Adapt a buffer index into an index in the wrapped container
-			size_type adjusted_index(size_type i) {
-#ifdef RECEIVE_BUFFER_DEBUGGING
-				std::cout << int(i) << "->" << int(_begin + i) << std::endl;
-#endif
-				return _begin + i;
-			}
-
-			/// @brief Opportunistically reset if possible, and ensure there is room
-			/// for n more elements to be added, shifting contents in the container
-			/// if necessary.
-			void ensure_space(size_type n) {
-				opportunistic_reset();
 				if (_pastEnd + n <= CAPACITY) {
 					return;
 				} else {
 					/// Slide back to the front of the array
 					BOOST_ASSERT_MSG(size() + n <= CAPACITY, "Impossible to ensure that much space");
 					slide_contents_forward();
-					/*
-					std::copy(_contents.begin() + _begin, _contents.begin() + _pastEnd, _contents.begin());
-					_pastEnd -= _begin;
-					_begin = 0;
-					*/
 				}
 			}
 
@@ -318,6 +280,7 @@ namespace util {
 				idealContentsCopy(*this, *this);
 			}
 
+			/// @brief rangecheck used by vector_simulator
 			bool rangecheck(size_type i) const {
 				return i < size();
 			}
