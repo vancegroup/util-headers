@@ -28,6 +28,7 @@
 #include <boost/array.hpp>
 #include <boost/integer.hpp>
 #include <boost/assert.hpp>
+#include <util/BoostAssertMsg.h>
 
 // Standard includes
 #include <algorithm>
@@ -127,7 +128,7 @@ namespace util {
 			///
 			/// @note Does not forcibly check bounds!
 			reference operator[](size_type i) {
-				BOOST_ASSERT_MSG(adjusted_index(i) < size(), "out of range");
+				BOOST_ASSERT_MSG(i < size(), "out of range");
 				return _contents[adjusted_index(i)];
 			}
 
@@ -135,7 +136,7 @@ namespace util {
 			///
 			/// @note Does not forcibly check bounds!
 			const_reference operator[](size_type i) const {
-				BOOST_ASSERT_MSG(adjusted_index(i) < size(), "out of range");
+				BOOST_ASSERT_MSG(i < size(), "out of range");
 				return _contents[adjusted_index(i)];
 			}
 
@@ -213,6 +214,7 @@ namespace util {
 				return _contents.begin() + _pastEnd;
 			}
 
+			/// @brief Erase an element - similar to std::vector<>::erase
 			iterator erase(iterator position) {
 				/*
 				size_type index = position - begin();
@@ -233,6 +235,7 @@ namespace util {
 				return erase(position, position + 1);
 			}
 
+			/// @brief Erase a range - similar to std::vector<>::erase
 			iterator erase(iterator first, iterator last) {
 				size_type startIndex = first - begin();
 				size_type endIndex = last - begin();
@@ -248,8 +251,8 @@ namespace util {
 					pop_back(len);
 				} else {
 					// Ick, the slow case.
-					BOOST_ASSERT_MSG(begin() < startIndex, "Iterator to erase before our beginning");
-					BOOST_ASSERT_MSG(endIndex < end(), "Iterator to erase after our end");
+					BOOST_ASSERT_MSG(0 < startIndex, "Iterator to erase before our beginning");
+					BOOST_ASSERT_MSG(endIndex < size(), "Iterator to erase after our end");
 					std::copy(last, end(), begin() + startIndex);
 					for (size_type i = 0; i < len; ++i) {
 						decrement_pastEnd();
@@ -257,7 +260,21 @@ namespace util {
 				}
 				return begin() + startIndex;
 			}
-
+#ifdef RECEIVE_BUFFER_DEBUGGING
+			void dumpStatus() const {
+				std::cout << "-------------" << std::endl;
+				std::cout << "_begin: " << int(_begin) << std::endl;
+				std::cout << "_pastEnd: " << int(_pastEnd) << std::endl;
+				std::cout << "size(): " << int(size()) << std::endl;
+				std::cout << "-------------" << std::endl;
+			}
+			void dumpContents() const {
+				for (int i = 0; i < CAPACITY; ++i) {
+					std::cout << "[" << (_contents[i] ? : ' ') << "]";
+				}
+				std::cout << std::endl;
+			}
+#endif
 		private:
 			friend class vector_simulator_access;
 
@@ -271,6 +288,9 @@ namespace util {
 
 			/// @brief Adapt a buffer index into an index in the wrapped container
 			size_type adjusted_index(size_type i) {
+#ifdef RECEIVE_BUFFER_DEBUGGING
+				std::cout << int(i) << "->" << int(_begin + i) << std::endl;
+#endif
 				return _begin + i;
 			}
 
@@ -314,8 +334,8 @@ namespace util {
 			}
 
 			void increment_begin() {
-				_begin++;
 				BOOST_ASSERT_MSG(_begin < _pastEnd, "Beginning moved past end");
+				_begin++;
 			}
 
 			/// @brief Copies the whole buffer of one object to the front of another (which may be the same)
