@@ -221,6 +221,21 @@ add_boost_test(MPLApplyAt
 	NumberGetterBigger
 	ActualTypes)
 
+add_boost_test(ReceiveBuffer
+	SOURCES
+	ReceiveBuffer.cpp
+	TESTS
+	ConstructionDefault
+	ConstructionCopy
+	CopyPopFront
+	CopyPopBack
+	Slide
+	SlideAppend
+	EraseFront
+	EraseTwoFront
+	EraseBack
+	EraseTwoBack)
+
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
 	add_boost_test(EigenMatrixSerialize
