@@ -31,6 +31,16 @@ BOOST_AUTO_TEST_CASE(ConstructionCopy) {
 	BOOST_CHECK_NO_THROW(ReceiveBuffer<25>(a));
 }
 
+BOOST_AUTO_TEST_CASE(PushBackSingle) {
+	ReceiveBuffer<25> a;
+
+	char valueToInsert = 0;
+	BOOST_REQUIRE_NO_THROW(a.push_back(valueToInsert));
+	BOOST_CHECK_EQUAL(a.size(), 1);
+	BOOST_CHECK_EQUAL(a[0], valueToInsert);
+	BOOST_CHECK(!a.empty());
+}
+
 BOOST_AUTO_TEST_CASE(CopyPopFront) {
 	std::string text("This is a test.");
 	const unsigned int len = text.size();

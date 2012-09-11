@@ -227,6 +227,7 @@ add_boost_test(ReceiveBuffer
 	TESTS
 	ConstructionDefault
 	ConstructionCopy
+	PushBackSingle
 	CopyPopFront
 	CopyPopBack
 	Slide

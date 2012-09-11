@@ -154,7 +154,7 @@ namespace util {
 			/// @note Does not forcibly check bounds!
 			void push_back(const_reference x) {
 				increment_pastEnd();
-				*this[size() - 1] = x;
+				(*this)[size() - 1] = x;
 			}
 
 			/// @brief Range push back
