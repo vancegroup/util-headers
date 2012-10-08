@@ -70,7 +70,7 @@ namespace util {
 					if (Current::value == i) {
 						op.template operator()<Current>();
 					} else {
-						type::apply<typename boost::mpl::next<Current>::type>(i, op);
+						type::template apply<typename boost::mpl::next<Current>::type>(i, op);
 					}
 				}
 
@@ -85,14 +85,14 @@ namespace util {
 				/// @brief main entrance point: starts off at zero.
 				static void apply(IntType i, F op) {
 					typedef boost::mpl::int_<0> Zero;
-					type::apply<Zero>(i, op);
+					type::template apply<Zero>(i, op);
 				}
 
 				/// @brief Utility trampoline for recursion: performs the application
 				/// of the validity check for tag-dispatching of recusive call or base case.
 				template<typename Current>
 				static void apply(IntType i, F op) {
-					type::apply<Current>(i, op, IsValidIndex<Current>());
+					type::template apply<Current>(i, op, IsValidIndex<Current>());
 				}
 
 		};
