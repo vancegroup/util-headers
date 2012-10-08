@@ -84,5 +84,16 @@ add_custom_target(util-FreeFunctions
 	SOURCES
 	${FREEFUNCTION_HEADERS})
 
-set(HEADERS ${UTIL_HEADERS} ${DATASTRUCTURES_HEADERS} ${MATH_HEADERS} ${METAPROGRAMMING_HEADERS} ${FREEFUNCTION_HEADERS} PARENT_SCOPE)
+set(HEADERS ${UTIL_HEADERS} ${DATASTRUCTURES_HEADERS} ${MATH_HEADERS} ${METAPROGRAMMING_HEADERS} ${FREEFUNCTION_HEADERS})
+set(HEADERS ${HEADERS} PARENT_SCOPE)
 set(UNTESTED_HEADERS ${UNTESTED_HEADERS} PARENT_SCOPE)
+
+###
+# Check to ensure we have all headers listed
+###
+file(GLOB_RECURSE globbed_headers RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" *.h)
+list(REMOVE_ITEM globbed_headers ${HEADERS} ${UNTESTED_HEADERS})
+list(LENGTH globbed_headers num_unknown_headers)
+if(num_unknown_headers GREATER 0)
+	message(FATAL_ERROR "The following headers are present in the file system, but missing in the build system: ${globbed_headers}")
+endif()
