@@ -27,7 +27,7 @@
 // - none
 
 // Standard includes
-#include <cmath>
+#include <algorithm> // for std::max
 
 namespace util {
 	template<typename T>

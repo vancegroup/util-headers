@@ -27,7 +27,8 @@
 // - none
 
 // Standard includes
-#include <cmath>
+#include <algorithm> // for std::min
+
 #undef min
 namespace util {
 	template<typename T>
