@@ -26,8 +26,16 @@
 // Library/third-party includes
 #include <boost/config.hpp>
 
+#if !defined(UTIL_HEADERS_VECTORSIMULATOR_NO_EXCEPTIONS)
+#  if defined(BOOST_NO_EXCEPTIONS) || defined(BOOST_EXCEPTION_DISABLE)
+#    define UTIL_HEADERS_VECTORSIMULATOR_NO_EXCEPTIONS 1
+#  endif
+#endif
+
 // Standard includes
+#if !defined(UTIL_HEADERS_VECTORSIMULATOR_NO_EXCEPTIONS)
 #include <stdexcept>
+#endif
 
 namespace util {
 
@@ -46,6 +54,16 @@ namespace util {
 			typedef value_type & reference;
 			typedef value_type const & const_reference;
 
+#if defined(UTIL_HEADERS_VECTORSIMULATOR_NO_EXCEPTIONS)
+			reference at(std::size_t i) {
+				return getDerived()[i];
+			}
+
+			const_reference at(size_type i) const {
+				return getDerived()[i];
+			}
+
+#else // exception-using code
 			reference at(std::size_t i) {
 				if (vector_simulator_access::rangecheck(getDerived(), i)) {
 					return getDerived()[i];
@@ -61,6 +79,7 @@ namespace util {
 					throw std::out_of_range("Out of range access in constant at()");
 				}
 			}
+#endif
 
 			reference front() {
 				return getDerived()[0];
