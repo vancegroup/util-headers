@@ -39,6 +39,8 @@ set(MATH_HEADERS
 	CubeComponents.h
 	EigenMatrixSerialize.h
 	EigenTie.h
+	max_extended.h
+	min_extended.h
 	RandomFloat.h
 	Saturate.h)
 
