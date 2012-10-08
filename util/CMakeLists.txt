@@ -19,6 +19,7 @@ set(DATASTRUCTURES_HEADERS
 	Set2.h
 	SplitMap.h
 	TupleTransmission.h
+	TypeId.h
 	ValueToTemplate.h
 	ValueToTemplatePolicy.h
 	VectorSimulator.h
