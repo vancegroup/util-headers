@@ -16,6 +16,7 @@ set(DATASTRUCTURES_HEADERS
 	RangedInt.h
 	ReceiveBuffer.h
 	SearchPath.h
+	Set2.h
 	SplitMap.h
 	TupleTransmission.h
 	ValueToTemplate.h
