@@ -101,12 +101,21 @@ if(GIT_FOUND)
 	endif()
 endif()
 
+set(HEADERS_WITH_ISSUES)
 foreach(HEADER ${HEADERS} ${UNTESTED_HEADERS})
 	configure_file("${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}" @ONLY)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${HEADER}"
 		DESTINATION util)
-#	install(CODE "configure_file(\"${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}\"
+
+	file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/util/${HEADER}" filecontents)
+	if(NOT filecontents MATCHES "[@]versioninfo[@]")
+		list(APPEND HEADERS_WITH_ISSUES "${HEADER}")
+	endif()
 endforeach()
+
+if(HEADERS_WITH_ISSUES)
+	message(FATAL_ERROR "The following headers lack the \@versioninfo\@ token in their file header comment: ${HEADERS_WITH_ISSUES}")
+endif()
 
 
 ###
