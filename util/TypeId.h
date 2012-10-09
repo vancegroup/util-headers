@@ -80,30 +80,31 @@ namespace util {
 
 	};
 
-	bool operator<(TypeId const& lhs, TypeId const& rhs) {
+	inline bool operator<(TypeId const& lhs, TypeId const& rhs) {
 		return lhs.before(rhs);
 	}
 
-	bool operator==(TypeId const& lhs, TypeId const& rhs) {
+	inline bool operator==(TypeId const& lhs, TypeId const& rhs) {
 		return lhs.get() == rhs.get();
 	}
 
-	bool operator!=(TypeId const& lhs, TypeId const& rhs) {
+	inline bool operator!=(TypeId const& lhs, TypeId const& rhs) {
 		return lhs.get() != rhs.get();
 	}
 
-	bool operator==(std::type_info const& lhs, TypeId const& rhs) {
+	inline bool operator==(std::type_info const& lhs, TypeId const& rhs) {
 		return lhs == rhs.get();
 	}
 
-	bool operator!=(std::type_info const& lhs, TypeId const& rhs) {
+	inline bool operator!=(std::type_info const& lhs, TypeId const& rhs) {
 		return lhs != rhs.get();
 	}
-	bool operator==(TypeId const& lhs, std::type_info const& rhs) {
+
+	inline bool operator==(TypeId const& lhs, std::type_info const& rhs) {
 		return lhs.get() == rhs;
 	}
 
-	bool operator!=(TypeId const& lhs, std::type_info const& rhs) {
+	inline bool operator!=(TypeId const& lhs, std::type_info const& rhs) {
 		return lhs.get() != rhs;
 	}
 } // end of namespace util
