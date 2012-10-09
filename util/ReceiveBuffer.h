@@ -181,7 +181,7 @@ namespace util {
 			/// @note May invalidate iterators!
 			template<typename Functor>
 			size_type bufferFromExternalFunctorRef(Functor & f, size_type n) {
-				n = std::min(n, max_size() - size());
+				n = std::min<size_type>(n, max_size() - size());
 				ensure_space(n);
 				size_type actual = f(_contents.begin() + _pastEnd, n);
 				_pastEnd += actual;
