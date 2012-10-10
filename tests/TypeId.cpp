@@ -77,3 +77,49 @@ BOOST_AUTO_TEST_CASE(Ordering) {
 	BOOST_CHECK(!((f.IntId < f.StringId) && (f.StringId < f.IntId)));
 }
 
+BOOST_AUTO_TEST_CASE(Vector) {
+	BOOST_REQUIRE_NO_THROW(TypeIdVector());
+	TypeIdVector vec;
+	Fixture f;
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.EmptyId));
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.IntId));
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.StringId));
+
+	BOOST_REQUIRE_EQUAL(vec.size(), 3);
+	BOOST_CHECK_EQUAL(vec[0], f.EmptyId);
+	BOOST_CHECK_EQUAL(vec[1], f.IntId);
+	BOOST_CHECK_EQUAL(vec[2], f.StringId);
+
+	BOOST_CHECK(vec != TypeIdVector());
+
+	BOOST_REQUIRE_NO_THROW(TypeIdVector(vec));
+	TypeIdVector v2(vec);
+	BOOST_CHECK(vec == v2);
+}
+
+BOOST_AUTO_TEST_CASE(Set) {
+	BOOST_REQUIRE_NO_THROW(TypeIdSet());
+	TypeIdSet set;
+	Fixture f;
+	BOOST_REQUIRE_NO_THROW(set.insert(f.EmptyId));
+	BOOST_REQUIRE_NO_THROW(set.insert(f.IntId));
+	BOOST_REQUIRE_NO_THROW(set.insert(f.StringId));
+
+	BOOST_REQUIRE_EQUAL(set.size(), 3);
+	BOOST_CHECK(set.find(f.EmptyId) != set.end());
+	BOOST_CHECK(set.find(f.IntId) != set.end());
+	BOOST_CHECK(set.find(f.StringId) != set.end());
+
+	BOOST_CHECK(set != TypeIdSet());
+
+	BOOST_REQUIRE_NO_THROW(TypeIdSet(set));
+	TypeIdSet s2(set);
+	BOOST_CHECK(set == s2);
+
+	BOOST_REQUIRE_NO_THROW(set.erase(set.find(f.IntId)));
+	BOOST_REQUIRE_EQUAL(set.size(), 2);
+	BOOST_CHECK(set.find(f.EmptyId) != set.end());
+	BOOST_CHECK(set.find(f.IntId) == set.end());
+	BOOST_CHECK(set.find(f.StringId) != set.end());
+}
+
