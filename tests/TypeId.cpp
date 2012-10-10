@@ -60,6 +60,34 @@ BOOST_AUTO_TEST_CASE(EqualityComparison) {
 	BOOST_CHECK(typeid(std::string) != TypeId());
 }
 
+BOOST_AUTO_TEST_CASE(EmptyMethod) {
+	Fixture f;
+	BOOST_CHECK(f.EmptyId.empty());
+	BOOST_CHECK(!f.IntId.empty());
+	BOOST_CHECK(!f.StringId.empty());
+}
+
+BOOST_AUTO_TEST_CASE(GetMethod) {
+	Fixture f;
+	BOOST_CHECK_NO_THROW(f.IntId.get());
+	BOOST_CHECK_NO_THROW(f.StringId.get());
+}
+
+BOOST_AUTO_TEST_CASE(GetPointerMethod) {
+	Fixture f;
+	BOOST_CHECK_NO_THROW(f.EmptyId.getPointer());
+	BOOST_CHECK_NO_THROW(f.IntId.getPointer());
+	BOOST_CHECK_NO_THROW(f.StringId.getPointer());
+}
+
+BOOST_AUTO_TEST_CASE(NameMethod) {
+	Fixture f;
+	/// These are all the guarantees we give - and even that might be too much.
+	BOOST_CHECK_EQUAL(std::string(f.EmptyId.name()), "");
+	BOOST_CHECK_NE(std::string(f.IntId.name()), "");
+	BOOST_CHECK_NE(std::string(f.StringId.name()), "");
+}
+
 BOOST_AUTO_TEST_CASE(Ordering) {
 	Fixture f;
 	BOOST_CHECK(!(f.EmptyId < f.EmptyId));
