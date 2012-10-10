@@ -61,6 +61,16 @@ namespace util {
 				}
 			}
 
+			/** @brief Ordering method, based on std::type_info's before ordering method.
+
+				Used by the nonmember operator<()
+
+				Arbitrary, except that for non-empty a and b,a.before(a)
+				is always false, and a.before(b) implies !(b.before(a))
+				and a != b
+
+				Furthermore, an "empty" info is never before anything.
+			*/
 			bool before(std::type_info const& other) const {
 				if (empty()) {
 					return false;
