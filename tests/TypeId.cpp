@@ -168,3 +168,19 @@ BOOST_AUTO_TEST_CASE(Set) {
 	BOOST_CHECK(set.find(f.StringId) != set.end());
 }
 
+BOOST_AUTO_TEST_CASE(TransitivityOfOrderingAndEquality) {
+	TypeIdVector vec;
+	Fixture f;
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.EmptyId));
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.IntId));
+	BOOST_REQUIRE_NO_THROW(vec.push_back(f.StringId));
+
+	for (size_t i = 0; i < vec.size(); ++i) {
+		for (size_t j = 0; j < vec.size(); ++j) {
+			for (size_t k = 0; k < vec.size(); ++k) {
+				BOOST_CHECK((vec[i] < vec[j] && vec[j] < vec[k]) ? vec[i] < vec[k] /* test 'implies' */ : true /* fallback if "if" fails */);
+				BOOST_CHECK((vec[i] == vec[j] && vec[j] == vec[k]) ? vec[i] == vec[k] /* test 'implies' */ : true /* fallback if "if" fails */);
+			}
+		}
+	}
+}

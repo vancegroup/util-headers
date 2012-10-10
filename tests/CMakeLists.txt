@@ -221,7 +221,8 @@ add_boost_test(TypeId
 	NameMethod
 	Ordering
 	Vector
-	Set)
+	Set
+	TransitivityOfOrderingAndEquality)
 
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
