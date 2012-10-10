@@ -27,13 +27,14 @@
 
 // Library/third-party includes
 #include <boost/mpl/identity.hpp>
+#include <boost/operators.hpp>
 
 // Standard includes
 #include <typeinfo>
 
 namespace util {
 	/// @brief A simple wrapper/handle class for type_info for use in containers, etc.
-	class TypeId {
+	class TypeId : public boost::totally_ordered<TypeId, boost::totally_ordered<TypeId, std::type_info> > {
 		private:
 			/// @brief Dummy empty type, used to indicate an empty typeid.
 			class NullType {};
@@ -115,28 +116,20 @@ namespace util {
 		return lhs.before(rhs);
 	}
 
+	inline bool operator<(TypeId const& lhs, std::type_info const& rhs) {
+		return lhs.before(rhs);
+	}
+
+	inline bool operator>(std::type_info const& lhs, TypeId const& rhs) {
+		return rhs.before(lhs);
+	}
+
 	inline bool operator==(TypeId const& lhs, TypeId const& rhs) {
 		return lhs.get() == rhs.get();
 	}
 
-	inline bool operator!=(TypeId const& lhs, TypeId const& rhs) {
-		return lhs.get() != rhs.get();
-	}
-
-	inline bool operator==(std::type_info const& lhs, TypeId const& rhs) {
-		return lhs == rhs.get();
-	}
-
-	inline bool operator!=(std::type_info const& lhs, TypeId const& rhs) {
-		return lhs != rhs.get();
-	}
-
 	inline bool operator==(TypeId const& lhs, std::type_info const& rhs) {
 		return lhs.get() == rhs;
-	}
-
-	inline bool operator!=(TypeId const& lhs, std::type_info const& rhs) {
-		return lhs.get() != rhs;
 	}
 
 	template<typename StreamType>
