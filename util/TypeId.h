@@ -46,6 +46,12 @@ namespace util {
 			template<typename T>
 			TypeId(boost::mpl::identity<T> const&) : _typeinfo(&typeid(T)) {}
 
+			/// @brief templated static factory method - easier than nesting a typeid call.
+			template<typename T>
+			static TypeId create() {
+				return TypeId(typeid(T));
+			}
+
 			/// @brief Some name, with no guarantee of uniqueness or usefulness.
 			const char * name() const {
 				if (empty()) {
