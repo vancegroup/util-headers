@@ -26,7 +26,6 @@
 // - none
 
 // Library/third-party includes
-#include <boost/mpl/void.hpp>
 #include <boost/mpl/identity.hpp>
 
 // Standard includes
@@ -35,8 +34,11 @@
 namespace util {
 	/// @brief A simple wrapper/handle class for type_info for use in containers, etc.
 	class TypeId {
+		private:
+			/// @brief Dummy empty type, used to indicate an empty typeid.
+			class NullType {};
 		public:
-			/// @brief default constructor
+			/// @brief default constructor - constructs an "empty" typeid.
 			TypeId() : _typeinfo(null_type_ptr()) {}
 
 			/// @brief constructor from type_info reference (return type of typeid operator)
@@ -101,7 +103,7 @@ namespace util {
 			}
 
 			static std::type_info const * null_type_ptr() {
-				return &typeid(boost::mpl::void_);
+				return &typeid(NullType);
 			}
 		private:
 
