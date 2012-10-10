@@ -104,29 +104,27 @@ namespace util {
 	}
 
 	inline bool operator==(TypeId const& lhs, TypeId const& rhs) {
-		return lhs.empty() && rhs.empty() ? true :
-		       (lhs.empty() || rhs.empty() ? false : lhs.get() == rhs.get());
+		return lhs.get() == rhs.get();
 	}
 
 	inline bool operator!=(TypeId const& lhs, TypeId const& rhs) {
-		return lhs.empty() && rhs.empty() ? false :
-		       (lhs.empty() || rhs.empty() ? true : lhs.get() != rhs.get());
+		return lhs.get() != rhs.get();
 	}
 
 	inline bool operator==(std::type_info const& lhs, TypeId const& rhs) {
-		return rhs.empty() ? false : lhs == rhs.get();
+		return lhs == rhs.get();
 	}
 
 	inline bool operator!=(std::type_info const& lhs, TypeId const& rhs) {
-		return rhs.empty() ? true : lhs != rhs.get();
+		return lhs != rhs.get();
 	}
 
 	inline bool operator==(TypeId const& lhs, std::type_info const& rhs) {
-		return lhs.empty() ? false : lhs.get() == rhs;
+		return lhs.get() == rhs;
 	}
 
 	inline bool operator!=(TypeId const& lhs, std::type_info const& rhs) {
-		return lhs.empty() ? true : lhs.get() != rhs;
+		return lhs.get() != rhs;
 	}
 
 	template<typename StreamType>
