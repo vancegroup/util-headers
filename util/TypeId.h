@@ -42,10 +42,6 @@ namespace util {
 			/// @brief constructor from type_info reference (return type of typeid operator)
 			TypeId(std::type_info const & ti) : _typeinfo(&ti) {}
 
-			/// @brief Templated constructor
-			template<typename T>
-			TypeId() : _typeinfo(&typeid(T)) {}
-
 			/// @brief Templated constructor using boost::mpl::identity as a wrapper.
 			template<typename T>
 			TypeId(boost::mpl::identity<T> const&) : _typeinfo(&typeid(T)) {}
