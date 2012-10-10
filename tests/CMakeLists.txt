@@ -206,7 +206,22 @@ add_boost_test(ReceiveBuffer
 
 add_boost_test(TypeId
 	SOURCES
-	TypeId.cpp)
+	TypeId.cpp
+	TESTS
+	DefaultConstructor
+	TypeinfoConstructor
+	MPLIdentityConstructor
+	StaticTemplateConstructor
+	FixtureConstruction
+	EqualityComparison
+	ConstructorEquality
+	EmptyMethod
+	GetMethod
+	GetPointerMethod
+	NameMethod
+	Ordering
+	Vector
+	Set)
 
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
