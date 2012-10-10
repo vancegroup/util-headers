@@ -107,6 +107,11 @@ namespace util {
 	inline bool operator!=(TypeId const& lhs, std::type_info const& rhs) {
 		return lhs.get() != rhs;
 	}
+
+	template<typename StreamType>
+	StreamType & operator<<(StreamType & s, TypeId const& rhs) {
+		s << rhs.name();
+	}
 } // end of namespace util
 
 #endif // INCLUDED_TypeId_h_GUID_db8ba085_2a20_480f_bea4_90d9ca6a4a3c
