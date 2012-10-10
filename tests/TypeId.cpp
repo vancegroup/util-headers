@@ -109,20 +109,14 @@ BOOST_AUTO_TEST_CASE(NameMethod) {
 BOOST_AUTO_TEST_CASE(Ordering) {
 	Fixture f;
 	BOOST_CHECK(!(f.EmptyId < f.EmptyId));
-	BOOST_CHECK(!(f.EmptyId < f.IntId));
-	BOOST_CHECK(!(f.EmptyId < typeid(int)));
-	BOOST_CHECK(!(f.EmptyId < f.StringId));
-	BOOST_CHECK(!(f.EmptyId < typeid(std::string)));
 
-
-	BOOST_CHECK(!(f.EmptyId < f.EmptyId));
 	BOOST_CHECK(!(f.IntId < f.IntId));
-	BOOST_CHECK(!(f.StringId < f.StringId));
+	BOOST_CHECK(!(typeid(int) < f.IntId));
+	BOOST_CHECK(!(f.IntId < typeid(int)));
 
-	BOOST_CHECK(f.StringId < f.EmptyId);
-	BOOST_CHECK(typeid(std::string) < f.EmptyId);
-	BOOST_CHECK(f.IntId < f.EmptyId);
-	BOOST_CHECK(typeid(int) < f.EmptyId);
+	BOOST_CHECK(!(f.StringId < f.StringId));
+	BOOST_CHECK(!(typeid(std::string) < f.StringId));
+	BOOST_CHECK(!(f.StringId < typeid(std::string)));
 
 	BOOST_CHECK((f.IntId < f.StringId) || (f.StringId < f.IntId));
 	BOOST_CHECK(!((f.IntId < f.StringId) && (f.StringId < f.IntId)));
