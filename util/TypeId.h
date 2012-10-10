@@ -26,7 +26,7 @@
 // - none
 
 // Library/third-party includes
-#include <boost/mpl/void.hpp>
+//#include <boost/mpl/void.hpp>
 #include <boost/mpl/identity.hpp>
 
 // Standard includes
@@ -36,8 +36,8 @@ namespace util {
 	/// @brief A simple wrapper/handle class for type_info for use in containers, etc.
 	class TypeId {
 		public:
-			/// @brief default constructor - initializes to typeinfo of boost::mpl::void_
-			TypeId() : _typeinfo(&null_type()) {}
+			/// @brief default constructor
+			TypeId() : _typeinfo(null_type_ptr()) {}
 
 			/// @brief constructor from type_info reference (return type of typeid operator)
 			TypeId(std::type_info const & ti) : _typeinfo(&ti) {}
@@ -48,14 +48,27 @@ namespace util {
 
 			/// @brief Some name, with no guarantee of uniqueness or usefulness.
 			const char * name() const {
-				return get().name();
+				if (empty()) {
+					return "";
+				} else {
+					return get().name();
+				}
 			}
 
 			bool before(std::type_info const& other) const {
+				if (empty()) {
+					return false;
+				}
 				return get().before(other);
 			}
 
 			bool before(TypeId const& other) const {
+				if (empty()) {
+					return false;
+				}
+				if (other.empty()) {
+					return true;
+				}
 				return get().before(other.get());
 			}
 
@@ -63,12 +76,16 @@ namespace util {
 				return *_typeinfo;
 			}
 
-			bool empty() const {
-				return get() == null_type();
+			std::type_info const * getPointer() const {
+				return _typeinfo;
 			}
 
-			static std::type_info const & null_type() {
-				return typeid(boost::mpl::void_);
+			bool empty() const {
+				return getPointer() == null_type_ptr();
+			}
+
+			static std::type_info const * null_type_ptr() {
+				return NULL/*typeid(boost::mpl::void_)*/;
 			}
 		private:
 
