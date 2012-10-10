@@ -26,7 +26,7 @@
 // - none
 
 // Library/third-party includes
-//#include <boost/mpl/void.hpp>
+#include <boost/mpl/void.hpp>
 #include <boost/mpl/identity.hpp>
 
 // Standard includes
@@ -91,7 +91,7 @@ namespace util {
 			}
 
 			static std::type_info const * null_type_ptr() {
-				return NULL/*typeid(boost::mpl::void_)*/;
+				return &typeid(boost::mpl::void_);
 			}
 		private:
 
