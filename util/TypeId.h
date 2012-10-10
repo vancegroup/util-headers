@@ -141,7 +141,7 @@ namespace util {
 
 	template<typename StreamType>
 	StreamType & operator<<(StreamType & s, TypeId const& rhs) {
-		s << rhs.name();
+		s << "[TypeId: " << rhs.name() << "]";
 		return s;
 	}
 } // end of namespace util
