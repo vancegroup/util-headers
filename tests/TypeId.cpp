@@ -114,6 +114,11 @@ BOOST_AUTO_TEST_CASE(Ordering) {
 	BOOST_CHECK(!(f.EmptyId < f.StringId));
 	BOOST_CHECK(!(f.EmptyId < typeid(std::string)));
 
+
+	BOOST_CHECK(!(f.EmptyId < f.EmptyId));
+	BOOST_CHECK(!(f.IntId < f.IntId));
+	BOOST_CHECK(!(f.StringId < f.StringId));
+
 	BOOST_CHECK(f.StringId < f.EmptyId);
 	BOOST_CHECK(typeid(std::string) < f.EmptyId);
 	BOOST_CHECK(f.IntId < f.EmptyId);
