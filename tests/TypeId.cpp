@@ -17,6 +17,7 @@
 // Standard includes
 #include <vector>
 #include <set>
+#include <map>
 #include <string>
 
 using namespace boost::unit_test;
@@ -24,6 +25,9 @@ using namespace boost::unit_test;
 using util::TypeId;
 typedef std::vector<util::TypeId> TypeIdVector;
 typedef std::set<util::TypeId> TypeIdSet;
+
+typedef std::pair<util::TypeId, int> TypeIdPair;
+typedef std::map<util::TypeId, int> TypeIdMap;
 
 struct Fixture {
 	Fixture() : StringId(typeid(std::string)), IntId(typeid(int)) {}
@@ -166,6 +170,32 @@ BOOST_AUTO_TEST_CASE(Set) {
 	BOOST_CHECK(set.find(f.EmptyId) != set.end());
 	BOOST_CHECK(set.find(f.IntId) == set.end());
 	BOOST_CHECK(set.find(f.StringId) != set.end());
+}
+
+BOOST_AUTO_TEST_CASE(Map) {
+	BOOST_REQUIRE_NO_THROW(TypeIdPair());
+	BOOST_REQUIRE_NO_THROW(TypeIdMap());
+	TypeIdMap map;
+	Fixture f;
+	BOOST_REQUIRE(map.insert(TypeIdPair(f.EmptyId, 0)).second);
+	BOOST_REQUIRE(map.insert(TypeIdPair(f.IntId, 1)).second);
+	BOOST_REQUIRE(map.insert(TypeIdPair(f.StringId, 2)).second);
+
+	BOOST_REQUIRE_EQUAL(map.size(), 3);
+
+	BOOST_CHECK_EQUAL(map.at(f.EmptyId), 0);
+	BOOST_CHECK_EQUAL(map.at(f.IntId), 1);
+	BOOST_CHECK_EQUAL(map.at(f.StringId), 2);
+
+	BOOST_CHECK_EQUAL(map[f.EmptyId], 0);
+	BOOST_CHECK_EQUAL(map[f.IntId], 1);
+	BOOST_CHECK_EQUAL(map[f.StringId], 2);
+
+	BOOST_CHECK(map != TypeIdMap());
+
+	BOOST_REQUIRE_NO_THROW(TypeIdMap(map));
+	TypeIdMap m2(map);
+	BOOST_CHECK(map == m2);
 }
 
 BOOST_AUTO_TEST_CASE(TransitivityOfOrderingAndEquality) {

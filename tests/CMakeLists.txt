@@ -222,6 +222,7 @@ add_boost_test(TypeId
 	Ordering
 	Vector
 	Set
+	Map
 	TransitivityOfOrderingAndEquality)
 
 find_package(Boost COMPONENTS serialization)
