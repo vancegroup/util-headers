@@ -41,6 +41,16 @@ BOOST_AUTO_TEST_CASE(TypeinfoConstructor) {
 	BOOST_REQUIRE_NO_THROW(TypeId(typeid(std::string)));
 }
 
+BOOST_AUTO_TEST_CASE(MPLIdentityConstructor) {
+	BOOST_REQUIRE_NO_THROW(TypeId(boost::mpl::identity<int>()));
+	BOOST_REQUIRE_NO_THROW(TypeId(boost::mpl::identity<std::string>()));
+}
+
+BOOST_AUTO_TEST_CASE(StaticTemplateConstructor) {
+	BOOST_REQUIRE_NO_THROW(TypeId::create<int>());
+	BOOST_REQUIRE_NO_THROW(TypeId::create<std::string>());
+}
+
 BOOST_AUTO_TEST_CASE(FixtureConstruction) {
 	BOOST_REQUIRE_NO_THROW(Fixture());
 }
@@ -58,6 +68,14 @@ BOOST_AUTO_TEST_CASE(EqualityComparison) {
 
 	BOOST_CHECK(TypeId() != typeid(std::string));
 	BOOST_CHECK(typeid(std::string) != TypeId());
+}
+
+BOOST_AUTO_TEST_CASE(ConstructorEquality) {
+	BOOST_CHECK_EQUAL(TypeId(typeid(int)), TypeId::create<int>());
+	BOOST_CHECK_EQUAL(TypeId(typeid(std::string)), TypeId::create<std::string>());
+
+	BOOST_CHECK_EQUAL(TypeId(typeid(int)), TypeId(boost::mpl::identity<int>()));
+	BOOST_CHECK_EQUAL(TypeId(typeid(std::string)), TypeId(boost::mpl::identity<std::string>()));
 }
 
 BOOST_AUTO_TEST_CASE(EmptyMethod) {
