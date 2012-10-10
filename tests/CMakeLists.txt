@@ -237,6 +237,10 @@ add_boost_test(ReceiveBuffer
 	EraseBack
 	EraseTwoBack)
 
+add_boost_test(TypeId
+	SOURCES
+	TypeId.cpp)
+
 find_package(Boost COMPONENTS serialization)
 if(Boost_SERIALIZATION_LIBRARY)
 	add_boost_test(EigenMatrixSerialize
