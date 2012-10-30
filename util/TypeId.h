@@ -72,22 +72,12 @@ namespace util {
 				is always false, and a.before(b) implies !(b.before(a))
 				and a != b
 
-				Furthermore, an "empty" info is never before anything.
 			*/
 			bool before(std::type_info const& other) const {
-				if (empty()) {
-					return false;
-				}
 				return get().before(other);
 			}
 
 			bool before(TypeId const& other) const {
-				if (empty()) {
-					return false;
-				}
-				if (other.empty()) {
-					return true;
-				}
 				return get().before(other.get());
 			}
 
