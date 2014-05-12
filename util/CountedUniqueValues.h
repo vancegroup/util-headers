@@ -50,7 +50,8 @@ namespace util {
 	class CountedUniqueValues {
 		public:
 			typedef T value_type;
-			typedef unsigned int count_type;
+			typedef std::vector<value_type> storage_type;
+			typedef typename storage_type::size_type count_type;
 
 			count_type store(value_type const& v) {
 				count_type i = _storage.size();
@@ -75,7 +76,6 @@ namespace util {
 			}
 
 		private:
-			typedef std::vector<value_type> storage_type;
 			typedef typename dictionary_policy::template apply<value_type, count_type>::type dictionary_type;
 			storage_type _storage;
 			dictionary_type _lookup;
