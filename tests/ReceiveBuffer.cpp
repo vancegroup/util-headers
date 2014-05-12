@@ -15,7 +15,7 @@
 #include <BoostTestTargetConfig.h>
 
 // Standard includes
-// - none
+#include <iostream>
 
 using namespace boost::unit_test;
 
