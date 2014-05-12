@@ -58,12 +58,6 @@ namespace util {
 				return i;
 			}
 
-
-			/// @todo dangerous because of not changing the lookup?
-			value_type & get(count_type const& i) {
-				return _storage.at(i);
-			}
-
 			value_type const& get(count_type const& i) const {
 				return _storage.at(i);
 			}
