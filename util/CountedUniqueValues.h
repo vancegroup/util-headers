@@ -36,13 +36,21 @@ namespace util {
 
 /// @addtogroup DataStructures Data Structures
 /// @{
+	/// Default policy struct for CountedUniqueValues indicating to use
+	/// a std::map as the dictionary.
+	struct CUVMapDictionaryPolicy {
+		template<typename A, typename B>
+		struct apply {
+			typedef std::map<A, B> type;
+		};
+	};
 
 	/// A container template that numbers and stores unique, immutable values.
-	template<typename value_type>
+	template<typename T, typename dictionary_policy = CUVMapDictionaryPolicy>
 	class CountedUniqueValues {
 		public:
+			typedef T value_type;
 			typedef unsigned int count_type;
-			typedef std::vector<value_type> storage_type;
 
 			count_type store(value_type const& v) {
 				count_type i = _storage.size();
@@ -67,9 +75,10 @@ namespace util {
 			}
 
 		protected:
-			std::vector<value_type> _storage;
-			std::map<value_type, count_type> _lookup;
-
+			typedef std::vector<value_type> storage_type;
+			typedef typename dictionary_policy::template apply<value_type, count_type>::type dictionary_type;
+			storage_type _storage;
+			dictionary_type _lookup;
 	};
 
 
