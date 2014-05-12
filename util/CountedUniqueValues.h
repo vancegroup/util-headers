@@ -37,7 +37,7 @@ namespace util {
 /// @addtogroup DataStructures Data Structures
 /// @{
 
-	/// A container template that numbers and stores unique values.
+	/// A container template that numbers and stores unique, immutable values.
 	template<typename value_type>
 	class CountedUniqueValues {
 		public:
