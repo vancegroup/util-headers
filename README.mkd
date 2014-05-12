@@ -1,6 +1,6 @@
 Utility Headers for C++
 =======================
-Maintained at <https://github.com/vance-group/util-headers>
+Maintained at <https://github.com/vancegroup/util-headers>
 
 Even when using the STL and libraries of best practices (like
 [Boost][1], [Eigen][2], and [Loki][3]), a C++ coder sometimes requires
