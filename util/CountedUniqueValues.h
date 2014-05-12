@@ -71,6 +71,10 @@ namespace util {
 				return _storage.at(i);
 			}
 
+			value_type const& operator[](count_type const& i) const {
+				return _storage[i];
+			}
+
 			count_type size() const {
 				return _storage.size();
 			}
