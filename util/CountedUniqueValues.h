@@ -74,7 +74,7 @@ namespace util {
 				return _storage.size();
 			}
 
-		protected:
+		private:
 			typedef std::vector<value_type> storage_type;
 			typedef typename dictionary_policy::template apply<value_type, count_type>::type dictionary_type;
 			storage_type _storage;
